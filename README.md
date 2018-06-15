@@ -24,8 +24,18 @@ pelican-themes -i themes/gum
 pelican-themes -i themes/pelicanyan
 ```
 
-### clone output
+### clone blog
+cd to ~
+```
+git clone git@github.com:princelai/blog_backup.git Blog
+```
+### first clone output
 cd to blog dir
 ```
 git clone git@github.com:princelai/princelai.github.io.git output
+```
+
+### sync output eveytimes
+```
+git pull origin master
 ```
