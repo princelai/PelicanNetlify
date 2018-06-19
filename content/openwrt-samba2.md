@@ -16,21 +16,19 @@ opkg list-installed | grep usb
 
 如果下列驱动未出现在上一步的结果中，请务必首先安装缺失的驱动
 ```
-opkg install kmod-usb-core kmod-usb-storage kmod-usb3 kmod-usb2
-insmod usbcore
-insmod xhci-hcd #USB2.0驱动
-insmod ehci-hcd #USB3.0驱动
+opkg install kmod-usb-core kmod-usb-storage kmod-usb2 kmod-ata-marvell-sata kmod-usb-storage-extras
 ```
 
 **安装相关工具**
 ```bash
+opkg install mount-utils #提供unmount,findmnt
 opkg install usbutils #提供lsusb
 opkg install block-mount #查看挂载点信息
 opkg install e2fsprogs #格式化工具mkfs
 opkg install kmod-fs-ext4
-opkg install kmod-fs-ntfs
+#opkg install kmod-fs-ntfs #我不用ntfs格式，所以不安装这个
 opkg install gdisk #分区工具
-opkg install fdisk #分区工具
+opkg install fdisk #分区工具，安装上一个就不用安装这个了
 ```
 查看已连接的USB设备
 ```bash
@@ -50,6 +48,7 @@ gdisk /dev/sda
 **格式化硬盘**
 ```bash
 mkfs.ext4 /dev/sda1
+mkfs.ext4 /dev/sda2
 ```
 如果是SSD硬盘，则可以按照如下方式安装操作
 ```bash
@@ -62,6 +61,9 @@ mkfs.f2fs /dev/sda1
 ```bash
 block detect > /etc/config/fstab
 uci set fstab.@mount[0].enabled='1'
+uci set fstab.@mount[1].enabled='1'
+uci set fstab.@mount[0].options='rw'
+uci set fstab.@mount[1].options='rw'
 uci set fstab.@global[0].check_fs='1'
 uci commit
 ```
@@ -70,20 +72,40 @@ uci commit
 uci show fstab
 ```
 
+**开启/重启挂载服务**
+
+```
+service fstab restart
+service fstab enable
+```
+
+
+
 **[可选]硬盘休眠**
+
 ```bash
 opkg update
-opkg install hdparm uci-app-hd-idle
+opkg install hdparm luci-app-hd-idle
 ```
 执行下面的命令启动休眠
 ```bash
-hdparm -S 240 /dev/sda2
+hdparm -S 120 /dev/sda1
+hdparm -S 120 /dev/sda2
 ```
 
 -S后的参数含义为：
 1. 0:关闭休眠
 2. 1-240：数字乘以5秒是时间，在设定时间内未使用则休眠
 3. 241-251：以30分钟为步进，时间为30分钟-5.5小时
+
+
+
+测试硬盘读取性能
+
+```bash
+hdparm -Tt /dev/sda1
+hdparm -Tt /dev/sda2
+```
 
 
 
@@ -114,7 +136,7 @@ opkg list | grep samba
 根据结果，安装适当的版本
 
 ```bash
-opkg install samba36-server luci-app-samba
+opkg install samba36-server luci-app-samba luci-i18n-samba-zh-cn
 ```
 
 **配置防火墙**
@@ -160,12 +182,12 @@ config 'rule'
 	obey pam restrictions = yes
 	socket options = TCP_NODELAY
 	unix charset = UTF-8
-    local master = yes
-	preferred master = yes
+    local master = yes #For Browsing shares folders
+	preferred master = yes #For Browsing shares folders
 	os level = 20
 	security = share
 	guest account = nobody
-	invalid users = root
+	invalid users = root #禁止root用户登录访问
 	smb passwd file = /etc/samba/smbpasswd
 ```
 
@@ -182,9 +204,17 @@ config 'samba'
         option 'homes' '0'
         option 'interface' 'loopback lan'
         
-config 'sambashare'
+config 'mediashare'
         option 'name' 'Shares'
         option 'path' '/mnt/sda1'
+        option 'guest_ok' 'yes'
+        option 'create_mask' '0777'
+        option 'dir_mask' '0777'
+        option 'read_only' 'no'
+        
+config 'fileshare'
+        option 'name' 'Files'
+        option 'path' '/mnt/sda2'
         option 'guest_ok' 'yes'
         option 'create_mask' '0777'
         option 'dir_mask' '0777'
