@@ -1,12 +1,21 @@
-Title: openwrt-samba2
+Title: LEDE路由器打造家庭媒体影音中心（一）
 Date: 2018-06-15 13:07
-Category: IT笔记, 金融笔记
+Category: IT笔记
 Tags: openwrt, samba, nas
-Slug:openwrt-samba2
+Slug:lede-media-center1
 Authors: Kevin Chen
 Status: draft
 
+
+
+### 前言
+
+### 更换源
+
+
+
 ### USB驱动
+
 **查看已安装的驱动**
 ```
 opkg update
@@ -15,37 +24,84 @@ opkg list-installed | grep usb
 **安装驱动和工具**
 
 如果下列驱动未出现在上一步的结果中，请务必首先安装缺失的驱动
+
 ```
-opkg install kmod-usb-core kmod-usb-storage kmod-usb2 kmod-ata-marvell-sata kmod-usb-storage-extras
+opkg install kmod-usb-core kmod-usb-storage kmod-ata-marvell-sata
 ```
 
-**安装相关工具**
-```bash
-opkg install mount-utils #提供unmount,findmnt
-opkg install usbutils #提供lsusb
-opkg install block-mount #查看挂载点信息
-opkg install e2fsprogs #格式化工具mkfs
-opkg install kmod-fs-ext4
-#opkg install kmod-fs-ntfs #我不用ntfs格式，所以不安装这个
-opkg install gdisk #分区工具
-opkg install fdisk #分区工具，安装上一个就不用安装这个了
+`kmod-usb-core`:USB核心驱动
+
+`kmod-usb-storage`:非高速usb-storage设备，高速设备驱动是[UAS](https://en.wikipedia.org/wiki/USB_Attached_SCSI)，已编译在内核中
+
+`kmod-usb2`:WRT1900ACS有一个USB2.0/eSATA口，只用到eSATA未用到USB2.0，所以不安装这个驱动，如果需要也可以安装
+
+`kmod-ata-marvell-sata`:Marvell SATA接口驱动
+
+网上搜到的教程和官方指南里还让安装一些其他的应用，但这些都是不必要或已被编译至内核中，包括：`kmod-usb-ohci`、`kmod-usb-uhci`、`kmod-usb3`
+
+*小技巧：如何分辨uas设备和usb-storage设备*
+
+`lsusb -t`
+
 ```
+/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/6p, 5000M
+    |__ Port 2: Dev 3, If 0, Class=Mass Storage, Driver=uas, 5000M
+    |__ Port 4: Dev 5, If 0, Class=Mass Storage, Driver=usb-storage, 5000M
+```
+
+Dev 3就是uas，Dev 5就是usb-storage，如果返回的结果类似于下面这样，Driver为空，那么就是驱动没有安装好。
+
+```
+|__ Port 4: Dev 5, If 0, Class=Mass Storage, Driver=, 5000M
+```
+
+
+
+**安装相关工具**
+
+```bash
+opkg install mount-utils usbutils block-mount e2fsprogs kmod-fs-ext4 gdisk fdisk 
+```
+`mount-utils`:提供unmount,findmnt
+
+`usbutils`:提供lsusb
+
+`block-mount`:提供block，查看挂载点信息
+
+`e2fsprogs`:格式化工具mkfs
+
+`kmod-fs-ext4`:格式化为ext4格式
+
+`kmod-fs-ntfs`:我不用ntfs格式，所以不安装这个，需要可以安装上
+
+`gdisk`:分区工具，支持GPT，硬盘容量超过2T需要用这个工具，当然容量小的也可以用这个
+
+`fdisk`:分区工具，不支持GPT，常用来查看分区信息
+
 查看已连接的USB设备
+
 ```bash
 lsusb -t
 ls -l /dev/sd*
 block info | grep "/dev/sd"
 ```
 
+*小提示：硬盘格式化为什么格式最好？*
+
+在Linux和LEDE平台上，微软的NTFS和FAT绝对不是一个好的格式，设计的优劣不谈，这两个格式不是Linux平台原生支持的，安装额外的驱动可能会带来发热、速度慢、不稳定等多种负面效果。所以，对于机械硬盘来说，EXT4和BTRFS是最好的，对于SSD来说，F2FS格式是最好的。
 
 ### 硬盘相关操作
+
 **硬盘分区**
 
 根据软件提示进行操作
 ```bash
 gdisk /dev/sda
 ```
+这里我把一块硬盘分为两个区`/dev/sda1`，`/dev/sda2`，分区1大小700G，分区2大小231G，总计1T。
+
 **格式化硬盘**
+
 ```bash
 mkfs.ext4 /dev/sda1
 mkfs.ext4 /dev/sda2
@@ -109,7 +165,7 @@ hdparm -Tt /dev/sda2
 
 
 
-如果不想按照上面一步一步来，那么官方也提供了快速操作
+如果不想按照上面一步一步来，那么官方也提供了快速操作，请根据自己的实际情况修改后执行。
 
 ```bash
 # Copy/paste each line below, then press Return
