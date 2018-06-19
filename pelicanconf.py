@@ -25,7 +25,7 @@ AUTHOR_FEED_RSS = None
 
 
 #Plugin
-PLUGIN_PATHS = ["plugins", "/opt/Anaconda3/lib/python3.6/site-packages/pelican/plugins"]
+PLUGIN_PATHS = ["plugins", "/opt/Anaconda/lib/python3.6/site-packages/pelican/plugins"]
 PLUGINS = ["render_math","tag_cloud","tipue_search","neighbors","related_posts"]
 TYPOGRIFY = True
 DISQUS_SITENAME = 'solarck'

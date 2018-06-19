@@ -128,11 +128,10 @@ uci commit
 uci show fstab
 ```
 
-**开启/重启挂载服务**
+**卸载/挂载服务**
 
 ```
-service fstab restart
-service fstab enable
+block umount && block mount
 ```
 
 
@@ -229,22 +228,25 @@ config 'rule'
 
 ```bash
 [global]
-	netbios name = |NAME| 
-	workgroup = |WORKGROUP|
-	server string = |DESCRIPTION|
+	server string = Samba on LEDE
 	syslog = 10
 	encrypt passwords = true
-	passdb backend = smbpasswd
 	obey pam restrictions = yes
-	socket options = TCP_NODELAY
-	unix charset = UTF-8
-    local master = yes #For Browsing shares folders
-	preferred master = yes #For Browsing shares folders
+	socket options = TCP_NODELAY IPTOS_LOWDELAY
+	unix charset = UTF-8 
+	browseable = yes
+    local master = yes
+	preferred master = yes
 	os level = 20
-	security = share
+	security = user
+	null passwords = yes
 	guest account = nobody
-	invalid users = root #禁止root用户登录访问
+	invalid users = root
+	passdb backend = smbpasswd
 	smb passwd file = /etc/samba/smbpasswd
+    map to guest = Bad User
+    max protocol = SMB2  
+    min receivefile size = 16384 
 ```
 
 
@@ -252,29 +254,30 @@ config 'rule'
 `vi /etc/config/samba `
 
 ```bash
-config 'samba'
-        option 'name' 'OpenWrt'
-        option 'workgroup' 'OpenWrt'
-        option 'description' 'Samba on OpenWrt'
-        option 'charset' 'UTF-8'
-        option 'homes' '0'
-        option 'interface' 'loopback lan'
-        
-config 'mediashare'
-        option 'name' 'Shares'
-        option 'path' '/mnt/sda1'
-        option 'guest_ok' 'yes'
-        option 'create_mask' '0777'
-        option 'dir_mask' '0777'
-        option 'read_only' 'no'
-        
-config 'fileshare'
-        option 'name' 'Files'
-        option 'path' '/mnt/sda2'
-        option 'guest_ok' 'yes'
-        option 'create_mask' '0777'
-        option 'dir_mask' '0777'
-        option 'read_only' 'no'
+config samba
+        option charset 'UTF-8'
+        option homes '0'
+        option interface 'loopback lan'
+        option name 'Lede'
+        option description 'Samba on Lede'
+        option workgroup 'Lede'
+
+config sambashare
+        option name 'Media'
+        option path '/mnt/sda1'
+        option read_only 'no'
+        option guest_ok 'yes'
+        option create_mask '0777'
+        option dir_mask '0777'
+
+config sambashare
+        option path '/mnt/sda2'
+        option read_only 'no'
+        option create_mask '0700'
+        option dir_mask '0700'
+        option name 'Document'
+        option guest_ok 'no'
+
 ```
 
 
