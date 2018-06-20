@@ -1,306 +1,180 @@
 Title: LEDE路由器打造家庭媒体影音中心（一）
 Date: 2018-06-15 13:07
 Category: IT笔记
-Tags: openwrt, samba, nas
+Tags: openwrt, lede,wrt1900acs
 Slug:lede-media-center1
 Authors: Kevin Chen
 Status: draft
 
 
 
-### 前言
+
+
+# 前言
+
+### 软/硬件
+
+软件：本文系统都是基于LEDE 17.01.4
+
+硬件：Linksys WRT1900ACS V2
+
+其他：一台电脑，最好是Linux带SSH，Windows的话可以下个putty安装上
+
+前提：我不会从头写起，而是从路由器已刷好LEDE 17.01.4，WAN口已联网，且已经可以SSH登录之后开始，其他外设，如硬盘、硬盘盒、用于EXROOT的U盘都已准备好。
+
+
+
+### 实现目的
+
+基于Linksys WRT1900ACS强悍的性能和扩展功能丰富的LEDE，打造一个有权限控制的NAS，支持DLNA，可以离线下载和远程访问的DDNS系统的多媒体中心。
+
+
+
+# 更换源
+
+### 添加对https的支持
+
+如果你在替换源后执行更新，那么会收到一条错误消息：
+
+> SSL support not available, please install one of the libustream-ssl-* libraries as well as the ca-bundle and ca-certificates packages.
+
+很明显，系统还不支持SSL，因为官方的源都是http的，而我们添加的源都是https的。不过也很简单，按照错误信息的提示安装相应的包就可以了。**这一步一定要在替换源之前执行**
+
+```bash
+opkg update
+opkg install ca-certificates libustream-openssl luci-ssl-openssl
+```
+
+
 
 ### 更换源
 
+国内访问LEDE官方源比较不稳定，速度也很慢，幸好[中科大](https://mirrors.ustc.edu.cn/lede/)和[清华](https://mirrors.tuna.tsinghua.edu.cn/lede/)都提供了LEDE的软件镜像源，为了后边操作能够顺利进行，首先需要更换源。
 
+LEDE OPKG的软件源配置文件有两个：
 
-### USB驱动
+`/etc/opkg/distfeeds.conf`：发行版本自带的官方源，需要把里面的内容全部注释掉或者清空。
 
-**查看已安装的驱动**
-```
-opkg update
-opkg list-installed | grep usb
-```
-**安装驱动和工具**
-
-如果下列驱动未出现在上一步的结果中，请务必首先安装缺失的驱动
-
-```
-opkg install kmod-usb-core kmod-usb-storage kmod-ata-marvell-sata
-```
-
-`kmod-usb-core`:USB核心驱动
-
-`kmod-usb-storage`:非高速usb-storage设备，高速设备驱动是[UAS](https://en.wikipedia.org/wiki/USB_Attached_SCSI)，已编译在内核中
-
-`kmod-usb2`:WRT1900ACS有一个USB2.0/eSATA口，只用到eSATA未用到USB2.0，所以不安装这个驱动，如果需要也可以安装
-
-`kmod-ata-marvell-sata`:Marvell SATA接口驱动
-
-网上搜到的教程和官方指南里还让安装一些其他的应用，但这些都是不必要或已被编译至内核中，包括：`kmod-usb-ohci`、`kmod-usb-uhci`、`kmod-usb3`
-
-*小技巧：如何分辨uas设备和usb-storage设备*
-
-`lsusb -t`
-
-```
-/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/6p, 5000M
-    |__ Port 2: Dev 3, If 0, Class=Mass Storage, Driver=uas, 5000M
-    |__ Port 4: Dev 5, If 0, Class=Mass Storage, Driver=usb-storage, 5000M
-```
-
-Dev 3就是uas，Dev 5就是usb-storage，如果返回的结果类似于下面这样，Driver为空，那么就是驱动没有安装好。
-
-```
-|__ Port 4: Dev 5, If 0, Class=Mass Storage, Driver=, 5000M
-```
-
-
-
-**安装相关工具**
-
-```bash
-opkg install mount-utils usbutils block-mount e2fsprogs kmod-fs-ext4 gdisk fdisk 
-```
-`mount-utils`:提供unmount,findmnt
-
-`usbutils`:提供lsusb
-
-`block-mount`:提供block，查看挂载点信息
-
-`e2fsprogs`:格式化工具mkfs
-
-`kmod-fs-ext4`:格式化为ext4格式
-
-`kmod-fs-ntfs`:我不用ntfs格式，所以不安装这个，需要可以安装上
-
-`gdisk`:分区工具，支持GPT，硬盘容量超过2T需要用这个工具，当然容量小的也可以用这个
-
-`fdisk`:分区工具，不支持GPT，常用来查看分区信息
-
-查看已连接的USB设备
-
-```bash
-lsusb -t
-ls -l /dev/sd*
-block info | grep "/dev/sd"
-```
-
-*小提示：硬盘格式化为什么格式最好？*
-
-在Linux和LEDE平台上，微软的NTFS和FAT绝对不是一个好的格式，设计的优劣不谈，这两个格式不是Linux平台原生支持的，安装额外的驱动可能会带来发热、速度慢、不稳定等多种负面效果。所以，对于机械硬盘来说，EXT4和BTRFS是最好的，对于SSD来说，F2FS格式是最好的。
-
-### 硬盘相关操作
-
-**硬盘分区**
-
-根据软件提示进行操作
-```bash
-gdisk /dev/sda
-```
-这里我把一块硬盘分为两个区`/dev/sda1`，`/dev/sda2`，分区1大小700G，分区2大小231G，总计1T。
-
-**格式化硬盘**
-
-```bash
-mkfs.ext4 /dev/sda1
-mkfs.ext4 /dev/sda2
-```
-如果是SSD硬盘，则可以按照如下方式安装操作
-```bash
-opkg install f2fs-tools
-opkg install kmod-fs-f2fs
-mkfs.f2fs /dev/sda1
-```
-
-**自动挂载分区**
-```bash
-block detect > /etc/config/fstab
-uci set fstab.@mount[0].enabled='1'
-uci set fstab.@mount[1].enabled='1'
-uci set fstab.@mount[0].options='rw'
-uci set fstab.@mount[1].options='rw'
-uci set fstab.@global[0].check_fs='1'
-uci commit
-```
-查看当前挂载点设置
-```bash
-uci show fstab
-```
-
-**卸载/挂载服务**
-
-```
-block umount && block mount
-```
-
-
-
-**[可选]硬盘休眠**
-
-```bash
-opkg update
-opkg install hdparm luci-app-hd-idle
-```
-执行下面的命令启动休眠
-```bash
-hdparm -S 120 /dev/sda1
-hdparm -S 120 /dev/sda2
-```
-
--S后的参数含义为：
-1. 0:关闭休眠
-2. 1-240：数字乘以5秒是时间，在设定时间内未使用则休眠
-3. 241-251：以30分钟为步进，时间为30分钟-5.5小时
-
-
-
-测试硬盘读取性能
-
-```bash
-hdparm -Tt /dev/sda1
-hdparm -Tt /dev/sda2
-```
-
-
-
-如果不想按照上面一步一步来，那么官方也提供了快速操作，请根据自己的实际情况修改后执行。
-
-```bash
-# Copy/paste each line below, then press Return
-opkg update && opkg install block-mount e2fsprogs kmod-fs-ext4 kmod-usb3 kmod-usb2 kmod-usb-storage
-mkfs.ext4 /dev/sda1
-block detect > /etc/config/fstab 
-uci set fstab.@mount[0].enabled='1' && uci set fstab.@global[0].check_fs='1' && uci commit 
-/sbin/block mount && service fstab enable
-```
-
-
-
-### 配置Samba
-
-**安装Samba**
-
-查看可安装的版本
-
-```bash
-opkg update
-opkg list | grep samba
-```
-
-根据结果，安装适当的版本
-
-```bash
-opkg install samba36-server luci-app-samba luci-i18n-samba-zh-cn
-```
-
-**配置防火墙**
-
-` vi /etc/config/firewall`
+`/etc/opkg/customfeeds.conf`：自定义源，把我们需要的内容粘贴到这里，内容如下：
 
 ```ini
-config 'rule'
-        option 'src' 'lan'
-        option 'proto' 'udp'
-        option 'dest_port' '137-138'
-        option 'target' 'ACCEPT'
+src/gz reboot_core https://mirrors.ustc.edu.cn/lede/releases/17.01.4/targets/mvebu/generic/packages
+src/gz reboot_base https://mirrors.ustc.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/base
+src/gz reboot_luci https://mirrors.ustc.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/luci
+src/gz reboot_packages https://mirrors.ustc.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/packages
+src/gz reboot_routing https://mirrors.ustc.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/routing
+src/gz reboot_telephony https://mirrors.ustc.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/telephony
 
-config 'rule'
-        option 'src' 'lan'
-        option 'proto' 'tcp'
-        option 'dest_port' '139'
-        option 'target' 'ACCEPT'
-
-config 'rule'
-        option 'src' 'lan'
-        option 'proto' 'tcp'
-        option 'dest_port' '445'
-        option 'target' 'ACCEPT'
+#只启用上面中科大的源，下面的作为备份
+#src/gz reboot_core http://downloads.lede-project.org/releases/17.01.4/targets/mvebu/generic/packages
+#src/gz reboot_base http://downloads.lede-project.org/releases/17.01.4/packages/arm_cortex-a9_vfpv3/base
+#src/gz reboot_luci http://downloads.lede-project.org/releases/17.01.4/packages/arm_cortex-a9_vfpv3/luci
+#src/gz reboot_packages http://downloads.lede-project.org/releases/17.01.4/packages/arm_cortex-a9_vfpv3/packages
+#src/gz reboot_routing http://downloads.lede-project.org/releases/17.01.4/packages/arm_cortex-a9_vfpv3/routing
+#src/gz reboot_telephony http://downloads.lede-project.org/releases/17.01.4/proot@ChenWrt:~# cat /etc/opkg/distfeeds.conf
+#src/gz reboot_core https://mirrors.tuna.tsinghua.edu.cn/lede/releases/17.01.4/targets/mvebu/generic/packages
+#src/gz reboot_base https://mirrors.tuna.tsinghua.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/base
+#src/gz reboot_luci https://mirrors.tuna.tsinghua.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/luci
+#src/gz reboot_packages https://mirrors.tuna.tsinghua.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/packages
+#src/gz reboot_routing https://mirrors.tuna.tsinghua.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/routing
+#src/gz reboot_telephony https://mirrors.tuna.tsinghua.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/telephony
 ```
 
-**Samba配置文件**
 
-*官方**强烈建议**使用luci来配置Samba，然后通过修改临时文件来完成配置。*
 
-*路由器每次重启，`/etc/samba/smb.conf`文件都将从/etc/samba/smb.conf.template文件从新创建，所以修改配置时请修改后者。*
+### 更新系统
 
-`vi /etc/samba/smb.conf.template`
+镜像源替换完成后，把所有已安装程序全部更新到最新
 
 ```bash
-[global]
-	server string = Samba on LEDE
-	syslog = 10
-	encrypt passwords = true
-	obey pam restrictions = yes
-	socket options = TCP_NODELAY IPTOS_LOWDELAY
-	unix charset = UTF-8 
-	browseable = yes
-    local master = yes
-	preferred master = yes
-	os level = 20
-	security = user
-	null passwords = yes
-	guest account = nobody
-	invalid users = root
-	passdb backend = smbpasswd
-	smb passwd file = /etc/samba/smbpasswd
-    map to guest = Bad User
-    max protocol = SMB2  
-    min receivefile size = 16384 
-```
-
-
-
-`vi /etc/config/samba `
-
-```bash
-config samba
-        option charset 'UTF-8'
-        option homes '0'
-        option interface 'loopback lan'
-        option name 'Lede'
-        option description 'Samba on Lede'
-        option workgroup 'Lede'
-
-config sambashare
-        option name 'Media'
-        option path '/mnt/sda1'
-        option read_only 'no'
-        option guest_ok 'yes'
-        option create_mask '0777'
-        option dir_mask '0777'
-
-config sambashare
-        option path '/mnt/sda2'
-        option read_only 'no'
-        option create_mask '0700'
-        option dir_mask '0700'
-        option name 'Document'
-        option guest_ok 'no'
-
+opkg update
+opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade 
 ```
 
 
 
 
-### 参考链接
-[Installing USB Drivers](https://openwrt.org/docs/guide-user/storage/usb-installing)
 
-[Using storage devices](https://openwrt.org/docs/guide-user/storage/usb-drives)
-[Share USB Hard-drive with Samba using the Luci web-interface](https://openwrt.org/docs/guide-user/services/nas/usb-storage-samba-webinterface)
-[SMB Samba share overview](https://openwrt.org/docs/guide-user/services/nas/samba_configuration)
+# 优化LuCi
 
-[cifs.server](https://openwrt.org/docs/guide-user/services/nas/cifs.server)
+### SSL支持
 
-[Samba](https://openwrt.org/docs/guide-user/services/nas/samba)
+#### **安装openssl**
 
-<hr />
-[智能路由器-OpenWRT 系列五 （NAS-SMB家庭共享）](https://www.cnblogs.com/wizju/p/6923625.html)
+```
+opkg update
+opkg install libopenssl
+opkg install openssl-util
+opkg install luci-app-uhttpd
+```
 
-[OpenWrt搭建文件共享服务（NAS）](https://www.jianshu.com/p/a122a036e8d9)
 
-[Openwrt 网络存储NAS之Samba服务](https://blog.csdn.net/yicao821/article/details/49929207)
 
-[【智能路由】用路由器低成本打造NAS+迅雷离线下载+同步android文件](https://luolei.org/openwrt-router-wifi-android-sync-iclould/)
+#### **创建配置文件**
 
-[基于OpenWrt打造NAS以及脱机下载中心](https://blog.zlf.me/%E5%9F%BA%E4%BA%8EOpenWrt%E6%89%93%E9%80%A0NAS%E4%BB%A5%E5%8F%8A%E8%84%B1%E6%9C%BA%E4%B8%8B%E8%BD%BD%E4%B8%AD%E5%BF%83.html)
+`vim /etc/ssl/myconfig.conf`
+
+```
+[req]
+distinguished_name  = req_distinguished_name
+x509_extensions     = v3_req
+prompt              = no
+[req_distinguished_name]
+C           = US
+ST          = CA
+L           = WRT1900ACS
+O           = Home
+OU          = Router
+CN          = 192.168.1.1
+[v3_req] 
+keyUsage           = keyEncipherment, dataEncipherment
+extendedKeyUsage   = serverAuth
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = 192.168.1.1
+IP.1 = 192.168.1.1
+```
+
+这里需要把**CN**、**DNS.1**、**IP.1**填写正确，其余的保持或任意填。
+
+
+
+#### **生成密钥**
+
+```
+cd /etc/ssl
+openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout mycert.key -out mycert.crt -config myconfig.conf
+```
+
+执行上面命令后，会在当前文件夹生成私钥和公钥，`mycert.key` 和 `mycert.crt`
+
+
+
+#### **uHTTPd添加证书**
+
+
+
+#### **备份**
+
+
+
+#### **管理浏览器证书**
+
+
+
+
+
+### 汉化
+
+```
+opkg update
+opkg install luci-i18n-base-zh-cn
+```
+
+
+
+
+
+
+# 参考链接
+[How to get rid of LuCI https certificate warnings](https://openwrt.org/docs/guide-user/luci/getting-rid-of-luci-https-certificate-warnings)

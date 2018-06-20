@@ -81,6 +81,13 @@
         </ul>
       </nav>
     {% endif %}
+    
+    {% if article.toc %}
+        <center><h4><b>目录</b></h4></center>
+        <nav class="toc">
+            {{ article.toc }}
+        </nav>
+    {% endif %}
 
   </div>
 {% endblock %}

@@ -20,7 +20,7 @@ echo %PATH%
 ```
 如果没有Anaconda的路径，就需要自己手动添加
 
-<!--more-->
+
 
 Linux用户编辑~/.bashrc，在最后添加以下内容，注意自己修改安装路径
 ```bash
@@ -41,7 +41,8 @@ activate root
 ### 更换源
 conda官方源非常慢，甚至有时候经常无法连接；pip时快时慢，也是经常无法连接，所以我们把更新源换为国内的，加快更新速度。
 
-**pip**
+#### **pip**
+
 目前国内常用的pip源有[阿里云](http://mirrors.aliyun.com/help/pypi)和豆瓣。
 
 Linux用户编辑~/.pip/pip.conf文件，粘贴以下内容
@@ -59,7 +60,8 @@ format = columns
 
 Windows用户编辑%USERPROFILE%\pip\pip.ini，没有就新建一个，内容和Linux一样。
 
-**conda**
+#### **conda**
+
 目前国内常用的conda源有[清华](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)和[中科大](http://mirrors.ustc.edu.cn/help/anaconda.html)两个
 
 Linux和Windows用户执行下面的命令添加conda源
@@ -75,8 +77,10 @@ conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
 conda config --set show_channel_urls yes
 ```
 ### 更新
-**conda**
+#### **conda**
+
 conda常用更新命令
+
 ```bash
 conda update XXX        #更新XXX包
 conda update --all      #更新所有可更新的包到最新
@@ -96,8 +100,10 @@ conda config --get channels     #获取当前使用的源，配合下面的命�
 conda config --remove channels https://XXX
 ```
 
-**pip**
+#### **pip**
+
 pip常用更新命令
+
 ```bash
 pip search XXX      #搜索
 pip install XXX     #安装
@@ -106,4 +112,3 @@ pip list > b.txt    #列出所有已安装的包
 pip list -o         #列出所有可更新的包
 pip show XXX        #查看包的路径和依赖等信息
 ```
----

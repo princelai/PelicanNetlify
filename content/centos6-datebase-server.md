@@ -12,11 +12,11 @@ Authors: Kevin Chen
 
 ### Mysql
 
-**下载安装mysql repo**
+#### **下载安装mysql repo**
 
 `rpm -Uvh https://repo.mysql.com//mysql80-community-release-el6-1.noarch.rpm`
 
-**升级至57版本**
+#### **升级至57版本**
 
 `yum --disablerepo=mysql80-community --enablerepo=mysql57-community upgrade`
 
@@ -42,11 +42,11 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
 
 ```
 
-**安装mysql-server**
+#### **安装mysql-server**
 
 `yum install mysql-community-server`
 
-**开启服务**
+#### **开启服务**
 
 `service mysqld start`
 
@@ -60,7 +60,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
 
 ### Mongo
 
-**创建repo文件**
+#### **创建repo文件**
 
 `vim /etc/yum.repos.d/mongodb-org-3.6.repo`
 
@@ -73,7 +73,7 @@ enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc
 ```
 
-**安装mongo组件合集**
+#### **安装mongo组件合集**
 
 `yum install -y mongodb-org`
 
@@ -87,7 +87,7 @@ mongo-org是一个合集，如果想精简安装各个组件，请参照下表�
 | `mongodb-org-shell`  | Contains the mongo shell. |
 | `mongodb-org-tools`  | Contains the following MongoDB tools: mongoimport bsondump, mongodump, mongoexport, mongofiles, mongoperf, mongorestore, mongostat, and mongotop. |
 
-**启动服务**
+#### **启动服务**
 
 `mongod -f /etc/mongod.conf `
 
@@ -101,7 +101,7 @@ mongo默认不加载conf文件，所以用service方法是无法正常启动的�
 
 ###　Nginx
 
-**创建repo文件**
+#### **创建repo文件**
 
 `vim /etc/yum.repos.d/nginx.repo`
 
@@ -113,7 +113,7 @@ gpgcheck=0
 enabled=1
 ```
 
-**安装和开启服务**
+#### **安装和开启服务**
 
 ```
 yum install -y nginx
@@ -165,13 +165,13 @@ mongodb-org-shell-3.6.5-1.el6.x86_64
 
 Linux上免密登录通常用RSA公钥和密钥实现，本地生成钥匙后，公钥上传至服务器，之后便可以免密登录了。
 
-**本地生成公钥密钥**
+#### **本地生成公钥密钥**
 
 `ssh-keygen -t rsa -b 4096`
 
 默认公钥会存储在`~/.ssh/id_rsa.pub`，备用。
 
-**修改服务器sshd配置**
+#### **修改服务器sshd配置**
 
 `vim /etc/ssh/sshd_config `
 
@@ -180,7 +180,7 @@ PubkeyAuthentication yes #解开注释
 AuthorizedKeysFile .ssh/authorized_keys #解开注释
 ```
 
-**上传本地公钥至服务器**
+#### **上传本地公钥至服务器**
 
 `ssh-copy-id -i .ssh/id_rsa.pub -p port user@ip`
 

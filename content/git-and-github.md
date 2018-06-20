@@ -90,7 +90,8 @@ Authors: Kevin Chen
 
 `git merge --no-ff -m "说明" 分支`：禁止Fast forward模式，创建新的commit
 
-参考：
+### 参考
+
 1. [简书](https://www.jianshu.com/p/e4e29c9c3bd9)
 2. [廖雪峰](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
 3. [阮一峰](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)

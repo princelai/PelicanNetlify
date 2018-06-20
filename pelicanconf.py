@@ -25,8 +25,8 @@ AUTHOR_FEED_RSS = None
 
 
 #Plugin
-PLUGIN_PATHS = ["plugins", "/opt/Anaconda/lib/python3.6/site-packages/pelican/plugins"]
-PLUGINS = ["render_math","tag_cloud","tipue_search","neighbors","related_posts"]
+PLUGIN_PATHS = ["plugins", "/opt/Anaconda3/lib/python3.6/site-packages/pelican/plugins"]
+PLUGINS = ["render_math","tag_cloud","tipue_search","pelican-toc","neighbors","related_posts"]
 TYPOGRIFY = True
 DISQUS_SITENAME = 'solarck'
 
@@ -34,6 +34,18 @@ DISQUS_SITENAME = 'solarck'
 #MENUITEMS = (('关于','about'),
              #('简历','resume'))
 
+#TOC
+TOC = {
+    'TOC_HEADERS'       : '^h[1-4]', # What headers should be included in
+                                     # the generated toc
+                                     # Expected format is a regular expression
+
+    'TOC_RUN'           : 'true',    # Default value for toc generation,
+                                     # if it does not evaluate
+                                     # to 'true' no toc will be generated
+
+    'TOC_INCLUDE_TITLE': 'false',     # If 'true' include title in toc
+}
 
 # Blogroll
 LINKS_WIDGET_NAME = '链接'
