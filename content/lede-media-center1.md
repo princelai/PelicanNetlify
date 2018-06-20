@@ -112,7 +112,7 @@ opkg install luci-app-uhttpd
 
 #### **创建配置文件**
 
-`vim /etc/ssl/myconfig.conf`
+`vim /etc/ssl/myconfig.cnf`
 
 ```
 [req]
@@ -143,7 +143,7 @@ IP.1 = 192.168.1.1
 
 ```
 cd /etc/ssl
-openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout mycert.key -out mycert.crt -config myconfig.conf
+openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout mycert.key -out mycert.crt -config myconfig.cnf
 ```
 
 执行上面命令后，会在当前文件夹生成私钥和公钥，`mycert.key` 和 `mycert.crt`
@@ -152,7 +152,9 @@ openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout mycert.key -out myce
 
 #### **uHTTPd添加证书**
 
+`HTTPS Certificate (DER Encoded) `:mycert.crt 
 
+`HTTPS Private Key (DER Encoded) `:mycert.key 
 
 #### **备份**
 

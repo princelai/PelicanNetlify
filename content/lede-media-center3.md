@@ -30,7 +30,15 @@ https://www.changeip.com/
 https://www.noip.com/
 ```
 
+ssh:system->admin
 
+vim /etc/config/uhttpd   
+
+/etc/init.d/uhttpd restart   
+
+firewall->Traffic Rules
+
+firewall->Port Forwards
 
 # DLNA
 
