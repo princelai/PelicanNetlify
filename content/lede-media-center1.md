@@ -66,8 +66,17 @@ mount /dev/sda1 /mnt ; tar -C /overlay -cvf - . | tar -C /mnt -xf - ; umount /mn
 ### 生成分区表
 
 ```
-block detect > /etc/config/fstab 
+block detect > /etc/config/fstab
+uci set fstab.@mount[0].target='/overlay'
+uci set fstab.@mount[0].enabled='1'
+uci set fstab.@mount[0].options='rw'
+uci set fstab.@mount[0].fstype='f2fs'
+uci commit
 ```
+
+
+
+
 
 `vim /etc/config/fstab`
 
@@ -79,9 +88,33 @@ block detect > /etc/config/fstab
 
 `df -h`
 
+```
+Filesystem                Size      Used Available Use% Mounted on
+/dev/root                 2.8M      2.8M         0 100% /rom
+tmpfs                   250.8M    556.0K    250.2M   0% /tmp
+/dev/sdb1                14.3G    496.6M     13.7G   3% /overlay
+overlayfs:/overlay       14.3G    496.6M     13.7G   3% /
+ubi1:syscfg              29.6M    268.0K     27.8M   1% /tmp/syscfg
+tmpfs                   512.0K         0    512.0K   0% /dev
+```
+
 
 
 如果`/overlay`分区已经变为U盘容量大小，那就是成功了。
+
+
+
+```
+root@LEDE:~# block info
+/dev/mtdblock7: TYPE="jffs2"
+/dev/ubiblock0_0: UUID="9f419b56-31564c19-0a0c1b12-a2f9b77b" VERSION="4.0" MOUNT="/rom" TYPE="squashfs"
+/dev/ubi0_1: UUID="1361ff26-cc87-40f1-8b99-00caf223093c" VERSION="w4r0" MOUNT="/overlay" TYPE="ubifs"
+/dev/ubi1_0: UUID="413d13a9-0f0a-4811-a0cb-3e3786ce26d7" VERSION="w4r0" TYPE="ubifs"
+/dev/sda1: UUID="AC94-4A20" VERSION="FAT32" TYPE="vfat"
+/dev/sdb1: UUID="616dc059-2437-4f3c-89fd-7b66fe269e43" VERSION="1.0" TYPE="ext4"
+/dev/sdb2: UUID="eff38518-d182-47a2-81bd-3e72a89c9e8c" VERSION="1.0" TYPE="ext4"
+
+```
 
 
 
@@ -99,7 +132,7 @@ block detect > /etc/config/fstab
 
 ```bash
 opkg update
-opkg install ca-certificates libustream-openssl luci-ssl-openssl
+opkg install ca-certificates luci-ssl-openssl
 ```
 
 
@@ -158,11 +191,11 @@ opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade
 
 #### **安装openssl**
 
+如果已经换过镜像源，那么前两个包已经装好了，只需要装最后一个即可
+
 ```
 opkg update
-opkg install libopenssl
-opkg install openssl-util
-opkg install luci-app-uhttpd
+opkg install libopenssl openssl-util luci-app-uhttpd
 ```
 
 

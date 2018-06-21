@@ -26,7 +26,7 @@ opkg list-installed | grep usb
 如果下列驱动未出现在上一步的结果中，请务必首先安装缺失的驱动
 
 ```
-opkg install kmod-usb-core kmod-usb-storage kmod-usb2 kmod-ata-marvell-sata
+opkg install kmod-usb-core kmod-usb-storage
 ```
 
 `kmod-usb-core`:USB核心驱动
@@ -44,7 +44,7 @@ opkg install kmod-usb-core kmod-usb-storage kmod-usb2 kmod-ata-marvell-sata
 ### 安装相关工具
 
 ```bash
-opkg install mount-utils usbutils block-mount e2fsprogs kmod-fs-ext4 gdisk fdisk 
+opkg install usbutils block-mount e2fsprogs kmod-fs-ext4 gdisk fdisk 
 ```
 
 `mount-utils`:提供unmount,findmnt
@@ -127,10 +127,10 @@ mkfs.f2fs /dev/sda1
 
 ```bash
 block detect > /etc/config/fstab
-uci set fstab.@mount[0].enabled='1'
 uci set fstab.@mount[1].enabled='1'
-uci set fstab.@mount[0].options='rw'
+uci set fstab.@mount[2].enabled='1'
 uci set fstab.@mount[1].options='rw'
+uci set fstab.@mount[2].options='rw'
 uci set fstab.@global[0].check_fs='1'
 uci commit
 ```
@@ -337,6 +337,15 @@ opkg install shadow-useradd
 useradd newuser
 passwd newuser
 smbpasswd -a newuser
+```
+
+
+
+最后启动/重启服务
+
+```bash
+/etc/init.d/samba restart
+/etc/init.d/samba enable
 ```
 
 
