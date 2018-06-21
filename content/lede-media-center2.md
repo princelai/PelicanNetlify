@@ -1,4 +1,4 @@
-Title: LEDE路由器打造家庭媒体影音中心（二）
+Title: LEDE/OpenWRT路由器打造家庭媒体影音中心（二）
 Date: 2018-06-15 13:07
 Category: IT笔记
 Tags: openwrt, lede,wrt1900acs,samba, nas
@@ -205,7 +205,7 @@ opkg install samba36-server luci-app-samba luci-i18n-samba-zh-cn
 
 ### 配置防火墙
 
-` vi /etc/config/firewall`
+` vim /etc/config/firewall`
 
 ```ini
 config 'rule'
@@ -247,7 +247,7 @@ config 'rule'
 
 #### **全局配置**
 
-`vi /etc/samba/smb.conf.template`
+`vim /etc/samba/smb.conf.template`
 
 ```bash
 [global]
@@ -274,7 +274,7 @@ config 'rule'
 
 #### **共享文件夹设置**
 
-`vi /etc/config/samba `
+`vim /etc/config/samba `
 
 ```bash
 config samba

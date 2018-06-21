@@ -1,4 +1,4 @@
-Title: LEDE路由器打造家庭媒体影音中心（一）
+Title: LEDE/OpenWRT路由器打造家庭媒体影音中心（一）
 Date: 2018-06-15 13:07
 Category: IT笔记
 Tags: openwrt, lede,wrt1900acs
@@ -20,13 +20,70 @@ Status: draft
 
 其他：一台电脑，最好是Linux带SSH，Windows的话可以下个putty安装上
 
-前提：我不会从头写起，而是从路由器已刷好LEDE 17.01.4，WAN口已联网，且已经可以SSH登录之后开始，其他外设，如硬盘、硬盘盒、用于EXROOT的U盘都已准备好。
+前提：我不会从头写起，而是从路由器已刷好LEDE 17.01.4，WAN口已联网，且已经可以SSH登录之后开始，其他外设，如硬盘、硬盘盒、用于Extroot的U盘都已准备好。
 
 
 
 ### 实现目的
 
 基于Linksys WRT1900ACS强悍的性能和扩展功能丰富的LEDE，打造一个有权限控制的NAS，支持DLNA，可以离线下载和远程访问的DDNS系统的多媒体中心。
+
+
+
+# Extroot
+
+extroot的作用就是扩充存储空间，这样就可以安装更多的软件。详细介绍可以查看很早之前我写过的一篇文章——[用extroot为openwrt扩充存储空间](https://solarck.com/openwrt-extroot.html)，这里就不赘述了。由于那篇文章比较老，LEDE也早已经升级了好几个含本，所以实际的操作还是以下面的内容为主。
+
+
+
+### 安装工具
+
+这里我准备把U盘格式化为f2fs格式，关于各种存储格式和下面需要安装的工具的作用，我会放在下一篇文章一起讲，这一步照着做就可以了。
+
+```
+opkg update
+opkg install block-mount kmod-fs-ext4 kmod-usb-storage e2fsprogs kmod-fs-f2fs f2fs-tools
+```
+
+
+
+### 格式化U盘
+
+```bash
+mkfs.f2fs /dev/sda1
+```
+
+
+
+### 迁移系统
+
+```bash
+mount /dev/sda1 /mnt ; tar -C /overlay -cvf - . | tar -C /mnt -xf - ; umount /mnt
+```
+
+
+
+### 生成分区表
+
+```
+block detect > /etc/config/fstab 
+```
+
+`vim /etc/config/fstab`
+
+
+
+### 验证
+
+重启系统后执行命令
+
+`df -h`
+
+
+
+如果`/overlay`分区已经变为U盘容量大小，那就是成功了。
+
+
 
 
 
@@ -180,3 +237,6 @@ opkg install luci-i18n-base-zh-cn
 
 # 参考链接
 [How to get rid of LuCI https certificate warnings](https://openwrt.org/docs/guide-user/luci/getting-rid-of-luci-https-certificate-warnings)
+
+[Extroot configuration](https://openwrt.org/docs/guide-user/additional-software/extroot_configuration)
+
