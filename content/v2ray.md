@@ -175,6 +175,13 @@ renew
       "tag": "direct"
     }
   ],
+  "dns": {
+    "servers": [
+      "8.8.8.8",
+      "8.8.4.4",
+      "localhost"
+    ]
+  },
   "routing": {
     "strategy": "rules",
     "settings": {
@@ -236,7 +243,7 @@ renew
       "clients": [
         {
           "id": "998c1fa3-962a-4682-a56d-ad262f7f184e",
-          "alterId": 64,
+          "alterId": 32,
           "security": "chacha20-poly1305"
         }
       ]
@@ -334,7 +341,7 @@ renew
           "users": [
             {
               "id": "998c1fa3-962a-4682-a56d-ad262f7f184e",
-              "alterId": 64,
+              "alterId": 32,
               "security": "chacha20-poly1305"
             }
           ]
@@ -362,6 +369,13 @@ renew
       "tag": "direct"
     }
   ],
+  "dns": {
+    "servers": [
+      "8.8.8.8",
+      "8.8.4.4",
+      "localhost"
+    ]
+  },
   "routing": {
     "strategy": "rules",
     "settings": {
