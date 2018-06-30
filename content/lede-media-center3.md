@@ -85,6 +85,17 @@ opkg install qos-scripts luci-app-qos luci-i18n-qos-zh-cn
 
 
 
+# Python3
+
+```
+opkg update
+opkg install python3 python3-pip
+```
+
+> terminfo.   python3-base.   libffi.   libbz2.   python3-light.   python3-pydoc.   liblzma.   python3-email.   python3-decimal.   python3-xml.   libxml2.   libncurses.   python3-ncurses.   python3-distutils.   python3-codecs.   python3-multiprocessing.   python3-unittest.   python3-ctypes.   libgdbm.   python3-gdbm.   libsqlite3.   python3-sqlite3.   python3-logging.   python3-openssl.   libdb47.   python3-dbm.   python3-asyncio.   python3-lzma.   python3.   
+
+大约会占30M
+
 
 
 # 参考链接
