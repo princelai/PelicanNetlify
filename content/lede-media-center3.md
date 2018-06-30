@@ -75,6 +75,15 @@ opkg install minidlna luci-app-minidlna luci-i18n-minidlna-zh-cn
 
 
 
+# Adblock
+
+```
+opkg update
+opkg install adblock luci-app-adblock luci-i18n-adblock-zh-cn
+```
+
+
+
 # Other
 
 ```
