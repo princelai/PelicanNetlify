@@ -8,11 +8,11 @@ Status: draft
 
 
 
-# aria2下载
+# acme
 
 ```
 opkg update
-opkg install aria2 luci-app-aria2 luci-i18n-aria2-zh-cn
+opkg install acme luci-app-acme
 ```
 
 
