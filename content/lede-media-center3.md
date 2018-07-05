@@ -102,7 +102,7 @@ opkg install socat netcat
 
 
 ```bash
-./acme.sh --issue --dns dns_cf -d chenwrt.com -d www.chenwrt.com
+./acme.sh --issue --dns dns_cf -d chenwrt.com -d www.chenwrt.com --tlsport 4430
 ```
 
 ```
@@ -110,6 +110,14 @@ opkg install socat netcat
 [Wed Jul  4 17:32:34 CST 2018] Domain: '_acme-challenge.chenwrt.com'
 [Wed Jul  4 17:32:34 CST 2018] TXT value: 'VmijFWairxPkDBuWZ_9OFIEwIiM40-kD8OgiWrIAFJQ'
 
+```
+
+```
+./acme.sh --install-cert -d chenwrt.com --cert-file chenwrt.com_ecc/chenwrt.com.cer --key-file chenwrt.com_ecc/chenwrt.com.key --fullchain-file chenwrt.com_ecc/chenwrt
+.com.cer
+
+./acme.sh --install-cert -d chenwrt.com --cert-file /etc/ssl/chenwrt.com.cer --key-file /etc/ssl/chenwrt.com.key --fullchain-file /etc/ssl/chenwrt
+.com.cer
 ```
 
 

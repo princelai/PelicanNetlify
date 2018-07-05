@@ -8,6 +8,10 @@ Status: draft
 
 
 
+# 优化网络
+
+[参照之前的文章](https://www.solarck.com/shadowsocks-libev.html)
+
 ```
 wget https://install.direct/go.sh
 bash go.sh
@@ -15,7 +19,11 @@ bash go.sh
 
 `/etc/systemd/system/v2ray.service `,`/etc/v2ray/config.json `
 
-`curl  https://get.acme.sh | sh   `
+```bash
+curl  https://get.acme.sh | sh
+```
+
+
 
 for standalone
 
@@ -27,7 +35,11 @@ renew
 
 `~/.acme.sh/acme.sh --renew -d solarck.top --force --ecc`
 
-`~/.acme.sh/acme.sh --installcert -d solarck.top --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc`
+```
+~/.acme.sh/acme.sh --installcert -d solarck.top --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
+```
+
+
 
 
 
