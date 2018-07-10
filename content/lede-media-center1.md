@@ -1,10 +1,10 @@
 Title: LEDE/OpenWRT路由器打造家庭媒体影音中心（一）
-Date: 2018-06-15 13:07
+Date: 2018-07-10 13:07
 Category: IT笔记
 Tags: openwrt, lede,wrt1900acs
 Slug:lede-media-center1
 Authors: Kevin Chen
-Status: draft
+
 
 
 
@@ -76,9 +76,27 @@ uci commit
 
 
 
+最后`fstab`应该如下
+
+`cat /etc/config/fstab`
+
+```
+config global
+        option anon_swap '0'
+        option anon_mount '0'
+        option auto_swap '1'
+        option auto_mount '1'
+        option delay_root '5'
+        option check_fs '1'
 
 
-`vim /etc/config/fstab`
+config mount
+        option enabled '1'
+        option uuid 'd9aa4451-780a-4fe5-b08d-d7f0a7ae0ba4'
+        option target '/overlay'
+        option fstype 'f2fs'
+        option options 'rw'
+```
 
 
 
@@ -104,16 +122,14 @@ tmpfs                   512.0K         0    512.0K   0% /dev
 
 
 
+`block info `信息也已经显示正确
+
 ```
-root@LEDE:~# block info
 /dev/mtdblock7: TYPE="jffs2"
 /dev/ubiblock0_0: UUID="9f419b56-31564c19-0a0c1b12-a2f9b77b" VERSION="4.0" MOUNT="/rom" TYPE="squashfs"
-/dev/ubi0_1: UUID="1361ff26-cc87-40f1-8b99-00caf223093c" VERSION="w4r0" MOUNT="/overlay" TYPE="ubifs"
+/dev/ubi0_1: UUID="1361ff26-cc87-40f1-8b99-00caf223093c" VERSION="w4r0" TYPE="ubifs"
 /dev/ubi1_0: UUID="413d13a9-0f0a-4811-a0cb-3e3786ce26d7" VERSION="w4r0" TYPE="ubifs"
-/dev/sda1: UUID="AC94-4A20" VERSION="FAT32" TYPE="vfat"
-/dev/sdb1: UUID="616dc059-2437-4f3c-89fd-7b66fe269e43" VERSION="1.0" TYPE="ext4"
-/dev/sdb2: UUID="eff38518-d182-47a2-81bd-3e72a89c9e8c" VERSION="1.0" TYPE="ext4"
-
+/dev/sda1: UUID="d9aa4451-780a-4fe5-b08d-d7f0a7ae0ba4" VERSION="1.8" MOUNT="/overlay" TYPE="f2fs"
 ```
 
 
@@ -155,13 +171,6 @@ src/gz reboot_packages https://mirrors.ustc.edu.cn/lede/releases/17.01.4/package
 src/gz reboot_routing https://mirrors.ustc.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/routing
 src/gz reboot_telephony https://mirrors.ustc.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/telephony
 
-#只启用上面中科大的源，下面的作为备份
-#src/gz reboot_core http://downloads.lede-project.org/releases/17.01.4/targets/mvebu/generic/packages
-#src/gz reboot_base http://downloads.lede-project.org/releases/17.01.4/packages/arm_cortex-a9_vfpv3/base
-#src/gz reboot_luci http://downloads.lede-project.org/releases/17.01.4/packages/arm_cortex-a9_vfpv3/luci
-#src/gz reboot_packages http://downloads.lede-project.org/releases/17.01.4/packages/arm_cortex-a9_vfpv3/packages
-#src/gz reboot_routing http://downloads.lede-project.org/releases/17.01.4/packages/arm_cortex-a9_vfpv3/routing
-#src/gz reboot_telephony http://downloads.lede-project.org/releases/17.01.4/proot@ChenWrt:~# cat /etc/opkg/distfeeds.conf
 #src/gz reboot_core https://mirrors.tuna.tsinghua.edu.cn/lede/releases/17.01.4/targets/mvebu/generic/packages
 #src/gz reboot_base https://mirrors.tuna.tsinghua.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/base
 #src/gz reboot_luci https://mirrors.tuna.tsinghua.edu.cn/lede/releases/17.01.4/packages/arm_cortex-a9_vfpv3/luci
@@ -185,76 +194,7 @@ opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade
 
 
 
-# 优化LuCi
-
-### SSL支持
-
-#### **安装openssl**
-
-如果已经换过镜像源，那么前两个包已经装好了，只需要装最后一个即可
-
-```
-opkg update
-opkg install libopenssl openssl-util luci-app-uhttpd
-```
-
-
-
-#### **创建配置文件**
-
-`vim /etc/ssl/myconfig.cnf`
-
-```
-[req]
-distinguished_name  = req_distinguished_name
-x509_extensions     = v3_req
-prompt              = no
-[req_distinguished_name]
-C           = US
-ST          = CA
-L           = WRT1900ACS
-O           = Home
-OU          = Router
-CN          = 192.168.1.1
-[v3_req] 
-keyUsage           = keyEncipherment, dataEncipherment
-extendedKeyUsage   = serverAuth
-subjectAltName = @alt_names
-[alt_names]
-DNS.1 = 192.168.1.1
-IP.1 = 192.168.1.1
-```
-
-这里需要把**CN**、**DNS.1**、**IP.1**填写正确，其余的保持或任意填。
-
-
-
-#### **生成密钥**
-
-```
-cd /etc/ssl
-openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout mycert.key -out mycert.crt -config myconfig.cnf
-```
-
-执行上面命令后，会在当前文件夹生成私钥和公钥，`mycert.key` 和 `mycert.crt`
-
-
-
-#### **uHTTPd添加证书**
-
-`HTTPS Certificate (DER Encoded) `:mycert.crt 
-
-`HTTPS Private Key (DER Encoded) `:mycert.key 
-
-#### **备份**
-
-
-
-#### **管理浏览器证书**
-
-
-
-
+# 其他
 
 ### 汉化
 

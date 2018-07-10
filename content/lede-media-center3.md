@@ -8,13 +8,6 @@ Status: draft
 
 
 
-# acme
-
-```
-opkg update
-opkg install acme luci-app-acme
-```
-
 
 
 # DDNS
@@ -83,42 +76,6 @@ opkg install adblock luci-app-adblock luci-i18n-adblock-zh-cn
 ```
 
 
-
-# Other
-
-```
-opkg install miniupnpd luci-app-upnp luci-i18n-upnp-zh-cn
-
-opkg install qos-scripts luci-app-qos luci-i18n-qos-zh-cn
-```
-
-# acme openwrt
-
-```
-opkg update
-opkg install socat netcat
-```
-
-
-
-```bash
-./acme.sh --issue --dns dns_cf -d chenwrt.com -d www.chenwrt.com --tlsport 4430
-```
-
-```
-[Wed Jul  4 17:32:34 CST 2018] Add the following TXT record:
-[Wed Jul  4 17:32:34 CST 2018] Domain: '_acme-challenge.chenwrt.com'
-[Wed Jul  4 17:32:34 CST 2018] TXT value: 'VmijFWairxPkDBuWZ_9OFIEwIiM40-kD8OgiWrIAFJQ'
-
-```
-
-```
-./acme.sh --install-cert -d chenwrt.com --cert-file chenwrt.com_ecc/chenwrt.com.cer --key-file chenwrt.com_ecc/chenwrt.com.key --fullchain-file chenwrt.com_ecc/chenwrt
-.com.cer
-
-./acme.sh --install-cert -d chenwrt.com --cert-file /etc/ssl/chenwrt.com.cer --key-file /etc/ssl/chenwrt.com.key --fullchain-file /etc/ssl/chenwrt
-.com.cer
-```
 
 
 

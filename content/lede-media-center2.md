@@ -33,9 +33,9 @@ opkg install kmod-usb-core kmod-usb-storage
 
 `kmod-usb-storage`:大容量存储设备驱动
 
-`kmod-usb2`:WRT1900ACS有一个USB2.0/eSATA口
+`kmod-usb2`:WRT1900ACS有一个USB2.0/eSATA口，可以不安装
 
-`kmod-ata-marvell-sata`:Marvell SATA接口驱动
+`kmod-ata-marvell-sata`:Marvell SATA接口驱动，可以不安装
 
 网上搜到的教程和官方指南里还让安装一些其他的应用，但这些都是不必要或已被编译至内核中，包括：`kmod-usb-ohci`、`kmod-usb-uhci`、`kmod-usb3`、`kmod-usb-storage-uas`
 
@@ -125,6 +125,8 @@ mkfs.f2fs /dev/sda1
 
 ### 自动挂载分区
 
+这一部分请根据自己`fstab`实际内容修改使用
+
 ```bash
 block detect > /etc/config/fstab
 uci set fstab.@mount[1].enabled='1'
@@ -151,6 +153,8 @@ block umount && block mount
 
 ### 硬盘休眠
 
+#### *hdparm*
+
 ```bash
 opkg update
 opkg install hdparm luci-app-hd-idle
@@ -171,16 +175,16 @@ hdparm -S 120 /dev/sda2
 
 
 
-如果不想按照上面一步一步来，那么官方也提供了快速操作，请根据自己的实际情况修改后执行。
+#### *hd-idle*
+
+更简单的方法就是安装Luci管理工具
 
 ```bash
-# Copy/paste each line below, then press Return
-opkg update && opkg install block-mount e2fsprogs kmod-fs-ext4 kmod-usb3 kmod-usb2 kmod-usb-storage
-mkfs.ext4 /dev/sda1
-block detect > /etc/config/fstab 
-uci set fstab.@mount[0].enabled='1' && uci set fstab.@global[0].check_fs='1' && uci commit 
-/sbin/block mount && service fstab enable
+opkg update
+opkg install hd-idle luci-app-hd-idle
 ```
+
+![hd-idle](http://kevinstuchuang.qiniudn.com/blog-pic/lede-idle.png)
 
 
 
@@ -352,7 +356,7 @@ smbpasswd -a newuser
 
 至此，Samba设置完成，也达到了我的目的，有可以匿名随意访问的共享文件夹，也有实现了权限控制的私有文件夹。而且是全平台都可以访问，Windows、Linux和手机（需要有支持SMB协议的软件）。
 
-
+![samba](http://kevinstuchuang.qiniudn.com/blog-pic/lede-samba.png)
 
 
 # 参考链接
@@ -365,14 +369,3 @@ smbpasswd -a newuser
 [cifs.server](https://openwrt.org/docs/guide-user/services/nas/cifs.server)
 
 [Samba](https://openwrt.org/docs/guide-user/services/nas/samba)
-
-<hr />
-[智能路由器-OpenWRT 系列五 （NAS-SMB家庭共享）](https://www.cnblogs.com/wizju/p/6923625.html)
-
-[OpenWrt搭建文件共享服务（NAS）](https://www.jianshu.com/p/a122a036e8d9)
-
-[Openwrt 网络存储NAS之Samba服务](https://blog.csdn.net/yicao821/article/details/49929207)
-
-[【智能路由】用路由器低成本打造NAS+迅雷离线下载+同步android文件](https://luolei.org/openwrt-router-wifi-android-sync-iclould/)
-
-[基于OpenWrt打造NAS以及脱机下载中心](https://blog.zlf.me/%E5%9F%BA%E4%BA%8EOpenWrt%E6%89%93%E9%80%A0NAS%E4%BB%A5%E5%8F%8A%E8%84%B1%E6%9C%BA%E4%B8%8B%E8%BD%BD%E4%B8%AD%E5%BF%83.html)
