@@ -1,67 +1,14 @@
-Title: V2ray
-Date: 2018-06-26 13:08
+Title: 在LEDE/OpenWRT上运行V2ray
+Date: 2018-07-12 11:16
 Category: IT笔记
-Tags: v2ray,acme
-Slug:
+Tags: lede,openwrt,v2ray
+Slug: v2ray-run-in-lede
 Authors: Kevin Chen
 Status: draft
 
 
 
-# 服务器端配置
 
-### 优化网络
-
-主要涉及bbr的安装配置，需要VPS是KVM架构可以参照[之前的文章](https://www.solarck.com/shadowsocks-libev.html)。
-
-### 安装V2ray
-
-```
-wget https://install.direct/go.sh
-bash go.sh
-```
-
-`/etc/systemd/system/v2ray.service `,`/etc/v2ray/config.json `
-
-### TLS域名证书
-
-在这部之前，你需要一个域名，免费的也无所谓。
-
-
-
-#### *安装acme*
-
-`apt-get install -y socat netcat `
-
-```bash
-curl  https://get.acme.sh | sh
-```
-
-
-
-#### *签发证书*
-
-我使用的是ecc证书，需要把domain换成自己的域名
-
-```
-~/.acme.sh/acme.sh --issue -d domain --standalone -k ec-256
-```
-
-
-
-#### *安装证书*
-
-证书会被安装到`/etc/v2ray`下
-
-```
-~/.acme.sh/acme.sh --installcert -d domain --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
-```
-
-
-
-#### *证书续期*
-
-`~/.acme.sh/acme.sh --renew -d domain --force --ecc`
 
 
 
@@ -187,36 +134,6 @@ esac
 exit $RETVAL
 ```
 
-
-
-# 本地配置
-
-
-
-# 配置文件
-
-
-
-### http2-TLS
-
-#### **服务端**
-
-```json
-
-```
-
-
-
-#### **客户端**
-
-```json
-
-```
-
-
-
 # 参考
-
-[v2ray](https://toutyrater.github.io/advanced/tls.html)
 
 [init.d](https://github.com/v2ray/v2ray-core/issues/101)

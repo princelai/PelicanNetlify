@@ -8,6 +8,8 @@ Status: draft
 
 
 
+# Shadowsocks
+
 安装密钥
 
 ```bash
@@ -24,6 +26,11 @@ cat /etc/os-release |grep "LEDE_ARCH" |awk '{split($0,a,"=");print substr(a[2],2
 
 ```
 
+
+
+
+`vim /etc/opkg/customfeeds.conf `
+
 ```
 src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/arm_cortex-a9_vfpv3
 src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/packages/luci
@@ -31,10 +38,19 @@ src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/packages/luci
 
 ```bash
 opkg update
-opkg install ChinaDNS luci-app-chinadns shadowsocks-libev luci-app-shadowsocks simple-obfs haproxy
+opkg install ChinaDNS luci-app-chinadns shadowsocks-libev luci-app-shadowsocks simple-obfs
 ```
 
 
+
+# Haproxy
+
+安装
+
+```
+opkg update
+opkg install haproxy
+```
 
 
 

@@ -1,8 +1,8 @@
-Title:
+Title:国内公共DNS测试
 Date: 2018-07-03 10:51
-Category: IT笔记, 金融笔记
-Tags:
-Slug:
+Category: IT笔记
+Tags: dns
+Slug: public-dns-test
 Authors: Kevin Chen
 Status: draft
 
