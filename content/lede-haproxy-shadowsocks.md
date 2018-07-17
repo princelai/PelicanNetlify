@@ -57,3 +57,8 @@ opkg install haproxy
 # 参考
 
 [openwrt-dist](http://openwrt-dist.sourceforge.net/)
+
+[OpenWrt基于HAProxy的透明代理负载均衡和高可用部署](https://blog.csdn.net/lvshaorong/article/details/53034513)
+
+[HAproxy指南之haproxy配置详解](http://blog.51cto.com/blief/1750952)
+

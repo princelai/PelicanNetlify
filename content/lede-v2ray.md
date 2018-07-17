@@ -137,3 +137,8 @@ exit $RETVAL
 # 参考
 
 [init.d](https://github.com/v2ray/v2ray-core/issues/101)
+
+[利用 V2Ray + GFWList 实现路由器自动翻墙](https://cryptopunk.me/posts/27406/)
+
+[网关服务器上设置V2Ray+dnsmasq透明代理](https://dakai.github.io/2017/11/27/v2ray.html)
+
