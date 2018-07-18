@@ -13,21 +13,13 @@ Status: draft
 
 
 ```
-curl -x socks5://127.0.0.1:1080 google.com
-
-ping -c 5 baidu.com
-
 mkdir /var/log/v2ray/
 nohup /usr/bin/v2ray/v2ray -config /etc/v2ray/LEDE-client.json &
 /usr/bin/v2ray/update_iptables.sh 
 
 iptables -t nat -nvL V2RAY --line-numbers
 
-
-/usr/bin/v2ray/gfwlist2dnsmasq.sh -d 101.132.183.99  -p 53 -o /tmp/gfwlist.overall
-
-
-curl -X GET "https://httpbin.org/ip" -H "accept: application/json"
+/usr/bin/v2ray/gfwlist2dnsmasq.sh -d 8.8.8.8  -p 53 -o /tmp/gfwlist.overall
 ```
 
 
