@@ -15,6 +15,7 @@ Status: draft
 ```
 mkdir /var/log/v2ray/
 nohup /usr/bin/v2ray/v2ray -config /etc/v2ray/LEDE-client.json &
+nohup /usr/bin/v2ray/v2ray -config /etc/v2ray/LEDE-KCP-client.json &
 /usr/bin/v2ray/update_iptables.sh 
 
 iptables -t nat -nvL V2RAY --line-numbers
