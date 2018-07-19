@@ -18,7 +18,7 @@ CONFFILE=$BASEDIR/pelicanconf.py
 SRV_PID=$BASEDIR/srv.pid
 PELICAN_PID=$BASEDIR/pelican.pid
 
-function usage(){
+function usage() {
   echo "usage: $0 (stop) (start) (restart) [port]"
   echo "This starts Pelican in debug and reload mode and then launches"
   echo "an HTTP server to help site development. It doesn't read"
@@ -31,7 +31,7 @@ function alive() {
   kill -0 $1 >/dev/null 2>&1
 }
 
-function shut_down(){
+function shut_down() {
   PID=$(cat $SRV_PID)
   if [[ $? -eq 0 ]]; then
     if alive $PID; then
@@ -59,23 +59,23 @@ function shut_down(){
   fi
 }
 
-function start_up(){
+function start_up() {
   local port=$1
   echo "Starting up Pelican and HTTP server"
   shift
   $PELICAN --debug --autoreload -r $INPUTDIR -o $OUTPUTDIR -s $CONFFILE $PELICANOPTS &
   pelican_pid=$!
-  echo $pelican_pid > $PELICAN_PID
+  echo $pelican_pid >$PELICAN_PID
   mkdir -p $OUTPUTDIR && cd $OUTPUTDIR
   $PY -m pelican.server $port &
   srv_pid=$!
-  echo $srv_pid > $SRV_PID
+  echo $srv_pid >$SRV_PID
   cd $BASEDIR
   sleep 1
-  if ! alive $pelican_pid ; then
+  if ! alive $pelican_pid; then
     echo "Pelican didn't start. Is the Pelican package installed?"
     return 1
-  elif ! alive $srv_pid ; then
+  elif ! alive $srv_pid; then
     echo "The HTTP server didn't start. Is there another service using port" $port "?"
     return 1
   fi

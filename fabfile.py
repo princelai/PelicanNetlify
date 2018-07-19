@@ -1,12 +1,12 @@
 # from fabric.api import *
-from fabric.api import local, env, hosts, lcd
-import fabric.contrib.project as project
 import os
 import shutil
+import socketserver
 import sys
 from datetime import datetime
-import socketserver
 
+import fabric.contrib.project as project
+from fabric.api import env, hosts, lcd, local
 from pelican.server import ComplexHTTPRequestHandler
 
 # Local path configuration (can be absolute or relative to fabfile)
@@ -38,10 +38,12 @@ Authors: Kevin Chen
 Status: draft
 """
 
+
 def new():
     os.chdir(env.content_path)
-    with open('new.md','w') as f:
+    with open('new.md', 'w') as f:
         f.write(META.format(datetime.now()))
+
 
 def clean():
     """Remove generated files"""
@@ -49,17 +51,21 @@ def clean():
         shutil.rmtree(DEPLOY_PATH)
         os.makedirs(DEPLOY_PATH)
 
+
 def build():
     """Build local version of site"""
     local('pelican -s pelicanconf.py')
+
 
 def rebuild():
     """`build` with the delete switch"""
     local('pelican -d -s pelicanconf.py')
 
+
 def regenerate():
     """Automatically regenerate site upon file modification"""
     local('pelican -r -s pelicanconf.py')
+
 
 def serve():
     """Serve site at http://localhost:8000/"""
@@ -73,14 +79,17 @@ def serve():
     sys.stderr.write('Serving on port {0} ...\n'.format(PORT))
     server.serve_forever()
 
+
 def reserve():
     """`build`, then `serve`"""
     build()
     serve()
 
+
 def preview():
     """Build production version of site"""
     local('pelican -s publishconf.py')
+
 
 def cf_upload():
     """Publish to Rackspace Cloud Files"""
@@ -90,6 +99,7 @@ def cf_upload():
               '-U {cloudfiles_username} '
               '-K {cloudfiles_api_key} '
               'upload -c {cloudfiles_container} .'.format(**env))
+
 
 @hosts(production)
 def publish():
@@ -103,10 +113,12 @@ def publish():
         extra_opts='-c',
     )
 
+
 def gh_pages():
     """Publish to GitHub Pages"""
     rebuild()
     local("ghp-import -b {github_pages_branch} {deploy_path} -p".format(**env))
+
 
 def github():
     local('pelican -s publishconf.py')
