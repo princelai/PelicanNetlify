@@ -1,22 +1,22 @@
-Title: openwrt开启Samba作为共享中心
+Title: openwrt 开启 Samba 作为共享中心
 Date: 2014-01-05 01:29
-Category: IT笔记
+Category: IT 笔记
 Tags: openwrt
 Slug: openwrt-samba
 Authors: Kevin Chen
 
-为Openwrt接入一个大U盘，不用来作共享中心的话实在没什么用处了，这也是为日后脱机BT下载提供一个基础。
+为 Openwrt 接入一个大 U 盘，不用来作共享中心的话实在没什么用处了，这也是为日后脱机 BT 下载提供一个基础。
 
 ### 安装
+
 ```bash
 opkg update
 opkg install samba36-server luci-app-samba
 ```
 
-<!--more-->
-
 ####配置文件
-samba的配置文件只有两个，而且默认配置稍作修改就可以使用
+samba 的配置文件只有两个，而且默认配置稍作修改就可以使用
+
 ```bash
 root@openwrt:~# vi /etc/samba/smb.conf.template
 [global]
@@ -71,74 +71,94 @@ config 'sambashare'
 	option 'dir_mask' '0777' #所有用户可写
 	option 'read_only' 'no'
 ```
+
 我的配置是无需密码所有用户都可以访问，可上传可下载。
 
 配置完还需要对目录进行权限提升
+
 ```bash
 chmod a+w /share
 ```
+
 或者更改文件夹用户
+
 ```bash
 chown nobody:nobody /share
 ```
-最后重启samba服务并开机启动
+
+最后重启 samba 服务并开机启动
+
 ```bash
 /etc/init.d/samba restart
 /etc/init.d/samba enable
 ```
 
 ### 访问
-Windows用户很容易访问，在网络邻居（网络）里就可以看到WORKGROUP-->OPENWRT-->Share文件夹了，但是linux用户需要一些其他命令。    
-**1. 安装g2sc**    
+
+Windows 用户很容易访问，在网络邻居（网络）里就可以看到 WORKGROUP-->OPENWRT-->Share 文件夹了，但是 linux 用户需要一些其他命令。  
+**1. 安装 g2sc**
+
 ```bash
 yaourt -S g2sc
 ```
-安装完就可以像Windows一样看到工作组和文件夹，但是只能下载，没有上传功能。    
+
+安装完就可以像 Windows 一样看到工作组和文件夹，但是只能下载，没有上传功能。
 
 **2. sambclient**
 安装工具
+
 ```bash
 yaourt -S sambaclient
 ```
-连接主机    
+
+连接主机
+
 ```bash
 kevin@kevin:pts/2 ~$: smbclient -L OPENWRT
 Enter kevins password:  #没设密码直接回车
 
 	Sharename       Type      Comment
 	---------       ----      -------
-	Shares          Disk      
+	Shares          Disk
 	IPC$            IPC       IPC Service (OpenWrt)
 
 	Server               Comment
 	---------            -------
-	CHEN-PC              
+	CHEN-PC
 	OPENWRT              OpenWrt
 
 	Workgroup            Master
 	---------            -------
 	WORKGROUP            OPENWRT
 ```
+
 ```bash
 kevin@kevin:pts/2 ~$: smbclient //OPENWRT/Shares #格式为//Servername/Sharename
 smb: \>
 ```
-出现了smb的命令行
+
+出现了 smb 的命令行
+
 ```bash
-get ****    #下载某个文件    
+get ****    #下载某个文件
 put ****    #上传某个文件
 ```
+
 更多命令输入?查看
 
-**3. mount挂载**
+**3. mount 挂载**
+
 ```bash
 kevin@kevin:pts/2 ~$: mkdir /mnt/samba
 kevin@kevin:pts/2 ~$: sudo mount -t cifs  -l //OPENWRT/Shares /mnt/samba
 ```
 
 ### 完成
-由于安装了Luci，所以开启了uhttp服务，把共享目录链接到/www目录同样可以通过浏览器直接下载，相当于把Samba目录同样做成了FTP目录。
+
+由于安装了 Luci，所以开启了 uhttp 服务，把共享目录链接到/www 目录同样可以通过浏览器直接下载，相当于把 Samba 目录同样做成了 FTP 目录。
+
 ```bash
 kevin@kevin:pts/2 ~$: ln -s /share /www/share
 ```
-Samba共享就全部完成，之后再继续研究BT下载，配合Samba的共享就等于免费拥有了一个简版NAS。
+
+Samba 共享就全部完成，之后再继续研究 BT 下载，配合 Samba 的共享就等于免费拥有了一个简版 NAS。

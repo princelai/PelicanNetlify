@@ -5,32 +5,27 @@ Tags: 定投, ETF
 Slug: Is-AIP-better-than-ETF
 Authors: Kevin Chen
 
-
 一直以来，定投的营销话术都是分批建仓，上涨时投资少降低成本，下跌时投资多赚取低估价值，但定投是否真的如宣传的那么美好？今天就用数据来模拟两种投资方式，看看孰优孰劣。
-
-
 
 ### 数据说明
 
-本次实验使用三只ETF基金作为投资和定投标的，分别为华夏上证50ETF（510050），华泰柏瑞沪深300ETF（510300），广发中证500ETF（510510），时间区间为2013年5月27日至2018年6月7日。
+本次实验使用三只 ETF 基金作为投资和定投标的，分别为华夏上证 50ETF（510050），华泰柏瑞沪深 300ETF（510300），广发中证 500ETF（510510），时间区间为 2013 年 5 月 27 日至 2018 年 6 月 7 日。
 
-先上图了解下这段时间ETF基金大致走势。
+先上图了解下这段时间 ETF 基金大致走势。
 
-*50ETF月线*
+_50ETF 月线_
 
 ![上证50ETF](http://kevinstuchuang.qiniudn.com/blog-pic/ETF50close.png)
 
-*500ETF周线*
+_500ETF 周线_
 
 ![500ETF](http://kevinstuchuang.qiniudn.com/blog-pic/ETF500close.png)
 
-这段区间整体来看是上涨的，大盘股涨的多，小盘股涨得少。分段来看2013年中至2014年中，属于震荡行情，2014年中至2015年中是暴涨行情，2015年中至2016年初是暴跌行情，2016年初至2018年中行情分化，大盘股再次进入牛市，中盘股属于慢牛，小盘股是横盘震荡走势。
+这段区间整体来看是上涨的，大盘股涨的多，小盘股涨得少。分段来看 2013 年中至 2014 年中，属于震荡行情，2014 年中至 2015 年中是暴涨行情，2015 年中至 2016 年初是暴跌行情，2016 年初至 2018 年中行情分化，大盘股再次进入牛市，中盘股属于慢牛，小盘股是横盘震荡走势。
 
 选择这个区间的行情，是因为这五年属于一个完整的周期，活跃时波动率大，行情过后的低迷时期波动率又小，是典型的中国股市。另外从长期来看，股票波动向上才应该是上市公司内在价值增长的表现。
 
-当然，用这个区间的数据做分析是有一个缺点的，就是这三只ETF基金整体涨幅都在40%-50%之间，如果在一开始就持有至当前日期，那么一定是一次性直接投资要优于定投，不过放心，后面编程不会让这种事情发生，我会加入时间随机项，尽量减小整体上涨带来的影响。
-
-
+当然，用这个区间的数据做分析是有一个缺点的，就是这三只 ETF 基金整体涨幅都在 40%-50%之间，如果在一开始就持有至当前日期，那么一定是一次性直接投资要优于定投，不过放心，后面编程不会让这种事情发生，我会加入时间随机项，尽量减小整体上涨带来的影响。
 
 ### 开始实验
 
@@ -43,9 +38,7 @@ import random
 import matplotlib.pyplot as plt
 ```
 
-
-
-之后利用tushare包，获取到三只ETF基金的收盘价，放入一个DataFrame内，这里我创建了一个类，主要是为了代码整洁考虑。
+之后利用 tushare 包，获取到三只 ETF 基金的收盘价，放入一个 DataFrame 内，这里我创建了一个类，主要是为了代码整洁考虑。
 
 ```python
 class AutoInvestmentPlan:
@@ -53,7 +46,7 @@ class AutoInvestmentPlan:
         plt.style.use('ggplot')
         self.code_list = ['510050','510300','510510']
         self.start_date = '2013-05-27'
-    
+
     def get_etf_close(self,code,start):
         df = ts.get_k_data(code,start=start)
         df.set_index('date',inplace=True)
@@ -73,8 +66,6 @@ class AutoInvestmentPlan:
         self.weekly = self.data.asfreq('W',method='pad')
 ```
 
-
-
 获取数据需要对类实例化，然后就得到了周和月数据
 
 ```python
@@ -82,25 +73,21 @@ aip = AutoInvestmentPlan()
 aip.get_data()
 ```
 
-
-
 这里需要等待几秒种，运行完成后就可以查看我们的数据了
 
-**周数据最新的5个收盘价**
+**周数据最新的 5 个收盘价**
 
 `aip.weekly.tail()`
 
 ```
             ETF50  ETF300  ETF500
-date                             
+date
 2018-05-06  2.634   3.770   1.646
 2018-05-13  2.716   3.873   1.667
 2018-05-20  2.733   3.899   1.670
 2018-05-27  2.654   3.811   1.649
 2018-06-03  2.643   3.777   1.588
 ```
-
-
 
 **月收益率数据**
 
@@ -118,8 +105,6 @@ min    -0.182533  -0.224457  -0.279845
 max     0.334728   0.254035   0.204142
 ```
 
-
-
 接下来在定义用来比较的函数
 
 ```python
@@ -135,7 +120,7 @@ def compare(underlying,df_period,times=15,money=1000,plot=False):
         cumsum_values['share_cum'] = cumsum_values['share_period'].cumsum()
         cumsum_values['values'] = cumsum_values.share_cum * d.loc[:,underlying]
         cumsum_values['payoff'] = [i*money for i in range(1,cumsum_values.index.size+1)]
-        
+
         a = d.loc[:,underlying] / d.loc[d.index[0],underlying]
         b = cumsum_values['values'] / cumsum_values['payoff']
         b.name = 'AIP'
@@ -146,10 +131,9 @@ def compare(underlying,df_period,times=15,money=1000,plot=False):
         print('from {} to {},dirctly invest ETF exceed AIP {:.2%}'.format(start.strftime('%Y-%m-%d'),end.strftime('%Y-%m-%d'),exceed))
         result.append(exceed)
     print('\nIn {} times simulation,dirctly invest ETF exceed AIP\'s mean is {:.2%}'.format(times,pd.np.mean(result)))
-
 ```
 
-这个比较函数从给定的ETF基金中的前半段时间随机选取一个日期，然后至少持有18个月，至多持有到当前日期，用这段时间的数据分别模拟在初始日期全部投资至结束和在区间内定投的收益情况。使用方法如下：
+这个比较函数从给定的 ETF 基金中的前半段时间随机选取一个日期，然后至少持有 18 个月，至多持有到当前日期，用这段时间的数据分别模拟在初始日期全部投资至结束和在区间内定投的收益情况。使用方法如下：
 
 ```
 #用每月定投1000元ETF50来比较
@@ -161,8 +145,6 @@ compare('ETF500',aip.weekly)
 #用每周定投500元ETF300来比较，共模拟10次，每次打印出走势对比图
 compare('ETF300',aip.weekly,times=10,money=500,plot=True)
 ```
-
-
 
 ### 比较结果
 
@@ -187,8 +169,6 @@ from 2014-04-30 to 2015-10-31,dirctly invest ETF exceed AIP 41.97%
 
 In 15 times simulation,dirctly invest ETF exceed AIP's mean is 22.81%
 ```
-
-
 
 `compare('ETF500',aip.weekly)`
 
@@ -216,9 +196,7 @@ In 15 times simulation,dirctly invest ETF exceed AIP's mean is 32.02%
 
 当然，定投也不是一无是处，至少对于当前资金不足，只想从每月工资中拿出一部分来投资的人来说，还是一种很好的投资方式的。
 
-
-
-###  完整代码
+### 完整代码
 
 ```python
 #!/usr/bin/env python3
@@ -234,7 +212,7 @@ class AutoInvestmentPlan:
         plt.style.use('ggplot')
         self.code_list = ['510050','510300','510510']
         self.start_date = '2013-05-27'
-    
+
     def get_etf_close(self,code,start):
         df = ts.get_k_data(code,start=start)
         df.set_index('date',inplace=True)
@@ -266,7 +244,7 @@ def compare(underlying,df_period,times=15,money=1000,plot=False):
         cumsum_values['share_cum'] = cumsum_values['share_period'].cumsum()
         cumsum_values['values'] = cumsum_values.share_cum * d.loc[:,underlying]
         cumsum_values['payoff'] = [i*money for i in range(1,cumsum_values.index.size+1)]
-        
+
         a = d.loc[:,underlying] / d.loc[d.index[0],underlying]
         b = cumsum_values['values'] / cumsum_values['payoff']
         b.name = 'AIP'
@@ -277,6 +255,4 @@ def compare(underlying,df_period,times=15,money=1000,plot=False):
         print('from {} to {},dirctly invest ETF exceed AIP {:.2%}'.format(start.strftime('%Y-%m-%d'),end.strftime('%Y-%m-%d'),exceed))
         result.append(exceed)
     print('\nIn {} times simulation,dirctly invest ETF exceed AIP\'s mean is {:.2%}'.format(times,pd.np.mean(result)))
-
 ```
-

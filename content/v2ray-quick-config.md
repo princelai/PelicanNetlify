@@ -5,20 +5,13 @@ Tags: v2ray,acme.sh,tls
 Slug: v2ray-quick-config
 Authors: Kevin Chen
 
-
-
-
 # 服务器端配置
 
 服务器系统使用的是Debian 9 x86_64，Ubuntu大部分操作都通用。如果是CentOS的话，该文章仅作为参考。
 
-
-
 ### 优化网络
 
 主要涉及bbr的安装配置，需要VPS是KVM架构，具体可以参照[之前的文章](https://www.solarck.com/shadowsocks-libev.html)。
-
-
 
 ### 安装V2ray
 
@@ -28,15 +21,14 @@ Authors: Kevin Chen
 wget https://install.direct/go.sh
 bash go.sh
 ```
+
 安装好后，主要文件如下：
 
-> `/etc/systemd/system/v2ray.service `：启动服务
+> `/etc/systemd/system/v2ray.service`：启动服务
 >
-> `/etc/v2ray/config.json `：配置文件
+> `/etc/v2ray/config.json`：配置文件
 >
-> `/usr/bin/v2ray/v2ray `：主程序
-
-
+> `/usr/bin/v2ray/v2ray`：主程序
 
 ### TLS域名证书
 
@@ -44,13 +36,11 @@ bash go.sh
 
 工具使用[acme.sh](https://github.com/Neilpang/acme.sh/wiki)，这是用来签发[Let's Encrypt](https://letsencrypt.org/)免费证书的脚本，非常好用。
 
-#### *安装acme*
+#### _安装acme_
 
 安装依赖工具
 
-`apt-get install -y socat netcat `
-
-
+`apt-get install -y socat netcat`
 
 安装acme.sh脚本
 
@@ -60,9 +50,7 @@ curl  https://get.acme.sh | sh
 
 默认是安装在`～/.acme.sh/`
 
-
-
-#### *签发证书*
+#### _签发证书_
 
 我使用的是ecc证书，需要把domain换成自己的域名
 
@@ -70,9 +58,7 @@ curl  https://get.acme.sh | sh
 ~/.acme.sh/acme.sh --issue -d domain --standalone -k ec-256
 ```
 
-
-
-#### *安装证书*
+#### _安装证书_
 
 证书会被安装到`/etc/v2ray`目录下
 
@@ -80,19 +66,13 @@ curl  https://get.acme.sh | sh
 ~/.acme.sh/acme.sh --installcert -d domain --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
 ```
 
-
-
-#### *证书续期*
+#### _证书续期_
 
 执行完签发命令后，系统已经加上了crond自动签发，如果你想手动签发，可以执行下面的命令。
 
 ```bash
 ~/.acme.sh/acme.sh --renew -d domain --force --ecc
 ```
-
-
-
-
 
 # 本地配置
 
@@ -106,23 +86,19 @@ yaourt -Sy v2ray
 
 如果你用的是其他系统，可以参考服务器的安装脚本。
 
-
-
 # 配置文件
 
 ### 配置说明
 
 我当前使用的连接方式是TCP+TLS这种，根据官方和网上收集的信息，据说当前最好的配置是WebSocket+WEB+TLS+CDN，我没有选择这种连接方式有以下几点原因：
 
-1. Websocket效率低于TCP
-2. 多层转发导致速度可能会变慢
-3. 配置较麻烦
+1.  Websocket效率低于TCP
+2.  多层转发导致速度可能会变慢
+3.  配置较麻烦
 
 如果你的ISP没有QOS，没有TCP阻断，你连接服务器的流量没有很大的话，是没有必要折腾这种连接方式的。当然我在写这篇文章之前还使用过H2+TLS的连接方式，但是不知是服务器没有加Caddy转发还是H2方式不稳定，断流严重，换成TCP+TLS后，连接稳定，速度尚可，未出现断流。
 
 每个人每个地区的ISP情况不尽相同，所以多试才能找到最适合你的配置，更多配置可以参考[配置模板](https://github.com/KiriKira/vTemplate)。
-
-
 
 ### TCP+TLS配置
 
@@ -137,10 +113,6 @@ yaourt -Sy v2ray
 所有配置的详细内容都可以在官方文档或白话文教程里找到，其实配置v2ray并没有那么复杂。
 
 最后贴上我的自用配置，生成UUID可以使用[UUID Generator](https://www.uuidgenerator.net/)这个网站，或者Linux用户可以使用下面命令`cat /proc/sys/kernel/random/uuid`生成。
-
-
-
-
 
 #### **服务端**
 
@@ -203,10 +175,7 @@ yaourt -Sy v2ray
     }
   }
 }
-
 ```
-
-
 
 #### **客户端**
 
@@ -323,10 +292,7 @@ yaourt -Sy v2ray
     }
   }
 }
-
 ```
-
-
 
 # 参考
 

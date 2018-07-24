@@ -1,28 +1,25 @@
-Title: CentOS6数据库服务器配置
+Title: CentOS6 数据库服务器配置
 Date: 2018-06-11 16:52
-Category: IT笔记
+Category: IT 笔记
 Tags: centos, ssh, linux
 Slug: centos6-datebase-server
 Authors: Kevin Chen
 
-
-本文章仅用于记录在公司服务器上通过yum repo来安装官方提供的数据库程序，而非通过编译方式来安装。通过官方仓库来安装有很多好处，比如升级、打补丁都很方便，不用编译浪费时间，更不需要安装多个版本的gcc来满足各种不同软件的要求。
-
-
+本文章仅用于记录在公司服务器上通过 yum repo 来安装官方提供的数据库程序，而非通过编译方式来安装。通过官方仓库来安装有很多好处，比如升级、打补丁都很方便，不用编译浪费时间，更不需要安装多个版本的 gcc 来满足各种不同软件的要求。
 
 ### Mysql
 
-#### **下载安装mysql repo**
+#### **下载安装 mysql repo**
 
 `rpm -Uvh https://repo.mysql.com//mysql80-community-release-el6-1.noarch.rpm`
 
-#### **升级至57版本**
+#### **升级至 57 版本**
 
 `yum --disablerepo=mysql80-community --enablerepo=mysql57-community upgrade`
 
-当前默认是80版本，如果未来需要升级，如果未来一直要维持在57版本，那么建议修改配置文件，以免每次都带上两个参数
+当前默认是 80 版本，如果未来需要升级，如果未来一直要维持在 57 版本，那么建议修改配置文件，以免每次都带上两个参数
 
-`vim /etc/yum.repos.d/mysql-community.repo `
+`vim /etc/yum.repos.d/mysql-community.repo`
 
 ```ini
 # Enable to use MySQL 5.7
@@ -39,10 +36,9 @@ baseurl=http://repo.mysql.com/yum/mysql-8.0-community/el/6/$basearch/
 enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
-
 ```
 
-#### **安装mysql-server**
+#### **安装 mysql-server**
 
 `yum install mysql-community-server`
 
@@ -50,17 +46,13 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
 
 `service mysqld start`
 
-当然这时候还未配置mysql，开启服务可能会失败。默认配置文件在`/etc/my.cnf`。
+当然这时候还未配置 mysql，开启服务可能会失败。默认配置文件在`/etc/my.cnf`。
 
-
-
-更多安装细节可以参照[mysql官方指南](https://dev.mysql.com/doc/mysql-yum-repo-quick-guide/en/)。
-
-
+更多安装细节可以参照[mysql 官方指南](https://dev.mysql.com/doc/mysql-yum-repo-quick-guide/en/)。
 
 ### Mongo
 
-#### **创建repo文件**
+#### **创建 repo 文件**
 
 `vim /etc/yum.repos.d/mongodb-org-3.6.repo`
 
@@ -73,35 +65,31 @@ enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc
 ```
 
-#### **安装mongo组件合集**
+#### **安装 mongo 组件合集**
 
 `yum install -y mongodb-org`
 
-mongo-org是一个合集，如果想精简安装各个组件，请参照下表。
+mongo-org 是一个合集，如果想精简安装各个组件，请参照下表。
 
-| Package Name         | Description                                                  |
-| -------------------- | ------------------------------------------------------------ |
-| `mongodb-org`        | A metapackage that will automatically install the four component packages listed below. |
-| `mongodb-org-server` | Contains the mongod daemon and associated configuration and init scripts. |
-| `mongodb-org-mongos` | Contains the mongos daemon. |
-| `mongodb-org-shell`  | Contains the mongo shell. |
+| Package Name         | Description                                                                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mongodb-org`        | A metapackage that will automatically install the four component packages listed below.                                                           |
+| `mongodb-org-server` | Contains the mongod daemon and associated configuration and init scripts.                                                                         |
+| `mongodb-org-mongos` | Contains the mongos daemon.                                                                                                                       |
+| `mongodb-org-shell`  | Contains the mongo shell.                                                                                                                         |
 | `mongodb-org-tools`  | Contains the following MongoDB tools: mongoimport bsondump, mongodump, mongoexport, mongofiles, mongoperf, mongorestore, mongostat, and mongotop. |
 
 #### **启动服务**
 
-`mongod -f /etc/mongod.conf `
+`mongod -f /etc/mongod.conf`
 
-mongo默认不加载conf文件，所以用service方法是无法正常启动的，暂时使用自带方法开启服务。
+mongo 默认不加载 conf 文件，所以用 service 方法是无法正常启动的，暂时使用自带方法开启服务。
 
+更多安装细节可以参照[mongo 官方指南](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/)。
 
+###　 Nginx
 
-更多安装细节可以参照[mongo官方指南](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/)。
-
-
-
-###　Nginx
-
-#### **创建repo文件**
+#### **创建 repo 文件**
 
 `vim /etc/yum.repos.d/nginx.repo`
 
@@ -120,15 +108,13 @@ yum install -y nginx
 service nginx start
 ```
 
-service方法启动nginx默认会加载`/etc/nginx/nginx.conf `配置。
-
-
+service 方法启动 nginx 默认会加载`/etc/nginx/nginx.conf`配置。
 
 ### 查看系统安装路径
 
 使用仓库安装有一点不是很清晰，那就是安装目录并非自己指定，有时需要修改一些文件时找不到文件在哪里，我们可以通过如下方法找到软件的所有文件目录。
 
-`rpm -qa |grep mongodb `
+`rpm -qa |grep mongodb`
 
 ```
 mongodb-org-mongos-3.6.5-1.el6.x86_64
@@ -138,9 +124,9 @@ mongodb-org-3.6.5-1.el6.x86_64
 mongodb-org-shell-3.6.5-1.el6.x86_64
 ```
 
-例如我们要查看server的所有文件目录，则执行
+例如我们要查看 server 的所有文件目录，则执行
 
-`rpm -ql mongodb-org-server-3.6.5-1.el6.x86_64   `
+`rpm -ql mongodb-org-server-3.6.5-1.el6.x86_64`
 
 ```
 /etc/init.d/mongod
@@ -159,11 +145,9 @@ mongodb-org-shell-3.6.5-1.el6.x86_64
 /var/run/mongodb
 ```
 
+### SSH 免密登录服务器
 
-
-### SSH免密登录服务器
-
-Linux上免密登录通常用RSA公钥和密钥实现，本地生成钥匙后，公钥上传至服务器，之后便可以免密登录了。
+Linux 上免密登录通常用 RSA 公钥和密钥实现，本地生成钥匙后，公钥上传至服务器，之后便可以免密登录了。
 
 #### **本地生成公钥密钥**
 
@@ -171,9 +155,9 @@ Linux上免密登录通常用RSA公钥和密钥实现，本地生成钥匙后，
 
 默认公钥会存储在`~/.ssh/id_rsa.pub`，备用。
 
-#### **修改服务器sshd配置**
+#### **修改服务器 sshd 配置**
 
-`vim /etc/ssh/sshd_config `
+`vim /etc/ssh/sshd_config`
 
 ```
 PubkeyAuthentication yes #解开注释
@@ -184,4 +168,4 @@ AuthorizedKeysFile .ssh/authorized_keys #解开注释
 
 `ssh-copy-id -i .ssh/id_rsa.pub -p port user@ip`
 
-修改上面的端口、用户名和ip，再在本地`.bashrc`或`.zshrc`新建一条alias就可以非常方便快捷的登录了。
+修改上面的端口、用户名和 ip，再在本地`.bashrc`或`.zshrc`新建一条 alias 就可以非常方便快捷的登录了。

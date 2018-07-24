@@ -1,16 +1,11 @@
-Title: LEDE/OpenWRT路由器打造家庭媒体影音中心（二）
+Title: LEDE/OpenWRT 路由器打造家庭媒体影音中心（二）
 Date: 2018-07-12 16:07
-Category: IT笔记
+Category: IT 笔记
 Tags: openwrt, lede,wrt1900acs,samba, nas
 Slug:lede-media-center2
 Authors: Kevin Chen
 
-
-
-
-
-
-# USB驱动
+# USB 驱动
 
 ### 查看已安装的驱动
 
@@ -18,8 +13,6 @@ Authors: Kevin Chen
 opkg update
 opkg list-installed | grep usb
 ```
-
-
 
 ### 安装驱动和工具
 
@@ -29,43 +22,39 @@ opkg list-installed | grep usb
 opkg install kmod-usb-core kmod-usb-storage
 ```
 
-`kmod-usb-core`:USB核心驱动
+`kmod-usb-core`:USB 核心驱动
 
 `kmod-usb-storage`:大容量存储设备驱动
 
-`kmod-usb2`:WRT1900ACS有一个USB2.0/eSATA口，可以不安装
+`kmod-usb2`:WRT1900ACS 有一个 USB2.0/eSATA 口，可以不安装
 
-`kmod-ata-marvell-sata`:Marvell SATA接口驱动，可以不安装
+`kmod-ata-marvell-sata`:Marvell SATA 接口驱动，可以不安装
 
 网上搜到的教程和官方指南里还让安装一些其他的应用，但这些都是不必要或已被编译至内核中，包括：`kmod-usb-ohci`、`kmod-usb-uhci`、`kmod-usb3`、`kmod-usb-storage-uas`
-
-
 
 ### 安装相关工具
 
 ```bash
-opkg install usbutils block-mount e2fsprogs kmod-fs-ext4 gdisk fdisk 
+opkg install usbutils block-mount e2fsprogs kmod-fs-ext4 gdisk fdisk
 ```
 
-`mount-utils`:提供unmount,findmnt
+`mount-utils`:提供 unmount,findmnt
 
-`usbutils`:提供lsusb
+`usbutils`:提供 lsusb
 
-`block-mount`:提供block，查看挂载点信息
+`block-mount`:提供 block，查看挂载点信息
 
-`e2fsprogs`:格式化工具mkfs
+`e2fsprogs`:格式化工具 mkfs
 
-`kmod-fs-ext4`:格式化为ext4格式
+`kmod-fs-ext4`:格式化为 ext4 格式
 
-`kmod-fs-ntfs`:我不用ntfs格式，所以不安装这个，需要可以安装上
+`kmod-fs-ntfs`:我不用 ntfs 格式，所以不安装这个，需要可以安装上
 
-`gdisk`:分区工具，支持GPT，硬盘容量超过2T需要用这个工具，当然容量小的也可以用这个
+`gdisk`:分区工具，支持 GPT，硬盘容量超过 2T 需要用这个工具，当然容量小的也可以用这个
 
-`fdisk`:分区工具，不支持GPT，常用来查看分区信息
+`fdisk`:分区工具，不支持 GPT，常用来查看分区信息
 
-
-
-以下几个命令查看已连接/挂载的USB设备
+以下几个命令查看已连接/挂载的 USB 设备
 
 ```bash
 df -h
@@ -74,11 +63,9 @@ ls -l /dev/sd*
 block info | grep "/dev/sd"
 ```
 
-*小提示：硬盘格式化为什么格式最好？*
+_小提示：硬盘格式化为什么格式最好？_
 
-在Linux和LEDE平台上，微软的NTFS和FAT32绝对不是一个好的格式，设计的优劣不谈，这两个格式不是Linux平台原生支持的，安装额外的驱动可能会带来发热、读写速度慢、不稳定等多种负面效果。所以，对于机械硬盘来说，EXT4和BTRFS是最好的，对于SSD来说，F2FS格式是最好的。
-
-
+在 Linux 和 LEDE 平台上，微软的 NTFS 和 FAT32 绝对不是一个好的格式，设计的优劣不谈，这两个格式不是 Linux 平台原生支持的，安装额外的驱动可能会带来发热、读写速度慢、不稳定等多种负面效果。所以，对于机械硬盘来说，EXT4 和 BTRFS 是最好的，对于 SSD 来说，F2FS 格式是最好的。
 
 # 硬盘相关操作
 
@@ -100,11 +87,7 @@ gdisk /dev/sda
 
 `?`:查看帮助
 
-
-
-这里我把一块硬盘分为两个区`/dev/sda1`，`/dev/sda2`，分区1大小700G，分区2大小231G，总计1T。
-
-
+这里我把一块硬盘分为两个区`/dev/sda1`，`/dev/sda2`，分区 1 大小 700G，分区 2 大小 231G，总计 1T。
 
 ### 格式化硬盘
 
@@ -113,15 +96,13 @@ mkfs.ext4 /dev/sda1
 mkfs.ext4 /dev/sda2
 ```
 
-如果是SSD硬盘，则可以按照如下方式安装操作
+如果是 SSD 硬盘，则可以按照如下方式安装操作
 
 ```bash
 opkg install f2fs-tools
 opkg install kmod-fs-f2fs
 mkfs.f2fs /dev/sda1
 ```
-
-
 
 ### 自动挂载分区
 
@@ -149,11 +130,9 @@ uci show fstab
 block umount && block mount
 ```
 
-
-
 ### 硬盘休眠
 
-#### *hdparm*
+#### _hdparm_
 
 ```bash
 opkg update
@@ -167,17 +146,15 @@ hdparm -S 120 /dev/sda1
 hdparm -S 120 /dev/sda2
 ```
 
--S后的参数含义为：
+-S 后的参数含义为：
 
-1. 0:关闭休眠
-2. 1-240：数字乘以5秒是时间，在设定时间内未使用则休眠
-3. 241-251：以30分钟为步进，时间为30分钟-5.5小时
+1.  0:关闭休眠
+2.  1-240：数字乘以 5 秒是时间，在设定时间内未使用则休眠
+3.  241-251：以 30 分钟为步进，时间为 30 分钟-5.5 小时
 
+#### _hd-idle_
 
-
-#### *hd-idle*
-
-更简单的方法就是安装Luci管理工具
+更简单的方法就是安装 Luci 管理工具
 
 ```bash
 opkg update
@@ -186,11 +163,9 @@ opkg install hd-idle luci-app-hd-idle
 
 ![hd-idle](http://kevinstuchuang.qiniudn.com/blog-pic/lede-idle.png)
 
-
-
 # Samba
 
-### 安装Samba
+### 安装 Samba
 
 查看可安装的版本
 
@@ -205,11 +180,9 @@ opkg list | grep samba
 opkg install samba36-server luci-app-samba luci-i18n-samba-zh-cn
 ```
 
-
-
 ### 配置防火墙
 
-` vim /etc/config/firewall`
+`vim /etc/config/firewall`
 
 ```ini
 config 'rule'
@@ -231,23 +204,17 @@ config 'rule'
         option 'target' 'ACCEPT'
 ```
 
+### Samba 配置
 
+_官方**强烈建议**使用 luci 来配置 Samba，然后通过修改临时文件来完成配置。_
 
-### Samba配置
+_路由器每次重启，`/etc/samba/smb.conf`文件都将从`/etc/samba/smb.conf.template`文件重新创建，所以修改配置时请修改后者。_
 
-*官方**强烈建议**使用luci来配置Samba，然后通过修改临时文件来完成配置。*
+全局和共享配置可以在 LuCi 界面编辑也可以直接编辑文件，按照我的配置实现如下几个功能：
 
-*路由器每次重启，`/etc/samba/smb.conf`文件都将从`/etc/samba/smb.conf.template`文件重新创建，所以修改配置时请修改后者。*
-
-
-
-全局和共享配置可以在LuCi界面编辑也可以直接编辑文件，按照我的配置实现如下几个功能：
-
-- 禁止root用户访问，防止权限出现问题
-- 允许匿名用户访问`/mnt/sda1`，即Media文件夹
-- 访问`/mnt/sda2`，即Document文件夹必须登录，用户只能访问到自己创建的文件夹和文件
-
-
+- 禁止 root 用户访问，防止权限出现问题
+- 允许匿名用户访问`/mnt/sda1`，即 Media 文件夹
+- 访问`/mnt/sda2`，即 Document 文件夹必须登录，用户只能访问到自己创建的文件夹和文件
 
 #### **全局配置**
 
@@ -261,7 +228,7 @@ config 'rule'
 	syslog = 5
 	encrypt passwords = true
 	socket options = TCP_NODELAY IPTOS_LOWDELAY
-	unix charset = UTF-8 
+	unix charset = UTF-8
 	browseable = yes
     local master = yes
 	preferred master = yes
@@ -274,11 +241,9 @@ config 'rule'
     map to guest = Bad User
 ```
 
-
-
 #### **共享文件夹设置**
 
-`vim /etc/config/samba `
+`vim /etc/config/samba`
 
 ```bash
 config samba
@@ -306,8 +271,6 @@ config sambashare
         option guest_ok 'no'
 ```
 
-
-
 #### **文件夹初始权限设置**
 
 `/mnt/sda2`其实没必要更改所属用户和组，但是强迫症就是要给统一了。
@@ -322,28 +285,22 @@ chgrp -R nogroup /mnt/sda2
 chmod -R 777 /mnt/sda2
 ```
 
-
-
 #### **添加用户**
 
-LEDE默认不带`useradd`命令，需要手动安装
+LEDE 默认不带`useradd`命令，需要手动安装
 
 ```bash
 opkg update
 opkg install shadow-useradd
 ```
 
-
-
-添加用户和设置密码要分两步走，首先要添加系统用户，然后再为该用户设置Samba密码。
+添加用户和设置密码要分两步走，首先要添加系统用户，然后再为该用户设置 Samba 密码。
 
 ```
 useradd newuser
 passwd newuser
 smbpasswd -a newuser
 ```
-
-
 
 最后启动/重启服务
 
@@ -352,14 +309,12 @@ smbpasswd -a newuser
 /etc/init.d/samba enable
 ```
 
-
-
-至此，Samba设置完成，也达到了我的目的，有可以匿名随意访问的共享文件夹，也有实现了权限控制的私有文件夹。而且是全平台都可以访问，Windows、Linux和手机（需要有支持SMB协议的软件）。
+至此，Samba 设置完成，也达到了我的目的，有可以匿名随意访问的共享文件夹，也有实现了权限控制的私有文件夹。而且是全平台都可以访问，Windows、Linux 和手机（需要有支持 SMB 协议的软件）。
 
 ![samba](http://kevinstuchuang.qiniudn.com/blog-pic/lede-samba.png)
 
-
 # 参考链接
+
 [Installing USB Drivers](https://openwrt.org/docs/guide-user/storage/usb-installing)
 
 [Using storage devices](https://openwrt.org/docs/guide-user/storage/usb-drives)

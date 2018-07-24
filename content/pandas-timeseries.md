@@ -1,18 +1,15 @@
-Title:Pandas时间处理函数速度对比
+Title:Pandas 时间处理函数速度对比
 Date: 2018-06-08 10:36
-Category: IT笔记
+Category: IT 笔记
 Tags: python, pandas
 Slug: pandas-timeseries
 Authors: Kevin Chen
 
-
-Pandas非常擅长处理时间序列，拥有多种处理时间序列的函数和方法，自己做了几个小测试，看看内置函数都能适配哪种格式、哪种情况，速度又有多快。
-
-
+Pandas 非常擅长处理时间序列，拥有多种处理时间序列的函数和方法，自己做了几个小测试，看看内置函数都能适配哪种格式、哪种情况，速度又有多快。
 
 我用到的时间处理主要是对细粒度的时间重采样至粗粒度，之后再对重采样后的时间进行分组再进行后续操作，如求和、求平均或取最后值。
 
-所以我就设计两个场景，第一个场景是对频率为秒的时间序列重采样至一分钟然后求平均；第二个场景就是对频率为秒的时间序列重采样至3分钟然后对新的时间序列取每个时间的最新值。
+所以我就设计两个场景，第一个场景是对频率为秒的时间序列重采样至一分钟然后求平均；第二个场景就是对频率为秒的时间序列重采样至 3 分钟然后对新的时间序列取每个时间的最新值。
 
 所以首先是要生成一组数据
 
@@ -26,7 +23,7 @@ df.columns = ['random']
 ser.name = 'random'
 ```
 
-df和ser分别对应DataFrame和Series，查看下数据格式
+df 和 ser 分别对应 DataFrame 和 Series，查看下数据格式
 
 `df.head()`
 
@@ -39,8 +36,6 @@ df和ser分别对应DataFrame和Series，查看下数据格式
 2018-04-07 00:00:04 -1.558763
 ```
 
-
-
 `ser.tail()`
 
 ```
@@ -51,8 +46,6 @@ df和ser分别对应DataFrame和Series，查看下数据格式
 2018-04-08 00:00:00    1.222731
 Freq: S, Name: random, dtype: float64
 ```
-
-
 
 接下来定义六个函数方法
 
@@ -75,33 +68,30 @@ def method4(data):
 
 def method5(data):
     data.asfreq('3Min',method='ffill')
-    
+
 def method6(data):
     data.resample('3Min').last()
-
 ```
 
-方法1-方法4适用于场景一，方法5-方法6适用于场景二，接下来具体说说这六个函数和为什么要这么设计场景。
+方法 1-方法 4 适用于场景一，方法 5-方法 6 适用于场景二，接下来具体说说这六个函数和为什么要这么设计场景。
 
-方法1使用的是内置to_period方法转换周期，to_timestamp方法是为了后续操作使用timestamp更方便。
+方法 1 使用的是内置 to_period 方法转换周期，to_timestamp 方法是为了后续操作使用 timestamp 更方便。
 
-方法2对索引日期进行字符串格式化然后再用内置的to_datetime方法转换回日期格式达到重采样效果。
+方法 2 对索引日期进行字符串格式化然后再用内置的 to_datetime 方法转换回日期格式达到重采样效果。
 
-方法3看似复杂，其实和方法二类似，我之所以加上方法三是因为我本以为这个办法处理会慢很多，但是最终结果还是有点出乎我的意料的。
+方法 3 看似复杂，其实和方法二类似，我之所以加上方法三是因为我本以为这个办法处理会慢很多，但是最终结果还是有点出乎我的意料的。
 
-方法4是内置的resample方法
+方法 4 是内置的 resample 方法
 
-方法5是内置的asfreq方法
+方法 5 是内置的 asfreq 方法
 
-方法6还是内置的resample方法
+方法 6 还是内置的 resample 方法
 
-可以看到resample方法适用范围最广，既可以对时间采取多种细粒度的操作，也能对重采样后的数据进行后续操作；而asfreq方法只能对数据进行重采样，无法进行复杂的后续操作，只能用向前/向后填充数值；to_period方法和字符串操作只能对时间进行整数采样，像45分钟，1小时30分这种更细腻的操作是不支持的。
-
-
+可以看到 resample 方法适用范围最广，既可以对时间采取多种细粒度的操作，也能对重采样后的数据进行后续操作；而 asfreq 方法只能对数据进行重采样，无法进行复杂的后续操作，只能用向前/向后填充数值；to_period 方法和字符串操作只能对时间进行整数采样，像 45 分钟，1 小时 30 分这种更细腻的操作是不支持的。
 
 ### 比较速度
 
-**场景1**
+**场景 1**
 
 ```
 %timeit method1(df)
@@ -127,11 +117,9 @@ def method6(data):
 1.63 ms ± 15.1 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 ```
 
-从上面对比数据得出结论，resample方法最快，to_period方法其次，两种字符串方法最慢，最快和最慢差距巨大。
+从上面对比数据得出结论，resample 方法最快，to_period 方法其次，两种字符串方法最慢，最快和最慢差距巨大。
 
-
-
-**场景2**
+**场景 2**
 
 ```
 %timeit method5(df)
@@ -149,18 +137,16 @@ def method6(data):
 1.87 ms ± 50.5 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 ```
 
-在场景二的测试中asfreq比resample快2倍多，如果不需要更多的后续操作，asfreq是很好的选择，否则resample方法更为全能。
+在场景二的测试中 asfreq 比 resample 快 2 倍多，如果不需要更多的后续操作，asfreq 是很好的选择，否则 resample 方法更为全能。
 
 下方的表格总结了几种方法的优劣：
 
-| 函数   | 时间细粒度操作 | 时间分组后续操作 | 速度 |
-| ------ | -------------- | ---------------- | ---- |
-| asfreq | X              | X         | ✓ |
-| resample | ✓ | ✓ | ✓ |
-| to_period | X | ✓ | ✓ |
-| 字符串 | X | ✓ | X |
-
-
+| 函数      | 时间细粒度操作 | 时间分组后续操作 | 速度 |
+| --------- | -------------- | ---------------- | ---- |
+| asfreq    | X              | X                | ✓    |
+| resample  | ✓              | ✓                | ✓    |
+| to_period | X              | ✓                | ✓    |
+| 字符串    | X              | ✓                | X    |
 
 ### Pandas Offset Aliases
 
@@ -194,8 +180,6 @@ def method6(data):
 | U, us    | microseconds                                     |
 | N        | nanoseconds                                      |
 
-
-
 ### 参考
 
-[官方文档](https://pandas.pydata.org/pandas-docs/stable/timeseries.html) 
+[官方文档](https://pandas.pydata.org/pandas-docs/stable/timeseries.html)

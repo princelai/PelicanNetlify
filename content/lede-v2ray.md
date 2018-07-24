@@ -1,31 +1,21 @@
-Title: 在LEDE/OpenWRT上运行V2ray
+Title: 在 LEDE/OpenWRT 上运行 V2ray
 Date: 2018-07-12 11:16
-Category: IT笔记
+Category: IT 笔记
 Tags: lede,openwrt,v2ray
 Slug: v2ray-run-in-lede
 Authors: Kevin Chen
 Status: draft
 
-
-
-
-
-
-
 ```
 mkdir /var/log/v2ray/
 nohup /usr/bin/v2ray/v2ray -config /etc/v2ray/LEDE-client.json &
 nohup /usr/bin/v2ray/v2ray -config /etc/v2ray/LEDE-KCP-client.json &
-/usr/bin/v2ray/update_iptables.sh 
+/usr/bin/v2ray/update_iptables.sh
 
 iptables -t nat -nvL V2RAY --line-numbers
 
 /usr/bin/v2ray/gfwlist2dnsmasq.sh -d 8.8.8.8  -p 53 -o /tmp/gfwlist.overall
 ```
-
-
-
-
 
 `/etc/init.d/v2ray`
 
@@ -155,5 +145,4 @@ exit $RETVAL
 
 [利用 V2Ray + GFWList 实现路由器自动翻墙](https://cryptopunk.me/posts/27406/)
 
-[网关服务器上设置V2Ray+dnsmasq透明代理](https://dakai.github.io/2017/11/27/v2ray.html)
-
+[网关服务器上设置 V2Ray+dnsmasq 透明代理](https://dakai.github.io/2017/11/27/v2ray.html)
