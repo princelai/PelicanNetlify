@@ -1,13 +1,16 @@
-Title: LEDE/OpenWRT 路由器打造家庭媒体影音中心（三） Date: 2018-06-15 13:07 Category: IT 笔记 Tags: openwrt, lede,wrt1900acs Slug:lede-media-center3 Authors: Kevin Chen Status: draft
+Title: LEDE/OpenWRT 路由器打造家庭媒体影音中心（三）
+Date: 2018-06-15 13:07
+Category: IT 笔记
+Tags: openwrt, lede,wrt1900acs
+Slug:lede-media-center3
+Authors: Kevin Chen
+Status: draft
 
 # DDNS
 
 几个比较著名的 DDNS 服务商
 
-> <https://www.dnsdynamic.org>
-> <http://www.pubyun.com/>
-> <https://www.changeip.com/>
-> <https://www.noip.com/>
+> <https://www.dnsdynamic.org> > <http://www.pubyun.com/> > <https://www.changeip.com/> > <https://www.noip.com/>
 
 安装工具和脚本
 

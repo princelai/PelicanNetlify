@@ -1,21 +1,15 @@
 Title:
 Date: 2018-07-24 12:30
-Category: IT笔记, 金融笔记
-Tags:
-Slug:
+Category: IT 笔记
+Tags:v2ray, caddy
+Slug: v2ray-caddy
 Authors: Kevin Chen
 Status: draft
-
-
-
-
 
 ```
 curl https://getcaddy.com | bash -s personal
 ulimit -n 8192
 ```
-
-
 
 ```
 example.top {
@@ -29,7 +23,7 @@ example.top {
         header_upstream Host "example.top"
         header_upstream X-Forwarded-Proto "https"
     }
-    
+
     proxy /wsray localhost:10086 {
         websocket
         header_upstream -Origin
@@ -37,14 +31,12 @@ example.top {
 }
 ```
 
-
-
 ```
 mkdir /etc/Caddy
 nano /etc/Caddy/CaddyFile
 
-systemctl stop v2ray@mKcp-server.service 
-systemctl start v2ray@TCP-TLS-server.service   
+systemctl stop v2ray@mKcp-server.service
+systemctl start v2ray@TCP-TLS-server.service
 
 mkdir /var/log/caddy/
 caddy -conf /etc/Caddy/CaddyFile
@@ -53,4 +45,3 @@ nohup caddy -conf /etc/Caddy/CaddyFile &
 systemctl stop v2ray@H2-TLS-server
 systemctl start v2ray@H2-TLS-server
 ```
-

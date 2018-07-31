@@ -1,12 +1,10 @@
-Title:  V2ray网关透明代理
+Title: V2ray 网关透明代理
 Date: 2018-07-12 11:16
 Category: IT 笔记
 Tags: lede,openwrt,v2ray
 Slug: v2ray-run-in-lede
 Authors: Kevin Chen
 Status: draft
-
-
 
 get
 
@@ -15,10 +13,7 @@ wget https://www.v2ray.com/download/Core_v3.31/v2ray-linux-arm.zip
 unzip v2ray-linux-arm.zip
 cd v2ray-v3.31-linux-arm/
 cp geoip.dat geosite.dat v2ctl v2ray v2ray_armv7 /usr/bin/v2ray/
-
 ```
-
-
 
 tmp
 
@@ -28,10 +23,8 @@ iptables -t nat -nvL V2RAY --line-numbers
 /usr/bin/v2ray/gfwlist2dnsmasq.sh -d 8.8.8.8  -p 53 -o /tmp/gfwlist.overall
 ```
 
-
-
 ```bash
-#!/bin/ash 
+#!/bin/ash
 chnroute_url=http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
 curl $chnroute_url | grep ipv4 | grep CN | awk -F\| '{ printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /tmp/chnroute.txt
 
@@ -72,12 +65,16 @@ iptables -t nat -A V2RAY -p all -j REDIRECT --to-ports 1060
 iptables -t nat -A PREROUTING -p all -j V2RAY
 exit 0
 ```
+
 get h2y
+
 ```bash
 wget https://github.com/ToutyRater/v2ray-SiteDAT/releases/download/v0.0.1/h2y.dat
 chmod a+x h2y.dat
 ```
+
 init script
+
 ```bash
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
@@ -86,7 +83,7 @@ alias upgrade="opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade"
 mkdir /var/log/v2ray/
 nohup /usr/bin/env v2ray.ray.buffer.size=1024 /usr/bin/v2ray/v2ray_armv7 -config /etc/v2ray/LEDE-H2-client.json &
 #nohup /usr/bin/env v2ray.ray.buffer.size=1024 /usr/bin/v2ray/v2ray_armv7 -config /etc/v2ray/LEDE-KCP-client.json &
-/usr/bin/v2ray/update_iptables.sh 
+/usr/bin/v2ray/update_iptables.sh
 exit 0
 ```
 

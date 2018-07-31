@@ -5,12 +5,14 @@ from __future__ import unicode_literals
 import os
 import sys
 
-from pelicanconf import *
+sys.path.append(os.curdir)
+
+if True:
+    from pelicanconf import *
 
 # This file is only used if you use `make publish` or
 # explicitly specify it as your config file.
 
-sys.path.append(os.curdir)
 
 SITEURL = 'https://www.solarck.com'
 MIXCONTENT = '//www.solarck.com'
