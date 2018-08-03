@@ -16,7 +16,7 @@ Status: draft
 
 ```
 opkg update
-opkg install wget curl bind-host knot-host drill ddns-scripts luci-app-ddns luci-i18n-ddns-zh-cn ddns-scripts_cloudflare.com-v4 ddns-scripts_no-ip_com
+opkg install wget curl bind-host knot-host drill ddns-scripts luci-app-ddns luci-i18n-ddns-zh-cn ddns-scripts_cloudflare.com-v4
 ```
 
 uhttpd 设置
