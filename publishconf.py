@@ -13,7 +13,6 @@ if True:
 # This file is only used if you use `make publish` or
 # explicitly specify it as your config file.
 
-
 SITEURL = 'https://www.solarck.com'
 MIXCONTENT = '//www.solarck.com'
 RELATIVE_URLS = False
