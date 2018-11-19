@@ -24,9 +24,8 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Plugin
-PLUGIN_PATHS = [
-    "plugins", "/opt/Anaconda3/lib/python3.6/site-packages/pelican/plugins"
-]
+# PLUGIN_PATHS = ["plugins", "/opt/Anaconda/envs/py37/lib/python3.7/site-packages/pelican/plugins"]
+PLUGIN_PATHS = ["plugins", "./plugins"]
 PLUGINS = [
     "render_math", "tag_cloud", "tipue_search", "pelican-toc", "neighbors",
     "related_posts"
@@ -53,8 +52,6 @@ TOC = {
 LINKS_WIDGET_NAME = '链接'
 LINKS = (
     ('Pelican', 'http://getpelican.com/'),
-    ('Python.org', 'http://python.org/'),
-    ('Jinja2', 'http://jinja.pocoo.org/'),
 )
 
 # Social widget

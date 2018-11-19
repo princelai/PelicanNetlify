@@ -88,3 +88,71 @@ pelican-themes -r plumage
 pelican-themes -i themes/plumage
 ```
 
+
+
+# using netlify
+
+python env
+
+```
+conda create -n pelican36 python==3.6.7
+```
+
+激活
+
+```
+conda activate pelican36
+```
+
+
+
+安装必要扩展
+
+```
+pip install pelican markdown typogrify bs4
+```
+
+
+
+
+
+
+
+install pelican themes and plugins
+
+
+
+```
+echo ".directory\n__pycache__/\noutput/\n\!.gitignore\n" >> .gitignore  
+```
+
+
+
+新建github
+
+```python
+git remote add origin git@github.com:princelai/PelicanNetlify.git
+git push -u origin master
+```
+
+
+
+```
+pelican -s publishconf.py -t themes/plumage  
+```
+
+
+
+
+
+```
+/opt/Anaconda/envs/pelican36/bin/pelican ~/Blog/content/ -s publishconf.py -t themes/plumage
+```
+
+
+
+```
+pip freeze > requirements.txt
+echo "3.6" > runtime.txt
+```
+

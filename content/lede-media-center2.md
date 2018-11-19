@@ -161,7 +161,7 @@ opkg update
 opkg install hd-idle luci-app-hd-idle
 ```
 
-![hd-idle](http://kevinstuchuang.qiniudn.com/blog-pic/lede-idle.png)
+![hd-idle](https://ws1.sinaimg.cn/large/65f2a787ly1fxa2prebypj20f709a3yn.jpg)
 
 # Samba
 
@@ -311,7 +311,7 @@ smbpasswd -a newuser
 
 至此，Samba 设置完成，也达到了我的目的，有可以匿名随意访问的共享文件夹，也有实现了权限控制的私有文件夹。而且是全平台都可以访问，Windows、Linux 和手机（需要有支持 SMB 协议的软件）。
 
-![samba](http://kevinstuchuang.qiniudn.com/blog-pic/lede-samba.png)
+![samba](https://ws1.sinaimg.cn/large/65f2a787ly1fxa2prha0jj20qz0mxjsm.jpg)
 
 # 参考链接
 
