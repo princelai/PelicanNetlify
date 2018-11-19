@@ -1,4 +1,5 @@
 .directory
 __pycache__/
 output/
+pictures/
 !.gitignore

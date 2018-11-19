@@ -15,11 +15,11 @@ Authors: Kevin Chen
 
 _50ETF 月线_
 
-![上证50ETF](http://kevinstuchuang.qiniudn.com/blog-pic/ETF50close.png)
+![上证50ETF](https://ws1.sinaimg.cn/large/65f2a787ly1fxdd4nrg9yj20rs0m8jsa.jpg)
 
 _500ETF 周线_
 
-![500ETF](http://kevinstuchuang.qiniudn.com/blog-pic/ETF500close.png)
+![500ETF](https://ws1.sinaimg.cn/large/65f2a787ly1fxdd4nrw1nj20rs0m8q3s.jpg)
 
 这段区间整体来看是上涨的，大盘股涨的多，小盘股涨得少。分段来看 2013 年中至 2014 年中，属于震荡行情，2014 年中至 2015 年中是暴涨行情，2015 年中至 2016 年初是暴跌行情，2016 年初至 2018 年中行情分化，大盘股再次进入牛市，中盘股属于慢牛，小盘股是横盘震荡走势。
 

@@ -138,7 +138,7 @@ git push -u origin master
 
 
 ```
-pelican -s publishconf.py -t themes/plumage  
+pelican -d -s publishconf.py -t themes/plumage  
 ```
 
 
@@ -146,7 +146,7 @@ pelican -s publishconf.py -t themes/plumage
 
 
 ```
-/opt/Anaconda/envs/pelican36/bin/pelican ~/Blog/content/ -s publishconf.py -t themes/plumage
+/opt/Anaconda/envs/pelican36/bin/pelican ~/Blog/content/ -d -s publishconf.py -t themes/plumage
 ```
 
 
