@@ -31,7 +31,7 @@ PLUGINS = [
     "related_posts"
 ]
 TYPOGRIFY = True
-DISQUS_SITENAME = 'solarck'
+
 
 # MENU
 # MENUITEMS = (('关于','about'),
@@ -74,14 +74,13 @@ DATE_FORMATS = {
 #     'extra/favicon.ico': {'path': '/static/favicon.ico'}
 # }
 
-STATIC_PATHS = ['images', 'favicon.ico', 'CNAME', 'static']
+STATIC_PATHS = ['_redirects', 'images', 'favicon.ico', 'CNAME', 'static']
 
 # THEME
 # THEME = 'pelicanyan'
 # DIRECT_TEMPLATES = ('index', 'categories', 'authors', 'archives', 'sitemap', 'robots')
 
 THEME = 'plumage'
-GOOGLE_ANALYTICS = 'UA-1337838-7'
 TIPUE_SEARCH = True
 ARCHIVES_SAVE_AS = 'archives.html'
 CATEGORIES_SAVE_AS = 'categories.html'
