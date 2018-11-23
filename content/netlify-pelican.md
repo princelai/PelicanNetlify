@@ -81,9 +81,9 @@ pelican-quickstart
 
 在Blog根目录新建两个文件夹
 
-`themes` : 这个目录用于存放你要用的主题，大量主题可以再Github搜索
+`themes` : 这个目录用于存放你要用的主题，大量主题可以在Github搜索
 
-`plugins ` : 这个目录用于你要用和主题必须的插件， Pelican所有插件可以在[这里](https://github.com/getpelican/pelican-plugins)找到
+`plugins ` : 这个目录用于你要用的主题必须的插件， Pelican所有插件可以在[这里](https://github.com/getpelican/pelican-plugins)找到
 
 
 
