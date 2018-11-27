@@ -1,6 +1,6 @@
 Title: Mongo常用命令记录
 Date: 2018-11-20 10:53
-Category: IT笔记, 金融笔记
+Category: 玩电脑
 Tags: mongo
 Slug: my-frequency-mongo-command
 Authors: Kevin Chen

@@ -1,6 +1,6 @@
 Title: tshark常用命令详解
 Date: 2018-11-16 18:35
-Category: IT笔记
+Category: 玩电脑
 Tags: wireshark, tshark
 Slug: tshark-freq-cmd
 Authors: Kevin Chen

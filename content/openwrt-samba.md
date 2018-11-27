@@ -1,6 +1,6 @@
 Title: openwrt 开启 Samba 作为共享中心
 Date: 2014-01-05 01:29
-Category: IT 笔记
+Category: 玩电脑
 Tags: openwrt
 Slug: openwrt-samba
 Authors: Kevin Chen

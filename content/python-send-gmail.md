@@ -1,6 +1,6 @@
 Title: 使用 Python 发送 Gmail
 Date: 2018-06-11 14:20
-Category: IT 笔记
+Category: 玩电脑
 Tags: python, gmail
 Slug: python-send-gmail
 Authors: Kevin Chen

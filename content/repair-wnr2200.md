@@ -1,6 +1,6 @@
 Title: 修复变砖的 WNR2200
 Date: 2013-12-31 21:51
-Category: IT 笔记
+Category: 玩电脑
 Tags: 路由器
 Slug: repair-wnr2200
 Authors: Kevin Chen

@@ -1,6 +1,6 @@
 Title: CentOS6 数据库服务器配置
 Date: 2018-06-11 16:52
-Category: IT 笔记
+Category: 玩电脑
 Tags: centos, ssh, linux
 Slug: centos6-datebase-server
 Authors: Kevin Chen

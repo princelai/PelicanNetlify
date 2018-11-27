@@ -1,6 +1,6 @@
 Title: LEDE/OpenWRT 路由器打造家庭媒体影音中心（二）
 Date: 2018-07-12 16:07
-Category: IT 笔记
+Category: 玩电脑
 Tags: openwrt, lede,wrt1900acs,samba, nas
 Slug:lede-media-center2
 Authors: Kevin Chen

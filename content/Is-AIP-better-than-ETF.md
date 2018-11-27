@@ -1,6 +1,6 @@
 Title: 用数据验证定投是否优于直接投资
 Date: 2018-06-06 17:27
-Category: 金融笔记
+Category: 金融与算法
 Tags: 定投, ETF
 Slug: Is-AIP-better-than-ETF
 Authors: Kevin Chen

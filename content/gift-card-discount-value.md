@@ -1,6 +1,6 @@
 Title: 充值卡折现价值分析
 Date: 2018-08-06 15:58
-Category: 金融笔记
+Category: 金融与算法
 Tags: 折现,最优化
 Slug: gift-card-discount-value
 Authors: Kevin Chen

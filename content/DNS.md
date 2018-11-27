@@ -1,6 +1,6 @@
 Title:国内公共DNS测试
 Date: 2018-07-03 10:51
-Category: IT笔记
+Category: 玩电脑
 Tags: dns
 Slug: public-dns-test
 Authors: Kevin Chen

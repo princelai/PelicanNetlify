@@ -1,6 +1,6 @@
 Title: matplotlib 中文字体配置
 Date: 2017-12-18 16:01
-Category: IT 笔记
+Category: 玩电脑
 Tags: python,matplotlib
 Slug: matplotlib-chinese-fonts
 Authors: Kevin Chen

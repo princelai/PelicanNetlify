@@ -1,6 +1,6 @@
 Title: git 和 github 主要使用方法
 Date: 2018-05-25 17:19
-Category: IT 笔记
+Category: 玩电脑
 Tags: git, github
 Slug: git-and-github
 Authors: Kevin Chen

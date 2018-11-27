@@ -1,6 +1,6 @@
 Title: 快速配置V2ray
 Date: 2018-07-13 10:08
-Category: IT笔记
+Category: 玩电脑
 Tags: v2ray,acme.sh,tls
 Slug: v2ray-quick-config
 Authors: Kevin Chen

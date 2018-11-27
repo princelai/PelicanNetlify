@@ -1,6 +1,6 @@
 Title: 编译 Tensorflow 1.10 + CUDA9.2 + MKL
 Date: 2018-07-30 18:43
-Category: IT 笔记
+Category: 机器学习
 Tags: tensorflow, cuda, GPU
 Slug: compile-tensorflow-gpu
 Authors: Kevin Chen

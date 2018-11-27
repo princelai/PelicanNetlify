@@ -1,6 +1,6 @@
 Title: 水星（Mercury）MW4530r 刷 Openwrt
 Date: 2014-01-02 01:08
-Category: IT 笔记
+Category: 玩电脑
 Tags: openwrt
 Slug: install-openwrt-on-mw4530r
 Authors: Kevin Chen

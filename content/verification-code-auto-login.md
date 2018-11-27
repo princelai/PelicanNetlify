@@ -1,6 +1,6 @@
 Title: 实现爬虫短信验证码自动登录
 Date: 2018-11-20 14:53
-Category: IT笔记
+Category: 玩电脑
 Tags:
 Slug: crawler-sms-verification-code-auto-login
 Authors: Kevin Chen

@@ -1,6 +1,6 @@
 Title: V2ray 网关透明代理
 Date: 2018-07-12 11:16
-Category: IT 笔记
+Category: 玩电脑
 Tags: lede,openwrt,v2ray
 Slug: v2ray-run-in-lede
 Authors: Kevin Chen

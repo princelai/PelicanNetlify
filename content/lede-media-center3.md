@@ -1,6 +1,6 @@
 Title: LEDE/OpenWRT 路由器打造家庭媒体影音中心（三）
 Date: 2018-06-15 13:07
-Category: IT 笔记
+Category: 玩电脑
 Tags: openwrt, lede,wrt1900acs
 Slug:lede-media-center3
 Authors: Kevin Chen

@@ -1,6 +1,6 @@
 Title: 微信和telegram机器人入门
 Date: 2018-11-20 14:39
-Category: IT笔记, 金融笔记
+Category: 玩电脑
 Tags: 微信,telegram,机器人
 Slug: introduction-wx-telegram-bot
 Authors: Kevin Chen

@@ -1,6 +1,6 @@
 Title: 配置 pip 和 conda
 Date: 2017-11-07 11:43
-Category: IT 笔记
+Category: 玩电脑
 Tags: pip,conda,python
 Slug: config-pip-conda
 Authors: Kevin Chen

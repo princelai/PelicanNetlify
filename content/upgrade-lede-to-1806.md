@@ -1,6 +1,6 @@
 Title: 升级 Openwrt/LEDE 大版本至 18.06
 Date: 2018-07-31 14:31
-Category: IT 笔记
+Category: 玩电脑
 Tags: openwrt, lede
 Slug: upgrade-lede-to-1806
 Authors: Kevin Chen

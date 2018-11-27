@@ -1,13 +1,13 @@
 Title: Netlify全自动部署静态博客
 Date: 2018-11-20 14:08
-Category: IT笔记
+Category: 玩电脑
 Tags: netligy, pelican
 Slug: using-netlify-auto-deployed-pelican
 Authors: Kevin Chen
 
 
 
-![netlify](https://flaviocopes.com/netlify/netlify-logo.png)
+![netlify](https://ws1.sinaimg.cn/large/65f2a787ly1fxmgh2wcfoj20lc0e80td.jpg)
 
 > Netlify是一家位于旧金山的云计算公司，为静态网站提供托管和无服务器后端服务。 它具有Git在全球应用交付网络中的持续部署，无服务器表单处理，对AWS Lambda功能的支持以及与Let's Encrypt的完全集成。它提供免费和付费计划。 [维基百科（英文)](https://en.wikipedia.org/wiki/Netlify)
 

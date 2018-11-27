@@ -1,6 +1,6 @@
 Title: 用股票数据说明方差和标准差的特性
 Date: 2018-01-15 15:35
-Category: 金融笔记
+Category: 金融与算法
 Tags: python,数学,统计学
 Slug: using-python-descript-vaiance-std
 Authors: Kevin Chen

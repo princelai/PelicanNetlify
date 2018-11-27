@@ -1,6 +1,6 @@
 Title:Pandas 时间处理函数速度对比
 Date: 2018-06-08 10:36
-Category: IT 笔记
+Category: 金融与算法
 Tags: python, pandas
 Slug: pandas-timeseries
 Authors: Kevin Chen

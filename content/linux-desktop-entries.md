@@ -1,6 +1,6 @@
 Title: 自定义 Linux 桌面启动程序
 Date: 2017-11-17 15:58
-Category: IT 笔记
+Category: 玩电脑
 Tags: linux
 Slug: linux-desktop-entries
 Authors: Kevin Chen

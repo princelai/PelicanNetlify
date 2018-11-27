@@ -1,6 +1,6 @@
 Title: 用 extroot 为 openwrt 扩充存储空间
 Date: 2014-01-03 01:48
-Category: IT 笔记
+Category: 玩电脑
 Tags: openwrt
 Slug: openwrt-extroot
 Authors: Kevin Chen

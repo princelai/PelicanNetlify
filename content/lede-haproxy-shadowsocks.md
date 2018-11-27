@@ -1,6 +1,6 @@
 Title:
 Date: 2018-07-10 14:15
-Category: IT 笔记, 金融笔记
+Category: 玩电脑
 Tags:
 Slug: lede-haproxy-shadowsocks
 Authors: Kevin Chen

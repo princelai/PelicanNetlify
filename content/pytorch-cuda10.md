@@ -1,6 +1,6 @@
 Title: 编译Pytorch1.0+CUDA10
 Date: 2018-11-20 15:26
-Category: IT笔记, 金融笔记
+Category: 机器学习
 Tags:pytorch, cuda10
 Slug: build-pytorch-preview-and-cuda10
 Authors: Kevin Chen

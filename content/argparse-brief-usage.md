@@ -1,6 +1,6 @@
 Title: argparse模块简要用法
 Date: 2018-01-08 17:41
-Category: IT笔记
+Category: 玩电脑
 Tags: python,argparse
 Slug: argparse-brief-usage
 Authors: Kevin Chen

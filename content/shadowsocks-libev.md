@@ -1,7 +1,7 @@
 Title: VPS 搭梯子指南——shadowsocks+BBR+obfs
 Date: 2017-11-13 15:55
 Modified: 2018-06-05 13:01
-Category: IT 笔记
+Category: 玩电脑
 Tags: shadowsocks
 Authors: Kevin Chen
 Slug: shadowsocks-libev
