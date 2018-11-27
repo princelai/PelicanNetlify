@@ -10,6 +10,23 @@ Status: draft
 
 
 
+```
+conda install numpy pyyaml mkl mkl-include setuptools cmake cffi typing
+conda install -c mingfeima mkldnn
+```
+
+
+
+```
+conda install -c cpbotha magma-cuda10 
+```
+
+
+
+```
+export CMAKE_PREFIX_PATH="/opt/Anaconda"
+```
+
 
 
 https://vxlabs.com/2018/11/04/pytorch-1-0-preview-nov-4-2018-packages-with-full-cuda-10-support-for-your-ubuntu-18-04-x86_64-systems/
