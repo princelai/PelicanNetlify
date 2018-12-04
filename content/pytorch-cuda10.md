@@ -24,7 +24,7 @@ conda install -c cpbotha magma-cuda10
 
 
 ```
-export CMAKE_PREFIX_PATH="/opt/Anaconda"
+export CMAKE_PREFIX_PATH="/opt/Anaconda/envs/py37"
 ```
 
 

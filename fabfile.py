@@ -10,7 +10,7 @@ env.content_path = 'content'
 
 META = """Title:
 Date: {:%Y-%m-%d %H:%M}
-Category: IT笔记, 金融笔记
+Category: 机器学习,金融与算法,玩电脑,杂记
 Tags:
 Slug:
 Authors: Kevin Chen

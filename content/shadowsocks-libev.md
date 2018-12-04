@@ -144,7 +144,7 @@ systemctl enable shadowsocks-libev #开机启动
 
 下载[shadowsocks-windows][3]解压缩，
 下载[simple-obfs][4]中的 obfs-local.exe 和 msys-2.0.dll 放到 shadowsocks-windows 目录中,obfs-host 随意写一个中国可以访问的网站。
-![shadowsocks-windows](http://kevinstuchuang.qiniudn.com/blog-pic/shadowsocks-windows.png)
+![shadowsocks-windows](https://ws1.sinaimg.cn/large/65f2a787ly1fxuvcogf1ej20id0glq4n.jpg)
 
 **Linux**
 
