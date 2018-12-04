@@ -8,7 +8,7 @@ Status: draft
 
 
 
-> 本文完全参考了[飞羽博客](https://cokebar.info)的两篇文章（[文章1](https://cokebar.info/archives/664)，[文章2](https://cokebar.info/archives/962)），这篇文章只做了微小的修改，用于备份自己的操作流程。想要实现LEDE+Shadowsocks的朋友可以跳转到那两篇文章研究。
+> 本文完全参考了[飞羽博客](https://cokebar.info)的[文章](https://cokebar.info/archives/664)，我这篇文章只做了微小的修改，用于备份自己的操作流程。想要查看更详细的LEDE+Shadowsocks配置细节的朋友可以跳转到那篇文章研究。
 
 
 
@@ -33,7 +33,7 @@ cat /etc/os-release |grep "LEDE_ARCH" |awk '{split($0,a,"=");print substr(a[2],2
 
 
 
-添加自定义源
+添加自定义源，下面`arm_cortex-a9_vfpv3`就是上面查到的版本
 
 `vim /etc/opkg/customfeeds.conf`
 
@@ -53,17 +53,31 @@ opkg install ChinaDNS luci-app-chinadns shadowsocks-libev luci-app-shadowsocks i
 
 
 
+```
+opkg install coreutils-base64 ca-certificates ca-bundle curl
+```
+
+
+
+
+
 # 配置
 
 ## Shadowsocks配置
 
 ### 添加服务器
 
-添加四个服务器（图）
+
+
+![add one](https://ws1.sinaimg.cn/large/65f2a787ly1fxv41slbu5j20dp0gujsc.jpg)
+这里添加一个服务器
+
+![服务器列表](https://ws1.sinaimg.cn/large/65f2a787ly1fxv41slllxj20qs0bedh5.jpg)
+
 
 ### 访问控制
 
-（图）
+![访问控制1](https://ws1.sinaimg.cn/large/65f2a787ly1fxv4ep5qw4j20dg0dwgmf.jpg)
 
 `被忽略IP列表`：因为之后要使用ChinaDNS分流，所以这里要选择这一项
 
@@ -71,9 +85,13 @@ opkg install ChinaDNS luci-app-chinadns shadowsocks-libev luci-app-shadowsocks i
 
 `强制走代理IP`：境外DNS
 
+在第一次使用前建议更新chnroute路由表，以及之后每几个月更新一次，更新方法在定时更新脚本中。
 
 
-（图）
+
+
+
+![访问控制2](https://ws1.sinaimg.cn/large/65f2a787ly1fxv4b9z2x0j20dw07a0t0.jpg)
 
 `代理类型`：直接连接就是，正常代理就是
 
@@ -85,31 +103,98 @@ opkg install ChinaDNS luci-app-chinadns shadowsocks-libev luci-app-shadowsocks i
 
 ### 开启代理
 
-（图）
+![透明代理](https://ws1.sinaimg.cn/large/65f2a787ly1fxv6rhr0oaj20db0910sy.jpg)
+
+
+
+![端口转发](https://ws1.sinaimg.cn/large/65f2a787ly1fxv6rhr39gj20cr08xmxc.jpg)
+
+
 
 因为路由器翻墙只需要用到透明代理，而DNS转发需要用到端口转发，所以把这两项按图设置好就可以了。
+
+这部分属于Shadowsocks配置，但是建议放到最后再执行，因为配置好一旦保存就要开始了，但是现在DNS还没配置好。
 
 
 
 ## DNS配置
 
-在路由表内的网址
+### 示意图
 
-> 路由器DNS--->ChinaDNS（#5353）--->DNS转发（#5311）--->境外DNS（8.8.8.8#53）
+不在chnroute路由表内的网址
 
-如果不在路由表内
+> 路由器DNS--->ChinaDNS（#5353）--->SS端口转发（#5300）--->境外DNS（8.8.8.8#53）
+
+在chnroute路由表内
 
 > 路由器DNS--->ChinaDNS（#5353）--->国内DNS（114.114.114.114#53）
 
 
 
+### ChinaDNS
+
+![ChinaDNS](https://ws1.sinaimg.cn/large/65f2a787ly1fxv6rhra4zj20e40bp3z3.jpg)
+
+### 系统DNS设置
+在Luci中切换至`网络--->DHCP/DNS--->基本设置`，DNS 转发填入`127.0.0.1#5353`
+
+切换至`网络--->DHCP/DNS--->HOSTS和解析文件`，勾选“忽略解析文件”
+
+切换至`网络--->接口--->WAN--->高级设置`，取消勾选“使用对端通告的 DNS 服务器”，并在“使用自定义的 DNS 服务器”中填入`127.0.0.1`
+
+
+
+### 优化DNS配置
+
+```
+mkdir /etc/dnsmasq.d
+uci add_list dhcp.@dnsmasq[0].confdir=/etc/dnsmasq.d
+uci add_list dhcp.@dnsmasq[0].cachesize=50000
+uci commit dhcp
+```
+
+新建一个文件夹，让dnsmasq关联到这个配置文件路径，增大缓存
+
+
+
+### 强制DNS走代理和强制DNS直连
+
+#### China-List
+
+```
+curl -L -o generate_dnsmasq_chinalist.sh https://github.com/cokebar/openwrt-scripts/raw/master/generate_dnsmasq_chinalist.sh
+chmod +x generate_dnsmasq_chinalist.sh
+sh generate_dnsmasq_chinalist.sh -d 114.114.114.114 -p 53 -o /etc/dnsmasq.d/accelerated-domains.china.conf
+```
+
+这段脚本会生成`/etc/dnsmasq.d/accelerated-domains.china.conf`配置文件
+
+
+
+#### GFWList
+
+```
+curl -L -o gfwlist2dnsmasq.sh https://github.com/cokebar/gfwlist2dnsmasq/raw/master/gfwlist2dnsmasq.sh
+chmod +x gfwlist2dnsmasq.sh
+sh gfwlist2dnsmasq.sh -d 127.0.0.1 -p 5300 -o /etc/dnsmasq.d/dnsmasq_gfwlist.conf
+```
+
+这段脚本会生成`/etc/dnsmasq.d/dnsmasq_gfwlist.conf`配置文件
+
+
+
+#### 重启dnsmasq服务
+
+```
+/etc/init.d/dnsmasq restart
+```
 
 
 
 
 # 额外的优化
 
-### TCP Fast Open
+## TCP Fast Open
 
 向`/etc/sysctl.conf`文件添加一行配置
 
@@ -127,11 +212,21 @@ sysctl -p
 
 
 
-### 定时更新脚本
+## 定时更新脚本
+
+### chnroute
 
 ```bash
 wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /etc/chinadns_chnroute.txt
 ```
+
+### China-List
+
+
+
+### GFWList
+
+
 
 
 

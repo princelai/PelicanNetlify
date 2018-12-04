@@ -104,7 +104,7 @@ def gh_pages(c):
 @task
 def preview(c):
     """Build production version of site"""
-    c.run('pelican -d -s pelicanconf.py')
+    c.run('pelican -d -s pelicanconf.py -t themes/plumage')
     os.chdir(CONFIG['deploy_path'])
     print("Server at http://127.0.0.1:8000")
     c.run('python -m http.server 8000 -b 127.0.0.1')
@@ -112,7 +112,7 @@ def preview(c):
 @task
 def github(c):
     """Build production version of site"""
-    c.run('pelican -d -s publishconf.py')
+    c.run('pelican -d -s publishconf.py -t themes/plumage')
     c.run('git add --all')
     c.run('git commit -m {}'.format(CONFIG['commit_message']))
     c.run('git push origin master')
