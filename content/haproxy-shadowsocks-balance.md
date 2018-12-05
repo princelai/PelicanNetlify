@@ -4,7 +4,6 @@ Category: 玩电脑
 Tags:shadowsocks,haproxy
 Slug:haproxy-shadowsocks-balance
 Authors: Kevin Chen
-Status: draft
 
 
 

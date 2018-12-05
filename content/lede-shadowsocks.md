@@ -67,12 +67,17 @@ opkg install coreutils-base64 ca-certificates ca-bundle curl
 
 ### 添加服务器
 
-
-
+这里添加一个服务器，如果开启TCP快速打开，后面会说道如何让路由器支持，其余的要与服务器端配置相同。
 ![add one](https://ws1.sinaimg.cn/large/65f2a787ly1fxv41slbu5j20dp0gujsc.jpg)
-这里添加一个服务器
 
+
+
+添加完所有服务器后的列表
 ![服务器列表](https://ws1.sinaimg.cn/large/65f2a787ly1fxv41slllxj20qs0bedh5.jpg)
+
+
+
+
 
 
 ### 访问控制
@@ -85,7 +90,7 @@ opkg install coreutils-base64 ca-certificates ca-bundle curl
 
 `强制走代理IP`：境外DNS
 
-在第一次使用前建议更新chnroute路由表，以及之后每几个月更新一次，更新方法在定时更新脚本中。
+在第一次使用前建议更新chnroute路由表，以及之后每几个月更新一次，更新方法在文章最后的定时更新脚本中。
 
 
 
@@ -189,6 +194,8 @@ sh gfwlist2dnsmasq.sh -d 127.0.0.1 -p 5300 -o /etc/dnsmasq.d/dnsmasq_gfwlist.con
 /etc/init.d/dnsmasq restart
 ```
 
+重启后dnsmasq会自动加载上面两个配置文件
+
 
 
 
@@ -249,7 +256,7 @@ mv *.sh /etc/script/
 
 ### 计划任务
 
-可以在Luci界面`系统--->计划任务`或者直接在shell中输入`crontab -e`
+可以在Luci界面`系统--->计划任务`或者直接在shell中输入`crontab -e`，把下面的内容复制进去，这个任务在每月8日凌晨4点多把全部需要更新的脚本执行一遍并重启dnsmasq。
 
 ```
 14  4  8  *  *  sh /etc/script/gen_chnroute.sh 
