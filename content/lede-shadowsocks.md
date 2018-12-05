@@ -216,24 +216,50 @@ sysctl -p
 
 ### chnroute
 
+创建一个脚本文件夹和shell脚本
+
+```
+cd /etc
+mkdir script
+touch gen_chnroute.sh
+```
+
+
+
+脚本内容如下
+
+`vim /etc/gen_chnroute.sh`
+
 ```bash
+#/bin/sh
+
 wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /etc/chinadns_chnroute.txt
 ```
 
-### China-List
+### China-List和GFWList
+
+把之前步骤已经下载好的脚本拷贝到脚本文件夹
+
+```bash
+cd ~
+mv *.sh /etc/script/
+```
 
 
 
-### GFWList
+### 计划任务
+
+可以在Luci界面`系统--->计划任务`或者直接在shell中输入`crontab -e`
+
+```
+14  4  8  *  *  sh /etc/script/gen_chnroute.sh 
+15  4  8  *  *  sh /etc/script/generate_dnsmasq_chinalist.sh -d 114.114.114.114 -p 53 -o /etc/dnsmasq.d/accelerated-domains.china.conf
+16  4  8  *  *  sh /etc/script/gfwlist2dnsmasq.sh -d 127.0.0.1 -p 5300 -o /etc/dnsmasq.d/dnsmasq_gfwlist.conf
+17  4  8  *  *  /etc/init.d/dnsmasq restart
+```
 
 
 
 
 
-# 参考
 
-[openwrt-dist](http://openwrt-dist.sourceforge.net/)
-
-[OpenWrt 基于 HAProxy 的透明代理负载均衡和高可用部署](https://blog.csdn.net/lvshaorong/article/details/53034513)
-
-[HAproxy 指南之 haproxy 配置详解](http://blog.51cto.com/blief/1750952)
