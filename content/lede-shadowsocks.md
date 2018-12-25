@@ -1,10 +1,9 @@
 Title: 路由器自动翻墙
-Date: 2018-12-04 14:15
+Date: 2018-12-16 22:35
 Category: 玩电脑
 Tags: lede,openwrt,shadowsocks
 Slug: lede-shadowsocks
 Authors: Kevin Chen
-Status: draft
 
 
 
