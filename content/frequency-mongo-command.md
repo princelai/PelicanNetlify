@@ -65,35 +65,34 @@ tar -czf news.tar.gz -C /home/kevin news.json
 
 1. 首先查看计数并删除集合
 
-    ```mongo
-    > db.news.count()
-    13136
-    > db.news.drop()
-    true
-    ```
+    `db.news.count()`
+
+    > 13136
+
+    `db.news.drop()`
+
+    > true
 
 
 
 2. 创建唯一索引
 
-   ```mongo
-   > db.news.createIndex({title:1},{unique:true})
-   {
-           "createdCollectionAutomatically" : true,
-           "numIndexesBefore" : 1,
-           "numIndexesAfter" : 2,
-           "ok" : 1
-   }
-   ```
+   `db.news.createIndex({title:1},{unique:true})`
+
+   > {
+   > ​        "createdCollectionAutomatically" : true,
+   > ​        "numIndexesBefore" : 1,
+   > ​        "numIndexesAfter" : 2,
+   > ​        "ok" : 1
+   > }
 
 3. 导入
 
    还是按照上面的导入方法正常导入，完成后查看内容数量
 
-   ```mongo
-   > db.news.count()
-   12552
-   ```
+   `db.news.count()`
+   
+   > 12552
 
 
 #### 方法二
