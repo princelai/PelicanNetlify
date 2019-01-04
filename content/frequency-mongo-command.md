@@ -49,7 +49,9 @@ tar -czf news.tar.gz -C /home/kevin news.json
 
 
 
-`mongoimport -d db_mongo -c news --upsert -j 2 news.json `
+```bash
+mongoimport -d db_mongo -c news --upsert -j 2 news.json
+```
 
 > `--upsert`：插入，如果内容存在则更新
 >
