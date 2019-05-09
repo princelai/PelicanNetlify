@@ -12,9 +12,9 @@ PATH = 'content'
 
 TIMEZONE = 'Asia/Shanghai'
 
-DEFAULT_LANG = 'zh'
+DEFAULT_LANG = 'zh-cn'
 DATE_FORMATS = {
-    'zh': '%B %d, %Y',
+    'zh-cn': '%B %d, %Y',
 }
 
 FEED_ALL_ATOM = None
