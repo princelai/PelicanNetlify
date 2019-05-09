@@ -4,7 +4,7 @@ bs4==0.0.1
 certifi==2018.11.29
 docutils==0.14
 feedgenerator==1.9
-Jinja2==2.10
+Jinja2==2.10.1
 Markdown==3.0.1
 MarkupSafe==1.1.0
 pelican==4.0.1
