@@ -73,7 +73,7 @@ DATE_FORMATS = {
 #     'extra/favicon.ico': {'path': '/static/favicon.ico'}
 # }
 
-STATIC_PATHS = ['_redirects', 'images', 'favicon.ico', 'CNAME', 'static']
+STATIC_PATHS = ['_redirects', 'favicon.ico', 'CNAME', 'static']
 
 # THEME
 # THEME = 'pelicanyan'
