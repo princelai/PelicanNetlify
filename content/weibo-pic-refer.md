@@ -1,6 +1,6 @@
 Title: 微博图床禁止外链？不存在的！
 Date: 2019-05-22 18:20
-Category: 机器学习,金融与算法,玩电脑,杂记
+Category: 玩电脑
 Tags: 微博, 图床
 Slug: weibo-pic-refer
 Authors: Kevin Chen
