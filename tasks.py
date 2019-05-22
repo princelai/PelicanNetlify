@@ -4,10 +4,6 @@ import os
 import shutil
 import sys
 from datetime import datetime
-try:
-    import socketserver
-except ImportError:
-    import SocketServer as socketserver
 
 from invoke import task
 from invoke.util import cd
@@ -76,3 +72,7 @@ def new(c):
     with open('new.md', 'w') as f:
         f.write(META.format(datetime.now()))
 
+@task
+def update_env(c):
+    """update netlify's pelican envirement"""
+    c.run('pip freeze > requirements.txt')

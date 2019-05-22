@@ -206,7 +206,7 @@ def percent_position_list(data, window):
     return position
 ```
 
-该方法就是单纯的循环list实现，调用方法特地封装在一个函数中，这样方便测试，但并没有返回数据，使用Ipython的`%timeit`魔术方法测得的时间写在`docstring`中。
+该方法就是单纯的循环list实现，调用方法特地封装在一个函数中，这样方便测试，但并没有返回数据，使用ipython的`%timeit`魔术方法测得的时间写在`docstring`中。
 
 ```python
 def python_list(stock):
@@ -240,7 +240,7 @@ def pandas_rolling(stock):
 
 
 
-虽然上面的方法不是我们要的结果，但是我可以稍微改造一下，弥补其中的一个缺陷。在rolling函数返回的NaN数据上再次调用循环方法计算，这样数据是全的，只是rolling计算的结果还是有误差的。
+虽然上面的方法不是我要的结果，但是我可以稍微改造一下，弥补其中的一个缺陷。在rolling函数返回的`NaN`数据上再次调用循环方法计算，这样数据是全的，只是rolling计算的结果还是有误差的。
 
 
 
@@ -265,7 +265,7 @@ def percent_position_plain(data, window):
 
 
 
-调用函数，这个版本的思想是能使用rolling的就用rolling，不能的不能再单独计算。从结果上看，比list版本性能稍好，速度提升大概21%，不算太理想。
+调用函数，这个版本的思想是能使用rolling的就用rolling，不能的再单独计算。从结果上看，比list版本性能稍好，速度提升大概21%，不算太理想。
 
 ```python
 def pandas_rolling_plain(stock):
@@ -295,7 +295,7 @@ def numpy_plain(stock):
 
 
 
-精简了代码，速度还得到提升，简直两开花，遗憾的是提升幅度并不大。不过能看出来Numpy的计算速度比Pandas的计算速度还是有优势的，毕竟个事简单，所以大规模计算还是从Pandas转换到Numpy来处理更合适。
+精简了代码，速度还得到提升，简直两开花，遗憾的是提升幅度并不大。不过能看出来Numpy的计算速度比Pandas的计算速度还是有优势的，毕竟数据格式简单，所以大规模计算还是从Pandas转换到Numpy来处理更合适。
 
 
 
@@ -312,7 +312,7 @@ import numpy as np
 
 
 
-计算函数与之前Numpy版本的区别只有两个，一个是使用了Numba的`njit`装饰器，这个装饰器与`jit(nopython=True)`等价，另一个区别是之前的计算函数使用list存出结果，而这个函数使用Numpy分配了一个空向量存储结果，这是因为Numba识别不了Python的list结构。
+计算函数与之前Numpy版本的区别只有两个，一个是使用了Numba的`njit`装饰器，这个装饰器与`jit(nopython=True)`等价，另一个区别是之前的计算函数使用list存储结果，而这个函数使用Numpy分配了一个空向量存储结果，这是因为Numba识别不了Python的list结构。
 
 ```python
 @njit
