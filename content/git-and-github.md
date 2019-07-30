@@ -99,8 +99,72 @@ Authors: Kevin Chen
 
 `git merge --no-ff -m "说明" 分支`：禁止 Fast forward 模式，创建新的 commit
 
+
+
+### 一项多源
+
+指的是一个git项目对应两个或多个远程git仓库
+
+#### 方案1
+
+首先查看项目远程仓库情况，现在只有一个名为origin的远程库
+
+```bash
+$ git remote -v
+origin  git@git.dev.tencent.com:princelai/Intelgoriform2.git (fetch)
+origin  git@git.dev.tencent.com:princelai/Intelgoriform2.git (push)
+```
+
+添加一个名为local的远程库
+
+```bash
+$ git remote add local ssh://git@172.168.11.127:22938/root/Intelgoriform2.git
+```
+
+现在在查看远程库
+
+```bash
+$ git remote -v
+local   ssh://git@172.168.11.127:22938/root/Intelgoriform2.git (fetch)
+local   ssh://git@172.168.11.127:22938/root/Intelgoriform2.git (push)
+origin  git@git.dev.tencent.com:princelai/Intelgoriform2.git (fetch)
+origin  git@git.dev.tencent.com:princelai/Intelgoriform2.git (push)
+
+```
+
+提交方法是需要手动提交两次
+
+```bash
+$ git push origin master
+$ git push local master
+```
+
+
+
+#### 方案2
+
+在只有一个origin远程库的情况下，使用下面的命令添加远程库
+
+```bash
+$ git remote set-url --add origin ssh://git@172.168.11.127:22938/root/Intelgoriform2.git
+```
+
+查看远程库情况
+
+```bash
+$ git remote -v
+origin  git@git.dev.tencent.com:princelai/Intelgoriform2.git (fetch)
+origin  git@git.dev.tencent.com:princelai/Intelgoriform2.git (push)
+origin  ssh://git@172.168.11.127:22938/root/Intelgoriform2.git (push)
+```
+
+这种方法提交时只需要提交一次就可 同时上传到两个远程库中了。
+
+
+
 ### 参考
 
 1.  [简书](https://www.jianshu.com/p/e4e29c9c3bd9)
 2.  [廖雪峰](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
 3.  [阮一峰](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
+4.  [将项目提交到两个git仓库](https://my.oschina.net/venusdrogon/blog/910677)
