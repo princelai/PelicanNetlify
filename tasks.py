@@ -73,6 +73,6 @@ def new(c):
         f.write(META.format(datetime.now()))
 
 @task
-def update_env(c):
+def updateenv(c):
     """update netlify's pelican envirement"""
     c.run('pip freeze > requirements.txt')
