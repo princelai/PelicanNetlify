@@ -76,3 +76,4 @@ def new(c):
 def updateenv(c):
     """update netlify's pelican envirement"""
     c.run('pip freeze > requirements.txt')
+    c.run("python --version|cut -d ' ' -f 2|cut -c1-3 > runtime.txt")
