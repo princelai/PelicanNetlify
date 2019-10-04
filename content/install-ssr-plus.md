@@ -35,18 +35,18 @@ v2ray官方没有提供我路由器架构的二进制文件，当然，openwrt�
 
 1. 首先要把lean的整套源码从github克隆下来，然后进入该目录
 
-	```bash
-	git clone https://github.com/coolsnowwolf/lede
-	cd lede
-	```
+```bash
+git clone https://github.com/coolsnowwolf/lede
+cd lede
+```
 
 
 
 2. 然后为你的固件更新/安装扩展包
 
-	```bash
-	./scripts/feeds update -a && ./scripts/feeds install -a
-	```
+```bash
+./scripts/feeds update -a && ./scripts/feeds install -a
+```
 
 
 
@@ -54,34 +54,34 @@ v2ray官方没有提供我路由器架构的二进制文件，当然，openwrt�
 
    这一步最为重要，先执行下面的命令
    
-   ```bash
+```bash
 make menuconfig 
-   ```
-   
+```
+
    之后会进入类似下面这样的界面，前三个分别是系统架构、子架构和路由器型号，这三个必须根据你自己的情况选对。
-   
+
    ![menuconfig](https://ws1.sinaimg.cn/large/65f2a787ly1g7miwhzuafj21hc0h9q58.jpg)
-   
+
    选择好以后，向下翻，找到LuCI --> Applications进入，找到图片中的插件然后空格选中
-   
+
    ![menucconfig2](https://ws1.sinaimg.cn/large/65f2a787ly1g7miwhykvcj21hc0h9n03.jpg)
-   
+
    由于我只用到了ss和v2ray，所以方括号中我只选择了我需要的，如有要用kcp和ssr可以相应选中，但是后续的依赖文件可能会更多。
-   
+
    如果你在`luci-app-ssr-plus`处按M而不是空格，那么相当于把该插件编译为模块而不是编译入固件，这样做当然可以，但是建议第一次先全部编译，然后再次单独编译，不然单独编译一个插件会失败。
+
    
-   
-   
+
 4. 下载所有脚本和程序
 
    这一步就是要科学上网的原因所在，不然很多程序不能顺利下载导致编译失败。
 
    代码最后的`-j5`可以把数字替换为你`CPU核数+1`。
 
-   ```bash
-   make download -j5
-   ```
-   
+```bash
+make download -j5
+```
+
    
 
 
@@ -89,9 +89,9 @@ make menuconfig
 
    同上，数字可以改，核越多越快，这一步需要等待几分钟～几十分钟不等。
 
-   ```bash
-   make -j5 V=s
-   ```
+```bash
+make -j5 V=s
+```
 
    
 
@@ -186,11 +186,17 @@ opkg install dns-forwarder luci-app-dns-forwarder
 
 1. dns-forwarder
 
-![dnsforwarder](https://ws1.sinaimg.cn/large/65f2a787ly1g7mkknx28nj20ej08faa7.jpg)
+   ![dnsforwarder](https://ws1.sinaimg.cn/large/65f2a787ly1g7mkknx28nj20ej08faa7.jpg)
 
 2. ssr-plus
 
-![ssrplus3](https://ws1.sinaimg.cn/large/65f2a787ly1g7mkknxataj20h70ak759.jpg)
+   ![ssrplus3](https://ws1.sinaimg.cn/large/65f2a787ly1g7mkknxataj20h70ak759.jpg)
+
+
+
+
+
+
 
 ## 后记
 
