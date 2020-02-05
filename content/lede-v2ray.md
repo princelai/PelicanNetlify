@@ -6,6 +6,101 @@ Slug: v2ray-run-in-lede
 Authors: Kevin Chen
 Status: draft
 
+
+
+安装
+
+```
+opkg update
+opkg install ca-certificates luci-ssl-openssl
+```
+
+
+
+源
+
+```
+src/gz openwrt_core https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/targets/ramips/mt7621/packages
+src/gz openwrt_kmods https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/targets/ramips/mt7621/kmods/4.14.167-1-2e88863ccdd594fb8e842df3c25842ee
+src/gz openwrt_base https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/base
+src/gz openwrt_luci https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/luci
+src/gz openwrt_packages https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/packages
+src/gz openwrt_routing https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/routing
+src/gz openwrt_telephony https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/telephony
+```
+
+
+
+v2ray源
+
+```
+wget -O kuoruan-public.key http://openwrt.kuoruan.net/packages/public.key
+opkg-key add kuoruan-public.key
+```
+
+
+
+```
+src/gz kuoruan_packages https://openwrt.kuoruan.net/packages/releases/mipsel_24kc
+src/gz kuoruan_universal https://openwrt.kuoruan.net/packages/releases/all
+```
+
+
+
+添加证书和源
+
+```
+wget http://openwrt-dist.sourceforge.net/openwrt-dist.pub
+opkg-key add openwrt-dist.pub
+```
+
+```
+opkg print-architecture | awk '{print $2}'
+```
+
+```
+src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/mipsel_24kc
+src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/packages/luci
+```
+
+
+
+全面更新
+
+```
+opkg update
+opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade
+```
+
+
+
+替换dnsmasq
+
+```
+opkg remove dnsmasq
+opkg install dnsmasq-full
+```
+
+
+
+安装插件
+
+```
+opkg install luci-i18n-base-zh-cn uhttpd libuhttpd-openssl luci-app-uhttpd luci-i18n-uhttpd-zh-cn ChinaDNS luci-app-chinadns ip-full ipset iptables-mod-tproxy iptables-mod-nat-extra libpthread coreutils-base64 ca-certificates ca-bundle curl vim-full vim-runtime
+```
+
+
+
+安装python3
+
+```
+opkg install python3 python3-requests python3-pip
+```
+
+
+
+
+
 get
 
 ```bash
@@ -26,7 +121,7 @@ iptables -t nat -nvL V2RAY --line-numbers
 ```bash
 #!/bin/ash
 chnroute_url=http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
-curl $chnroute_url | grep ipv4 | grep CN | awk -F\| '{ printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /tmp/chnroute.txt
+curl $chnroute_url | grep ipv4 | grep CN | awk -F\| '{ printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /etc/chnroute.txt
 
 # Create new chain
 iptables -t nat -N V2RAY
@@ -35,11 +130,6 @@ iptables -t nat -N V2RAY
 iptables -t nat -A V2RAY -d 95.169.10.107 -j RETURN
 iptables -t nat -A V2RAY -d 95.169.3.48 -j RETURN
 iptables -t nat -A V2RAY -d 107.172.103.201 -j RETURN
-#your china dns
-#iptables -t nat -A V2RAY -d 101.6.6.6 -j RETURN
-#iptables -t nat -A V2RAY -d 101.132.183.99 -j RETURN
-#iptables -t nat -A V2RAY -d 193.112.15.186 -j RETURN
-#iptables -t nat -A V2RAY -d 223.113.97.99 -j RETURN
 
 # Ignore LANs and any other addresses you'd like to bypass the proxy
 iptables -t nat -A V2RAY -d 0.0.0.0/8 -j RETURN
