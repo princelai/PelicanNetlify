@@ -177,6 +177,75 @@ nohup /usr/bin/env v2ray.ray.buffer.size=1024 /usr/bin/v2ray/v2ray_armv7 -config
 exit 0
 ```
 
+```
+
+#############################################
+
+mkdir /etc/dnsmasq.d
+uci add_list dhcp.@dnsmasq[0].confdir=/etc/dnsmasq.d
+uci add_list dhcp.@dnsmasq[0].cachesize=10000
+uci commit dhcp
+
+mkdir -p /etc/scripts
+cd /etc/scripts
+
+ipset -N gfwlist iphash
+ipset -N chinalist iphash
+ipset -N telegram iphash
+ipset -N chnroute hash:net
+
+
+chnroute_url=http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
+curl $chnroute_url | grep ipv4 | grep CN | awk -F\| '{ printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /etc/chnroute.txt
+
+curl -L -o /etc/scripts/generate_dnsmasq_chinalist.sh https://github.com/cokebar/openwrt-scripts/raw/master/generate_dnsmasq_chinalist.sh
+chmod +x /etc/scripts/generate_dnsmasq_chinalist.sh
+sh /etc/scripts/generate_dnsmasq_chinalist.sh -d 223.5.5.5 -p 53 -s chinalist -o /etc/dnsmasq.d/dnsmasq_chinalist.conf
+
+curl -L -o /etc/scripts/gfwlist2dnsmasq.sh https://github.com/cokebar/gfwlist2dnsmasq/raw/master/gfwlist2dnsmasq.sh
+chmod +x /etc/scripts/gfwlist2dnsmasq.sh
+sh /etc/scripts/gfwlist2dnsmasq.sh -d 8.8.4.4 -p 53 -s gfwlist -o /etc/dnsmasq.d/dnsmasq_gfwlist.conf
+
+
+for i in `cat /etc/chnroute.txt`;
+do
+  ipset add chnroute $i
+done
+
+
+
+iptables -t nat -N V2RAY
+
+iptables -t nat -A V2RAY -d 95.169.10.107 -j RETURN
+iptables -t nat -A V2RAY -d 95.169.3.48 -j RETURN
+iptables -t nat -A V2RAY -d 67.230.177.79 -j RETURN
+
+iptables -t nat -A V2RAY -d 0.0.0.0/8 -j RETURN
+iptables -t nat -A V2RAY -d 10.0.0.0/8 -j RETURN
+iptables -t nat -A V2RAY -d 127.0.0.0/8 -j RETURN
+iptables -t nat -A V2RAY -d 169.254.0.0/16 -j RETURN
+iptables -t nat -A V2RAY -d 172.16.0.0/12 -j RETURN
+iptables -t nat -A V2RAY -d 192.168.0.0/16 -j RETURN
+iptables -t nat -A V2RAY -d 224.0.0.0/4 -j RETURN
+iptables -t nat -A V2RAY -d 240.0.0.0/4 -j RETURN
+
+iptables -t nat -I PREROUTING -p tcp  -m set --match-set gfwlist dst -j REDIRECT --to-ports 12345
+iptables -t nat -I PREROUTING -p tcp  -m set --match-set telegram dst -j REDIRECT --to-ports 12345
+iptables -t nat -I PREROUTING -p tcp  -m set --match-set chinalist dst -j RETURN
+iptables -t nat -I PREROUTING -p tcp  -m set --match-set chnroute dst -j RETURN
+
+iptables -t nat -A V2RAY -p tcp -j RETURN -m mark --mark 0xff
+iptables -t nat -A OUTPUT -p tcp -j V2RAY
+
+iptables -t mangle -N V2RAY_MARK
+iptables -t mangle -A V2RAY_MARK -p udp --dport 53 -j MARK --set-mark 1
+iptables -t mangle -A OUTPUT -j V2RAY_MARK
+```
+
+
+
+
+
 # 参考
 
 [init.d](https://github.com/v2ray/v2ray-core/issues/101)
