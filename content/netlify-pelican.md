@@ -7,7 +7,7 @@ Authors: Kevin Chen
 
 
 
-![netlify](https://ws1.sinaimg.cn/large/65f2a787ly1fxmgh2wcfoj20lc0e80td.jpg)
+![netlify](https://wx1.sinaimg.cn/large/65f2a787ly1fxmgh2wcfoj20lc0e80td.jpg)
 
 > Netlify是一家位于旧金山的云计算公司，为静态网站提供托管和无服务器后端服务。 它具有Git在全球应用交付网络中的持续部署，无服务器表单处理，对AWS Lambda功能的支持以及与Let's Encrypt的完全集成。它提供免费和付费计划。 [维基百科（英文)](https://en.wikipedia.org/wiki/Netlify)
 
@@ -34,7 +34,7 @@ Authors: Kevin Chen
 
 新建好后就先放在那，最后才会用到。
 
-![new repo](https://ws1.sinaimg.cn/large/65f2a787ly1fxdivt257cj20l40i1wfs.jpg)
+![new repo](https://wx1.sinaimg.cn/large/65f2a787ly1fxdivt257cj20l40i1wfs.jpg)
 
 
 
@@ -179,7 +179,7 @@ echo ".directory\n__pycache__/\noutput/\n\!.gitignore\n" > .gitignore
 
 我选择使用github账号[登录Netlify](https://app.netlify.com/)，然后需要为Netlify授权可以访问那个仓库，如图，这里选择步骤一中新建好的repo。
 
-![Netlify connect Github](https://ws1.sinaimg.cn/large/65f2a787ly1fxdivt26fpj20l80rpmyp.jpg)
+![Netlify connect Github](https://wx1.sinaimg.cn/large/65f2a787ly1fxdivt26fpj20l80rpmyp.jpg)
 
 
 
@@ -187,7 +187,7 @@ echo ".directory\n__pycache__/\noutput/\n\!.gitignore\n" > .gitignore
 
 连接授权完成后，还是选择这个repo，然后下一步。
 
-![pick repo](https://ws1.sinaimg.cn/large/65f2a787ly1fxdivt23b9j20yv0lj3zv.jpg)
+![pick repo](https://wx1.sinaimg.cn/large/65f2a787ly1fxdivt23b9j20yv0lj3zv.jpg)
 
 
 
@@ -209,7 +209,7 @@ echo ".directory\n__pycache__/\noutput/\n\!.gitignore\n" > .gitignore
 
 生成的文件放在output文件夹，如果你要使用其他文件夹，除了要修改这里，还要修改pelicanconf.py文件内的配置。
 
-![build option](https://ws1.sinaimg.cn/large/65f2a787ly1fxdivt2rozj20yz0px401.jpg)
+![build option](https://wx1.sinaimg.cn/large/65f2a787ly1fxdivt2rozj20yz0px401.jpg)
 
 
 

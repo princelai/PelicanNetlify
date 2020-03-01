@@ -9,7 +9,7 @@ Authors: Kevin Chen
 
 前几天，媳妇把收到的一条短信转给我，问我值不值，我的第一反应当然是不值，这种预存方式都是欺负不懂时间价值的人玩的把戏。为了说服她，特地手算折现，但是发现，嗯？好像还是挺值的啊。于是就有了这篇文章，把计算的完整思路和代码贴出来。
 
-![message](https://ws1.sinaimg.cn/large/65f2a787ly1fxdcodwzzmj21402a84i0.jpg)
+![message](https://wx1.sinaimg.cn/large/65f2a787ly1fxdcodwzzmj21402a84i0.jpg)
 
 _注：计算全部使用年华利率按月折现_
 
@@ -149,7 +149,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-![profit surface](https://ws1.sinaimg.cn/large/65f2a787ly1fxdcu6j5byj218g0q5tgw.jpg)
+![profit surface](https://wx1.sinaimg.cn/large/65f2a787ly1fxdcu6j5byj218g0q5tgw.jpg)
 
 三维空间的一个平面，其实就是二维空间的一条直线，收益曲线确实不是一个凸函数。找不到最优解实属正常。但是总的来说，这个充值卡还是很值得办理的，在当前 4%的平均利率水平下，他们又不限制使用车辆，所以可以足够快的用完。
 

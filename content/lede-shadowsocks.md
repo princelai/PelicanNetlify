@@ -67,12 +67,12 @@ opkg install coreutils-base64 ca-certificates ca-bundle curl
 ### 添加服务器
 
 这里添加一个服务器，如果开启TCP快速打开，后面会说道如何让路由器支持，其余的要与服务器端配置相同。
-![add one](https://ws1.sinaimg.cn/large/65f2a787ly1fxv41slbu5j20dp0gujsc.jpg)
+![add one](https://wx1.sinaimg.cn/large/65f2a787ly1fxv41slbu5j20dp0gujsc.jpg)
 
 
 
 添加完所有服务器后的列表
-![服务器列表](https://ws1.sinaimg.cn/large/65f2a787ly1fxv41slllxj20qs0bedh5.jpg)
+![服务器列表](https://wx1.sinaimg.cn/large/65f2a787ly1fxv41slllxj20qs0bedh5.jpg)
 
 
 
@@ -81,7 +81,7 @@ opkg install coreutils-base64 ca-certificates ca-bundle curl
 
 ### 访问控制
 
-![访问控制1](https://ws1.sinaimg.cn/large/65f2a787ly1fxv4ep5qw4j20dg0dwgmf.jpg)
+![访问控制1](https://wx1.sinaimg.cn/large/65f2a787ly1fxv4ep5qw4j20dg0dwgmf.jpg)
 
 `被忽略IP列表`：因为之后要使用ChinaDNS分流，所以这里要选择这一项
 
@@ -95,7 +95,7 @@ opkg install coreutils-base64 ca-certificates ca-bundle curl
 
 
 
-![访问控制2](https://ws1.sinaimg.cn/large/65f2a787ly1fxv4b9z2x0j20dw07a0t0.jpg)
+![访问控制2](https://wx1.sinaimg.cn/large/65f2a787ly1fxv4b9z2x0j20dw07a0t0.jpg)
 
 `代理类型`：直接连接就是，正常代理就是
 
@@ -107,11 +107,11 @@ opkg install coreutils-base64 ca-certificates ca-bundle curl
 
 ### 开启代理
 
-![透明代理](https://ws1.sinaimg.cn/large/65f2a787ly1fxv6rhr0oaj20db0910sy.jpg)
+![透明代理](https://wx1.sinaimg.cn/large/65f2a787ly1fxv6rhr0oaj20db0910sy.jpg)
 
 
 
-![端口转发](https://ws1.sinaimg.cn/large/65f2a787ly1fxv6rhr39gj20cr08xmxc.jpg)
+![端口转发](https://wx1.sinaimg.cn/large/65f2a787ly1fxv6rhr39gj20cr08xmxc.jpg)
 
 
 
@@ -137,7 +137,7 @@ opkg install coreutils-base64 ca-certificates ca-bundle curl
 
 ### ChinaDNS
 
-![ChinaDNS](https://ws1.sinaimg.cn/large/65f2a787ly1fxv6rhra4zj20e40bp3z3.jpg)
+![ChinaDNS](https://wx1.sinaimg.cn/large/65f2a787ly1fxv6rhra4zj20e40bp3z3.jpg)
 
 ### 系统DNS设置
 在Luci中切换至`网络--->DHCP/DNS--->基本设置`，DNS 转发填入`127.0.0.1#5353`

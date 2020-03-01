@@ -19,7 +19,7 @@ Authors: Kevin Chen
 
 下载好文件后，进入路由器 Luci 界面，System ---> Backup / Flash Firmware
 
-![backup and flash](https://ws1.sinaimg.cn/large/65f2a787ly1fxa2pretyzj20qi0jugnh.jpg)
+![backup and flash](https://wx1.sinaimg.cn/large/65f2a787ly1fxa2pretyzj20qi0jugnh.jpg)
 
 建议先备份一份配置到本地，备份好后，上传文件，开刷！等待路由器重启后进入后面的步骤。
 

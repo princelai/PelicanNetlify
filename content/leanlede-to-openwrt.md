@@ -9,19 +9,19 @@ Authors: Kevin Chen
 
 自从知道恩山lean大神开源的LEDE系统，一直沉迷于它的方便，自己想要什么就编译什么，比如他自己开发的adbyby和ssr-plus插件，但是使用了一段时间以后，就发现某些软件的兼容性有问题，不定时重启且重启后无法联网，无奈只能选择刷回原版，但是刷回的过程非常艰辛，今天把握成功刷回的过程记录下来分享给大家。如下图，这是我路由器的型号和架构。
 
-![pic1](https://ws1.sinaimg.cn/large/65f2a787ly1g7k7ebpbomj20oy08m74o.jpg)
+![pic1](https://wx1.sinaimg.cn/large/65f2a787ly1g7k7ebpbomj20oy08m74o.jpg)
 
 
 
 我从openwrt的官网下载了几乎所有我能下载到的固件，不论是稳定版还是开发版。（中间混杂着一个newifi3的固件请无视）
 
-![pic2](https://ws1.sinaimg.cn/large/65f2a787ly1g7k7ebpkp2j20h504nt9u.jpg)
+![pic2](https://wx1.sinaimg.cn/large/65f2a787ly1g7k7ebpkp2j20h504nt9u.jpg)
 
 
 
 任何一个固件使用luci自带的刷写页面都会提示“不支持所上传的映像文件格式，请选择适合当前平台的通用映像文件”。这就让我很郁闷，我也是刷过上百次原版固件的人了，怎么这次就不行了呢？
 
-![pic3](https://ws1.sinaimg.cn/large/65f2a787ly1g7k7ebphakj20kn05daai.jpg)
+![pic3](https://wx1.sinaimg.cn/large/65f2a787ly1g7k7ebphakj20kn05daai.jpg)
 
 
 

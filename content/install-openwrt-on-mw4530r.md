@@ -102,6 +102,6 @@ opkg install luci luci-ssl luci-i18n-chinese
 
 贴一张 Openwrt 的路由架构图，这张图帮助我理解了端口和路由的关系。
 
-![linksys](https://ws1.sinaimg.cn/large/65f2a787ly1fxuvfpqw1gj20e70a5q3g.jpg)
+![linksys](https://wx1.sinaimg.cn/large/65f2a787ly1fxuvfpqw1gj20e70a5q3g.jpg)
 
 [1]: http://downloads.openwrt.org/snapshots/trunk/ar71xx/

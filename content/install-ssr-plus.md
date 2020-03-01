@@ -60,11 +60,11 @@ make menuconfig
 
    之后会进入类似下面这样的界面，前三个分别是系统架构、子架构和路由器型号，这三个必须根据你自己的情况选对。
 
-   ![menuconfig](https://ws1.sinaimg.cn/large/65f2a787ly1g7miwhzuafj21hc0h9q58.jpg)
+   ![menuconfig](https://wx1.sinaimg.cn/large/65f2a787ly1g7miwhzuafj21hc0h9q58.jpg)
 
    选择好以后，向下翻，找到LuCI --> Applications进入，找到图片中的插件然后空格选中
 
-   ![menucconfig2](https://ws1.sinaimg.cn/large/65f2a787ly1g7miwhykvcj21hc0h9n03.jpg)
+   ![menucconfig2](https://wx1.sinaimg.cn/large/65f2a787ly1g7miwhykvcj21hc0h9n03.jpg)
 
    由于我只用到了ss和v2ray，所以方括号中我只选择了我需要的，如有要用kcp和ssr可以相应选中，但是后续的依赖文件可能会更多。
 
@@ -186,11 +186,11 @@ opkg install dns-forwarder luci-app-dns-forwarder
 
 1. dns-forwarder
 
-   ![dnsforwarder](https://ws1.sinaimg.cn/large/65f2a787ly1g7mkknx28nj20ej08faa7.jpg)
+   ![dnsforwarder](https://wx1.sinaimg.cn/large/65f2a787ly1g7mkknx28nj20ej08faa7.jpg)
 
 2. ssr-plus
 
-   ![ssrplus3](https://ws1.sinaimg.cn/large/65f2a787ly1g7mkknxataj20h70ak759.jpg)
+   ![ssrplus3](https://wx1.sinaimg.cn/large/65f2a787ly1g7mkknxataj20h70ak759.jpg)
 
 
 

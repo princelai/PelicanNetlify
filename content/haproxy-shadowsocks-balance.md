@@ -15,7 +15,7 @@ Authors: Kevin Chen
 
 整套系统的流程如图
 
-![流程图](https://ws1.sinaimg.cn/large/65f2a787ly1fxvwgijay1j20gh0hhaaj.jpg)
+![流程图](https://wx1.sinaimg.cn/large/65f2a787ly1fxvwgijay1j20gh0hhaaj.jpg)
 
 ## Haproxy
 
@@ -130,4 +130,4 @@ systemctl start shadowsocks-libev@Shadowsocks-haproxy.service
 
 ## 监控图形界面
 
-![监控](https://ws1.sinaimg.cn/large/65f2a787ly1fxvwgg6nalj21h70ebwhp.jpg)
+![监控](https://wx1.sinaimg.cn/large/65f2a787ly1fxvwgg6nalj21h70ebwhp.jpg)

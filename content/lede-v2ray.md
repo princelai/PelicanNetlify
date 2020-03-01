@@ -31,6 +31,61 @@ src/gz openwrt_telephony https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/1
 
 
 
+替换dnsmasq
+
+```
+opkg download dnsmasq-full
+opkg install dnsmasq-full
+opkg remove dnsmasq
+opkg install dnsmasq-full_2.80-15_arm_cortex-a9_vfpv3.ipk
+rm dnsmasq-full_2.80-15_arm_cortex-a9_vfpv3.ipk 
+```
+
+
+
+全面更新
+
+```
+opkg update
+opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade
+```
+
+
+
+extroot
+
+```
+opkg update && opkg install block-mount kmod-fs-ext4 kmod-usb-storage e2fsprogs kmod-usb-ohci kmod-usb-uhci fdisk usbutils
+
+2. Configuring rootfs_data
+DEVICE="$(awk -e '/\s\/overlay\s/{print $1}' /etc/mtab)"
+uci -q delete fstab.rwm
+uci set fstab.rwm="mount"
+uci set fstab.rwm.device="${DEVICE}"
+uci set fstab.rwm.target="/rwm"
+uci commit fstab
+
+3. Configuring extroot
+mkfs.ext4 /dev/sda1
+
+DEVICE="/dev/sda1"
+eval $(block info "${DEVICE}" | grep -o -e "UUID=\S*")
+uci -q delete fstab.overlay
+uci set fstab.overlay="mount"
+uci set fstab.overlay.uuid="${UUID}"
+uci set fstab.overlay.target="/overlay"
+uci commit fstab
+
+4.Transferring the data
+mount /dev/sda1 /mnt
+cp -a -f /overlay/. /mnt
+umount /mnt
+
+reboot
+```
+
+
+
 v2ray源
 
 ```
@@ -42,6 +97,7 @@ opkg-key add kuoruan-public.key
 
 ```
 src/gz kuoruan_packages https://openwrt.kuoruan.net/packages/releases/mipsel_24kc
+src/gz kuoruan_packages https://openwrt.kuoruan.net/packages/releases/arm_cortex-a9_vfpv3
 src/gz kuoruan_universal https://openwrt.kuoruan.net/packages/releases/all
 ```
 
@@ -60,33 +116,59 @@ opkg print-architecture | awk '{print $2}'
 
 ```
 src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/mipsel_24kc
+src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/arm_cortex-a9_vfpv3
 src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/packages/luci
 ```
 
 
 
-全面更新
 
-```
-opkg update
-opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade
-```
-
-
-
-替换dnsmasq
-
-```
-opkg remove dnsmasq
-opkg install dnsmasq-full
-```
 
 
 
 安装插件
 
 ```
-opkg install luci-i18n-base-zh-cn uhttpd libuhttpd-openssl luci-app-uhttpd luci-i18n-uhttpd-zh-cn ChinaDNS luci-app-chinadns ip-full ipset iptables-mod-tproxy iptables-mod-nat-extra libpthread coreutils-base64 ca-certificates ca-bundle curl vim-full vim-runtime
+opkg update
+opkg install luci-i18n-base-zh-cn uhttpd libuhttpd-openssl luci-app-uhttpd luci-i18n-uhttpd-zh-cn ip-full ipset iptables-mod-tproxy iptables-mod-nat-extra libpthread coreutils-base64 ca-certificates ca-bundle curl vim-full vim-runtime v2ray-core luci-app-v2ray luci-i18n-v2ray-zh-cn
+```
+
+
+
+```
+chmod a+x /usr/bin/geoip.dat 
+chmod a+x /usr/bin/geosite.dat
+```
+
+
+
+```
+mkdir /etc/dnsmasq.d
+uci add_list dhcp.@dnsmasq[0].confdir=/etc/dnsmasq.d
+uci add_list dhcp.@dnsmasq[0].cachesize=10000
+uci commit dhcp
+
+mkdir -p /etc/scripts
+cd /etc/scripts
+
+curl -L -o /etc/scripts/generate_dnsmasq_chinalist.sh https://github.com/cokebar/openwrt-scripts/raw/master/generate_dnsmasq_chinalist.sh
+chmod +x /etc/scripts/generate_dnsmasq_chinalist.sh
+sh /etc/scripts/generate_dnsmasq_chinalist.sh -d 223.5.5.5 -p 53 -s v2ray_dst_direct_v4 -o /etc/dnsmasq.d/dnsmasq_chinalist.conf
+
+curl -L -o /etc/scripts/gfwlist2dnsmasq.sh https://github.com/cokebar/gfwlist2dnsmasq/raw/master/gfwlist2dnsmasq.sh
+chmod +x /etc/scripts/gfwlist2dnsmasq.sh
+sh /etc/scripts/gfwlist2dnsmasq.sh -d 8.8.4.4 -p 53 -s v2ray_dst_proxy_v4 -o /etc/dnsmasq.d/dnsmasq_gfwlist.conf
+
+/etc/init.d/dnsmasq restart
+```
+
+
+
+ddns
+
+```
+wget https://github.com/honwen/luci-app-aliddns/releases/download/v20171205/luci-app-aliddns_0.2.0-1_all.ipk -O /tmp/aliddns.ipk
+opkg install /tmp/aliddns.ipk
 ```
 
 
@@ -253,3 +335,5 @@ iptables -t mangle -A OUTPUT -j V2RAY_MARK
 [利用 V2Ray + GFWList 实现路由器自动翻墙](https://cryptopunk.me/posts/27406/)
 
 [网关服务器上设置 V2Ray+dnsmasq 透明代理](https://dakai.github.io/2017/11/27/v2ray.html)
+
+[extroot](https://openwrt.org/docs/guide-user/additional-software/extroot_configuration)
