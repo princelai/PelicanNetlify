@@ -17,16 +17,16 @@ opkg install ca-certificates luci-ssl-openssl
 
 
 
-源
+源`/etc/opkg/customfeeds.conf`
 
 ```
-src/gz openwrt_core https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/targets/ramips/mt7621/packages
-src/gz openwrt_kmods https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/targets/ramips/mt7621/kmods/4.14.167-1-2e88863ccdd594fb8e842df3c25842ee
-src/gz openwrt_base https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/base
-src/gz openwrt_luci https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/luci
-src/gz openwrt_packages https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/packages
-src/gz openwrt_routing https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/routing
-src/gz openwrt_telephony https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/telephony
+src/gz openwrt_core https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/targets/x86/64/packages
+src/gz openwrt_base https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/x86_64/base
+src/gz openwrt_luci https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/x86_64/luci
+src/gz openwrt_packages https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/x86_64/packages
+src/gz openwrt_routing https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/x86_64/routing
+src/gz openwrt_telephony https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/x86_64/telephony
+src/gz openwrt_kmods https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/targets/x86/64/kmods/4.14.167-1-e1dd7676581672f6f0bdb1363506dee1
 ```
 
 
@@ -37,8 +37,8 @@ src/gz openwrt_telephony https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/1
 opkg download dnsmasq-full
 opkg install dnsmasq-full
 opkg remove dnsmasq
-opkg install dnsmasq-full_2.80-15_arm_cortex-a9_vfpv3.ipk
-rm dnsmasq-full_2.80-15_arm_cortex-a9_vfpv3.ipk 
+opkg install dnsmasq-full_2.80-15_x86_64.ipk
+rm dnsmasq-full_2.80-15_x86_64.ipk 
 ```
 
 
@@ -96,8 +96,7 @@ opkg-key add kuoruan-public.key
 
 
 ```
-src/gz kuoruan_packages https://openwrt.kuoruan.net/packages/releases/mipsel_24kc
-src/gz kuoruan_packages https://openwrt.kuoruan.net/packages/releases/arm_cortex-a9_vfpv3
+src/gz kuoruan_packages https://openwrt.kuoruan.net/packages/releases/x86_64/
 src/gz kuoruan_universal https://openwrt.kuoruan.net/packages/releases/all
 ```
 
@@ -115,8 +114,7 @@ opkg print-architecture | awk '{print $2}'
 ```
 
 ```
-src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/mipsel_24kc
-src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/arm_cortex-a9_vfpv3
+src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/x86_64/
 src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/packages/luci
 ```
 
@@ -130,7 +128,7 @@ src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/packages/luci
 
 ```
 opkg update
-opkg install luci-i18n-base-zh-cn uhttpd libuhttpd-openssl luci-app-uhttpd luci-i18n-uhttpd-zh-cn ip-full ipset iptables-mod-tproxy iptables-mod-nat-extra libpthread coreutils-base64 ca-certificates ca-bundle curl vim-full vim-runtime v2ray-core luci-app-v2ray luci-i18n-v2ray-zh-cn
+opkg install luci-i18n-base-zh-cn uhttpd libuhttpd-openssl luci-app-uhttpd luci-i18n-uhttpd-zh-cn ip-full ipset iptables-mod-tproxy iptables-mod-nat-extra libpthread coreutils-base64 ca-bundle curl vim-full vim-runtime v2ray-core luci-app-v2ray luci-i18n-v2ray-zh-cn
 ```
 
 
@@ -143,8 +141,8 @@ chmod a+x /usr/bin/geosite.dat
 
 
 ```
-mkdir /etc/dnsmasq.d
-uci add_list dhcp.@dnsmasq[0].confdir=/etc/dnsmasq.d
+#mkdir /etc/dnsmasq.d
+#uci add_list dhcp.@dnsmasq[0].confdir=/etc/dnsmasq.d
 uci add_list dhcp.@dnsmasq[0].cachesize=10000
 uci commit dhcp
 
