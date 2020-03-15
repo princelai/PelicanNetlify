@@ -12,13 +12,19 @@ Authors: Kevin Chen
 
 
 
-1. 首先，需要更新系统、安装必要程序
+1.首先，需要更新系统、安装必要程序
 
    ```
    opkg update && opkg install block-mount kmod-fs-ext4 kmod-usb-storage e2fsprogs kmod-usb-ohci kmod-usb-uhci fdisk usbutils
    ```
 
-2. 之后更新rootfs数据
+
+
+
+
+
+
+2.之后更新rootfs数据
 
    ```
    DEVICE="$(awk -e '/\s\/overlay\s/{print $1}' /etc/mtab)"
@@ -29,7 +35,11 @@ Authors: Kevin Chen
    uci commit fstab
    ```
 
-3. 然后格式化硬盘，后再次更新文件系统表
+
+
+
+
+3.然后格式化硬盘，后再次更新文件系统表
 
    ```
    mkfs.ext4 /dev/sda1
@@ -43,7 +53,13 @@ Authors: Kevin Chen
    uci commit fstab
    ```
 
-4. 最后，迁移数据
+
+
+
+
+
+
+4.最后，迁移数据
 
    ```
    mount /dev/sda1 /mnt
@@ -51,7 +67,13 @@ Authors: Kevin Chen
    umount /mnt
    ```
 
-5. 重启，完成
+
+
+
+
+
+
+5.重启，完成
 
    ```
    reboot
