@@ -52,40 +52,6 @@ opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade
 
 
 
-extroot
-
-```
-opkg update && opkg install block-mount kmod-fs-ext4 kmod-usb-storage e2fsprogs kmod-usb-ohci kmod-usb-uhci fdisk usbutils
-
-2. Configuring rootfs_data
-DEVICE="$(awk -e '/\s\/overlay\s/{print $1}' /etc/mtab)"
-uci -q delete fstab.rwm
-uci set fstab.rwm="mount"
-uci set fstab.rwm.device="${DEVICE}"
-uci set fstab.rwm.target="/rwm"
-uci commit fstab
-
-3. Configuring extroot
-mkfs.ext4 /dev/sda1
-
-DEVICE="/dev/sda1"
-eval $(block info "${DEVICE}" | grep -o -e "UUID=\S*")
-uci -q delete fstab.overlay
-uci set fstab.overlay="mount"
-uci set fstab.overlay.uuid="${UUID}"
-uci set fstab.overlay.target="/overlay"
-uci commit fstab
-
-4.Transferring the data
-mount /dev/sda1 /mnt
-cp -a -f /overlay/. /mnt
-umount /mnt
-
-reboot
-```
-
-
-
 v2ray源
 
 ```
