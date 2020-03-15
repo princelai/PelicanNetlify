@@ -53,7 +53,7 @@ cd lede
 3.个性化你自己的固件
 
    这一步最为重要，先执行下面的命令
-   
+
 ```bash
 make menuconfig 
 ```
@@ -120,7 +120,7 @@ opkg install /tmp/luci-app-ssr-plus_1-99_all.ipk
 
 
 
-如果你是原版openwrt，那么执行完安装后一定会报错，提示到不到依赖
+如果你是原版openwrt，那么执行完安装后一定会报错，提示找不到依赖
 
 ```
  * satisfy_dependencies_for: Cannot satisfy the following dependencies for luci-app-ssr-plus:

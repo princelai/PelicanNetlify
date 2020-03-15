@@ -59,7 +59,7 @@ opkg-key add kuoruan-public.key
 
 
 
-然后在上面提到的**自定义源**里增加下面的内容。
+然后在上面提到的**自定义源**里增加下面的内容，注意替换架构目录。
 
 ```
 src/gz kuoruan_packages https://openwrt.kuoruan.net/packages/releases/x86_64/
@@ -80,6 +80,8 @@ opkg-key add openwrt-dist.pub
 ```
 
 
+
+**注意替换为自己的架构**
 
 ```
 src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/x86_64/
