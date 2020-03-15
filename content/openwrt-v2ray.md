@@ -40,7 +40,7 @@ src/gz openwrt_kmods https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07
 
 如果不知道自己的架构，可以使用下面的命令查询
 
-```
+```bash
 opkg print-architecture | awk '{print $2}'
 ```
 
@@ -50,7 +50,7 @@ opkg print-architecture | awk '{print $2}'
 
 openwrt-v2ray作者非常良心，提供了多种架构的编译文件，以及可以在线更新的源，方便日后更新使用，但我们要先把第三方源的key导入才能正常使用。
 
-```
+```bash
 wget -O kuoruan-public.key http://openwrt.kuoruan.net/packages/public.key
 opkg-key add kuoruan-public.key
 ```
@@ -61,7 +61,7 @@ opkg-key add kuoruan-public.key
 
 然后在上面提到的**自定义源**里增加下面的内容，注意替换架构目录。
 
-```
+```ini
 src/gz kuoruan_packages https://openwrt.kuoruan.net/packages/releases/x86_64/
 src/gz kuoruan_universal https://openwrt.kuoruan.net/packages/releases/all
 ```
@@ -74,7 +74,7 @@ src/gz kuoruan_universal https://openwrt.kuoruan.net/packages/releases/all
 
 方法同上，这里就不赘述了。需要说明的是，这个源是安装ss和dns-forward这类工具的源，有需要可以添加，没需要就跳过吧，我下面的教程没有用到这里的相关程序。
 
-```
+```bash
 wget http://openwrt-dist.sourceforge.net/openwrt-dist.pub
 opkg-key add openwrt-dist.pub
 ```
@@ -83,7 +83,7 @@ opkg-key add openwrt-dist.pub
 
 **注意替换为自己的架构**
 
-```
+```ini
 src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/x86_64/
 src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/packages/luci
 ```
@@ -100,7 +100,7 @@ src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/packages/luci
 
 注意，我下面的代码没有写错，第一条是下载ipk文件到本地，第二条dnsmasq-full安装一定会失败，但目的是让系统自动安装所需要的依赖。
 
-```
+```bash
 opkg download dnsmasq-full
 opkg install dnsmasq-full
 opkg remove dnsmasq
@@ -114,7 +114,7 @@ rm dnsmasq-full_2.80-15_x86_64.ipk
 
 我是更新强迫党，要尽量保持软件最新。
 
-```
+```bash
 opkg update
 opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade
 ```
@@ -127,7 +127,7 @@ opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade
 
 下面包含了必要软件、系统工具和部分中文翻译补丁，建议全部安装，如果路由器空间实在不够，可以看看我写的Extroot教程。
 
-```
+```bash
 opkg update
 opkg install luci-i18n-base-zh-cn uhttpd libuhttpd-openssl luci-app-uhttpd luci-i18n-uhttpd-zh-cn ip-full ipset iptables-mod-tproxy iptables-mod-nat-extra libpthread coreutils-base64 ca-bundle curl vim-full vim-runtime v2ray-core luci-app-v2ray luci-i18n-v2ray-zh-cn
 ```
@@ -136,7 +136,7 @@ opkg install luci-i18n-base-zh-cn uhttpd libuhttpd-openssl luci-app-uhttpd luci-
 
 安装好openwrt-v2ray后需要为geo文件增加执行权限，不然启动可能报错， 即使你用不到这两个文件。
 
-```
+```bash
 chmod a+x /usr/bin/geoip.dat 
 chmod a+x /usr/bin/geosite.dat
 ```

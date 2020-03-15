@@ -122,22 +122,21 @@ opkg install /tmp/luci-app-ssr-plus_1-99_all.ipk
 
 如果你是原版openwrt，那么执行完安装后一定会报错，提示找不到依赖
 
-```
- * satisfy_dependencies_for: Cannot satisfy the following dependencies for luci-app-ssr-plus:
- *      shadowsocksr-libev-alt
- *      ipset
- *      ip-full
- *      iptables-mod-tproxy
- *      dnsmasq-full
- *      coreutils
- *      coreutils-base64
- *      bash
- *      pdnsd-alt
- *      wget
- *      shadowsocks-libev-ss-redir
- *      v2ray
- * opkg_install_cmd: Cannot install package luci-app-ssr-plus.
-```
+>satisfy_dependencies_for: Cannot satisfy the following dependencies for luci-app-ssr-plus:
+>    shadowsocksr-libev-alt
+>       ipset
+>       ip-full
+>       iptables-mod-tproxy
+>       dnsmasq-full
+>       coreutils
+>       coreutils-base64
+>       bash
+>       pdnsd-alt
+>       wget
+>       shadowsocks-libev-ss-redir
+>       v2ray
+>     opkg_install_cmd: Cannot install package luci-app-ssr-plus.
+
 
 
 
