@@ -5,12 +5,12 @@ Tags: openwrt, extroot
 Slug: new-extroot
 Authors: Kevin Chen
 
-
+<br />
 
 
 之前写过一篇文章[用 extroot 为 openwrt 扩充存储空间](https://www.solarck.com/openwrt-extroot.html)，最近重装openwrt的时候，发现官方文档已经更新了扩展方法，觉得有必要单独写一篇作为更正，以免误导新人。
 
-
+<br />
 
 ### 1.首先，需要更新系统、安装必要程序
 
@@ -18,7 +18,7 @@ Authors: Kevin Chen
    opkg update && opkg install block-mount kmod-fs-ext4 kmod-usb-storage e2fsprogs kmod-usb-ohci kmod-usb-uhci fdisk usbutils
    ```
 
-
+<br />
 
 
 
@@ -37,7 +37,7 @@ Authors: Kevin Chen
 
 
 
-
+<br />
 
 ### 3.然后格式化硬盘，后再次更新文件系统表
 
@@ -55,7 +55,7 @@ Authors: Kevin Chen
 
 
 
-
+<br />
 
 
 
@@ -71,7 +71,7 @@ Authors: Kevin Chen
 
 
 
-
+<br />
 
 ### 5.重启，完成
 
@@ -79,7 +79,7 @@ Authors: Kevin Chen
    reboot
    ```
 
-   
+   <br />
 
 ## 参考
 

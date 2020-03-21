@@ -7,14 +7,18 @@ Authors: Kevin Chen
 
 
 
+<br />
+
 之前文章提到过，我使用恩山lean大神的固件，主要是看中了他固件中的`luci-app-ssr-plus`这个插件，但是由于自己编译的固件稳定性上总是差点意思，不得已换回了官方原版openwrt，随之科学上网的插件也换成了`shadowsocks-libev`，这个插件是非常优秀的，但还是存在几个我非常介意的问题：
 
 > 1. ss的特征貌似已经能被GFW识别，国庆前我的三台私人服务器就全挂了，全面换成v2ray是迫在眉睫，但是该插件只支持原版ss
 > 2. 该插件的地址只能是IP地址，不支持域名，所以对于justmysocks这样被封后自动动换IP的服务就非常麻烦
 
+<br />
+
 v2ray官方没有提供我路由器架构的二进制文件，当然，openwrt就是以插件多闻名，其实可选的v2ray方案也很多，比如第三方固件[openwrt-v2ray](https://github.com/kuoruan/openwrt-v2ray)就提供了我需要的文件，再配合[luci-app-v2ray](https://github.com/kuoruan/luci-app-v2ray)也可以搭建出来，不过这套配置我是试过的，说实话配置起来比较复杂，DNS的解析转发、ChinaList、GFWList等功能也都需要自己来，所以我的第一选择还是`luci-app-ssr-plus`
 
-
+<br />
 
 在原版openwrt上使用这个插件有两种方法
 
@@ -25,7 +29,7 @@ v2ray官方没有提供我路由器架构的二进制文件，当然，openwrt�
 
 
 
-
+<br />
 
 ## 编译插件
 
@@ -40,7 +44,7 @@ git clone https://github.com/coolsnowwolf/lede
 cd lede
 ```
 
-
+<br />
 
 2.然后为你的固件更新/安装扩展包
 
@@ -48,7 +52,7 @@ cd lede
 ./scripts/feeds update -a && ./scripts/feeds install -a
 ```
 
-
+<br />
 
 3.个性化你自己的固件
 
@@ -58,19 +62,33 @@ cd lede
 make menuconfig 
 ```
 
-   之后会进入类似下面这样的界面，前三个分别是系统架构、子架构和路由器型号，这三个必须根据你自己的情况选对。
+<br />
+
+之后会进入类似下面这样的界面，前三个分别是系统架构、子架构和路由器型号，这三个必须根据你自己的情况选对。
 
    ![menuconfig](https://wx1.sinaimg.cn/large/65f2a787ly1g7miwhzuafj21hc0h9q58.jpg)
 
-   选择好以后，向下翻，找到LuCI --> Applications进入，找到图片中的插件然后空格选中
+
+
+<br />   
+
+选择好以后，向下翻，找到LuCI --> Applications进入，找到图片中的插件然后空格选中
 
    ![menucconfig2](https://wx1.sinaimg.cn/large/65f2a787ly1g7miwhykvcj21hc0h9n03.jpg)
 
-   由于我只用到了ss和v2ray，所以方括号中我只选择了我需要的，如有要用kcp和ssr可以相应选中，但是后续的依赖文件可能会更多。
+   
 
-   如果你在`luci-app-ssr-plus`处按M而不是空格，那么相当于把该插件编译为模块而不是编译入固件，这样做当然可以，但是建议第一次先全部编译，然后再次单独编译，不然单独编译一个插件会失败。
+<br />
+
+由于我只用到了ss和v2ray，所以方括号中我只选择了我需要的，如有要用kcp和ssr可以相应选中，但是后续的依赖文件可能会更多。
 
    
+
+如果你在`luci-app-ssr-plus`处按M而不是空格，那么相当于把该插件编译为模块而不是编译入固件，这样做当然可以，但是建议第一次先全部编译，然后再次单独编译，不然单独编译一个插件会失败。
+
+
+
+<br />   
 
 4.下载所有脚本和程序
 
@@ -84,6 +102,7 @@ make download -j5
 
    
 
+<br />
 
 5.开始编译
 
@@ -97,11 +116,13 @@ make -j5 V=s
 
 
 
-
+<br />
 
 ## 安装依赖及插件
 
 **在安装前，建议先看看我之前写过的两篇文章[升级 Openwrt/LEDE 大版本至 18.06](https://www.solarck.com/upgrade-lede-to-1806.html)或[LEDE/OpenWRT 路由器打造家庭媒体影音中心（一）](https://www.solarck.com/lede-media-center1.html)关于更换源那部分，这样会大大提升下载安装插件的速度。**
+
+<br />
 
 上面编译完成后，编译出的文件就可以在`bin/packages/路由器架构/base/`里找到你要的全部文件，先把`luci-app-ssr-plus`传到路由器安装试试。
 
@@ -112,13 +133,15 @@ scp -P 22 luci-app-ssr-plus*.ipk root@192.168.250.1:/tmp/
 
 
 
+<br />
+
 切换到路由器shell执行（插件文件名每个人可能略有不同）
 
 ```bash
 opkg install /tmp/luci-app-ssr-plus_1-99_all.ipk
 ```
 
-
+<br />
 
 如果你是原版openwrt，那么执行完安装后一定会报错，提示找不到依赖
 
@@ -137,7 +160,7 @@ opkg install /tmp/luci-app-ssr-plus_1-99_all.ipk
 >       v2ray
 >     opkg_install_cmd: Cannot install package luci-app-ssr-plus.
 
-
+<br />
 
 
 你的提示可能会和我的有点出入，缺少的依赖或多或少，但一定会报错，原因就在于`luci-app-ssr-plus`依赖三个插件不在官方源中，所以我们要把下面几个编译好的插件传上路由器提前安装好。文件都在上面提到的目录中，上传方法也相同，这里就不赘述了。
@@ -148,6 +171,8 @@ opkg install /tmp/luci-app-ssr-plus_1-99_all.ipk
 >
 > v2ray
 
+<br />
+
 最后还有一点要注意的，在安装所有非官方依赖后，安装`luci-app-ssr-plus`前，还有一步操作。openwrt系统都会内置`dnsmasq`用于DNS服务，但是这个插件与`dnsmasq-full`是冲突的，所以要手动卸载掉，但是可以不手动安装，作为官方源中可以找到的依赖插件，它是可以自动安装的。
 
 ```bash
@@ -155,19 +180,21 @@ opkg remove dnsmasq
 opkg install /tmp/luci-app-ssr-plus_1-99_all.ipk
 ```
 
+<br />
+
 安装好后，默认是看不到插件的，需要开启彩蛋，在路由器shell执行下面的命令
 
 ```bash
 echo 0xDEADBEEF > /etc/config/google_fu_mode
 ```
 
-
+<br />
 
 至此就算大功告成。不过在我的路由器上还有一个小问题需要修复，没有问题的配置好自己的服务器应该就可以科学上网了，无需往下看。
 
 
 
-
+<br />
 
 ## 替换pdnsd
 
@@ -180,6 +207,8 @@ opkg install dns-forwarder luci-app-dns-forwarder
 ```
 
 
+
+<br />
 
 最后按照下面两张图片分别设置好就可以了
 
@@ -195,7 +224,7 @@ opkg install dns-forwarder luci-app-dns-forwarder
 
 
 
-
+<br />
 
 ## 后记
 
