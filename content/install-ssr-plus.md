@@ -33,7 +33,7 @@ v2ray官方没有提供我路由器架构的二进制文件，当然，openwrt�
 
 
 
-1. 首先要把lean的整套源码从github克隆下来，然后进入该目录
+1.首先要把lean的整套源码从github克隆下来，然后进入该目录
 
 ```bash
 git clone https://github.com/coolsnowwolf/lede
@@ -42,7 +42,7 @@ cd lede
 
 
 
-2. 然后为你的固件更新/安装扩展包
+2.然后为你的固件更新/安装扩展包
 
 ```bash
 ./scripts/feeds update -a && ./scripts/feeds install -a
@@ -50,10 +50,10 @@ cd lede
 
 
 
-3. 个性化你自己的固件
+3.个性化你自己的固件
 
    这一步最为重要，先执行下面的命令
-   
+
 ```bash
 make menuconfig 
 ```
@@ -72,7 +72,7 @@ make menuconfig
 
    
 
-4. 下载所有脚本和程序
+4.下载所有脚本和程序
 
    这一步就是要科学上网的原因所在，不然很多程序不能顺利下载导致编译失败。
 
@@ -85,7 +85,7 @@ make download -j5
    
 
 
-5. 开始编译
+5.开始编译
 
    同上，数字可以改，核越多越快，这一步需要等待几分钟～几十分钟不等。
 
@@ -120,24 +120,23 @@ opkg install /tmp/luci-app-ssr-plus_1-99_all.ipk
 
 
 
-如果你是原版openwrt，那么执行完安装后一定会报错，提示到不到依赖
+如果你是原版openwrt，那么执行完安装后一定会报错，提示找不到依赖
 
-```
- * satisfy_dependencies_for: Cannot satisfy the following dependencies for luci-app-ssr-plus:
- *      shadowsocksr-libev-alt
- *      ipset
- *      ip-full
- *      iptables-mod-tproxy
- *      dnsmasq-full
- *      coreutils
- *      coreutils-base64
- *      bash
- *      pdnsd-alt
- *      wget
- *      shadowsocks-libev-ss-redir
- *      v2ray
- * opkg_install_cmd: Cannot install package luci-app-ssr-plus.
-```
+>satisfy_dependencies_for: Cannot satisfy the following dependencies for luci-app-ssr-plus:
+>    shadowsocksr-libev-alt
+>       ipset
+>       ip-full
+>       iptables-mod-tproxy
+>       dnsmasq-full
+>       coreutils
+>       coreutils-base64
+>       bash
+>       pdnsd-alt
+>       wget
+>       shadowsocks-libev-ss-redir
+>       v2ray
+>     opkg_install_cmd: Cannot install package luci-app-ssr-plus.
+
 
 
 
@@ -184,11 +183,11 @@ opkg install dns-forwarder luci-app-dns-forwarder
 
 最后按照下面两张图片分别设置好就可以了
 
-1. dns-forwarder
+1.dns-forwarder
 
    ![dnsforwarder](https://wx1.sinaimg.cn/large/65f2a787ly1g7mkknx28nj20ej08faa7.jpg)
 
-2. ssr-plus
+2.ssr-plus
 
    ![ssrplus3](https://wx1.sinaimg.cn/large/65f2a787ly1g7mkknxataj20h70ak759.jpg)
 

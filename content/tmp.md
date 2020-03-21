@@ -1,150 +1,18 @@
-Title: V2ray 网关透明代理
-Date: 2018-07-12 11:16
-Category: 玩电脑
-Tags: lede,openwrt,v2ray
-Slug: v2ray-run-in-lede
+Title: 临时文件
+Date: 2020-03-16 00:26
+Category: 机器学习,金融与算法,玩电脑,杂记
+Tags:
+Slug: tmp-draft
 Authors: Kevin Chen
 Status: draft
 
 
 
-安装
-
-```
-opkg update
-opkg install ca-certificates luci-ssl-openssl
-```
-
-
-
-源
-
-```
-src/gz openwrt_core https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/targets/ramips/mt7621/packages
-src/gz openwrt_kmods https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/targets/ramips/mt7621/kmods/4.14.167-1-2e88863ccdd594fb8e842df3c25842ee
-src/gz openwrt_base https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/base
-src/gz openwrt_luci https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/luci
-src/gz openwrt_packages https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/packages
-src/gz openwrt_routing https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/routing
-src/gz openwrt_telephony https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/19.07.1/packages/mipsel_24kc/telephony
-```
-
-
-
-替换dnsmasq
-
-```
-opkg download dnsmasq-full
-opkg install dnsmasq-full
-opkg remove dnsmasq
-opkg install dnsmasq-full_2.80-15_arm_cortex-a9_vfpv3.ipk
-rm dnsmasq-full_2.80-15_arm_cortex-a9_vfpv3.ipk 
-```
-
-
-
-全面更新
-
-```
-opkg update
-opkg list-upgradable | cut -f 1 -d ' ' | xargs opkg upgrade
-```
-
-
-
-extroot
-
-```
-opkg update && opkg install block-mount kmod-fs-ext4 kmod-usb-storage e2fsprogs kmod-usb-ohci kmod-usb-uhci fdisk usbutils
-
-2. Configuring rootfs_data
-DEVICE="$(awk -e '/\s\/overlay\s/{print $1}' /etc/mtab)"
-uci -q delete fstab.rwm
-uci set fstab.rwm="mount"
-uci set fstab.rwm.device="${DEVICE}"
-uci set fstab.rwm.target="/rwm"
-uci commit fstab
-
-3. Configuring extroot
-mkfs.ext4 /dev/sda1
-
-DEVICE="/dev/sda1"
-eval $(block info "${DEVICE}" | grep -o -e "UUID=\S*")
-uci -q delete fstab.overlay
-uci set fstab.overlay="mount"
-uci set fstab.overlay.uuid="${UUID}"
-uci set fstab.overlay.target="/overlay"
-uci commit fstab
-
-4.Transferring the data
-mount /dev/sda1 /mnt
-cp -a -f /overlay/. /mnt
-umount /mnt
-
-reboot
-```
-
-
-
-v2ray源
-
-```
-wget -O kuoruan-public.key http://openwrt.kuoruan.net/packages/public.key
-opkg-key add kuoruan-public.key
-```
-
 
 
 ```
-src/gz kuoruan_packages https://openwrt.kuoruan.net/packages/releases/mipsel_24kc
-src/gz kuoruan_packages https://openwrt.kuoruan.net/packages/releases/arm_cortex-a9_vfpv3
-src/gz kuoruan_universal https://openwrt.kuoruan.net/packages/releases/all
-```
-
-
-
-添加证书和源
-
-```
-wget http://openwrt-dist.sourceforge.net/openwrt-dist.pub
-opkg-key add openwrt-dist.pub
-```
-
-```
-opkg print-architecture | awk '{print $2}'
-```
-
-```
-src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/mipsel_24kc
-src/gz openwrt_dist http://openwrt-dist.sourceforge.net/packages/base/arm_cortex-a9_vfpv3
-src/gz openwrt_dist_luci http://openwrt-dist.sourceforge.net/packages/luci
-```
-
-
-
-
-
-
-
-安装插件
-
-```
-opkg update
-opkg install luci-i18n-base-zh-cn uhttpd libuhttpd-openssl luci-app-uhttpd luci-i18n-uhttpd-zh-cn ip-full ipset iptables-mod-tproxy iptables-mod-nat-extra libpthread coreutils-base64 ca-certificates ca-bundle curl vim-full vim-runtime v2ray-core luci-app-v2ray luci-i18n-v2ray-zh-cn
-```
-
-
-
-```
-chmod a+x /usr/bin/geoip.dat 
-chmod a+x /usr/bin/geosite.dat
-```
-
-
-
-```
-mkdir /etc/dnsmasq.d
-uci add_list dhcp.@dnsmasq[0].confdir=/etc/dnsmasq.d
+#mkdir /etc/dnsmasq.d
+#uci add_list dhcp.@dnsmasq[0].confdir=/etc/dnsmasq.d
 uci add_list dhcp.@dnsmasq[0].cachesize=10000
 uci commit dhcp
 
@@ -260,7 +128,6 @@ exit 0
 ```
 
 ```
-
 #############################################
 
 mkdir /etc/dnsmasq.d
