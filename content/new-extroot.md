@@ -14,8 +14,8 @@ Authors: Kevin Chen
 
 ### 1.首先，需要更新系统、安装必要程序
 
-   ```
-   opkg update && opkg install block-mount kmod-fs-ext4 kmod-usb-storage e2fsprogs kmod-usb-ohci kmod-usb-uhci fdisk usbutils
+   ```bash
+opkg update && opkg install block-mount kmod-fs-ext4 kmod-usb-storage e2fsprogs kmod-usb-ohci kmod-usb-uhci fdisk usbutils
    ```
 
 <br />
@@ -26,13 +26,13 @@ Authors: Kevin Chen
 
 ### 2.之后更新rootfs数据
 
-   ```
-   DEVICE="$(awk -e '/\s\/overlay\s/{print $1}' /etc/mtab)"
-   uci -q delete fstab.rwm
-   uci set fstab.rwm="mount"
-   uci set fstab.rwm.device="${DEVICE}"
-   uci set fstab.rwm.target="/rwm"
-   uci commit fstab
+   ```bash
+DEVICE="$(awk -e '/\s\/overlay\s/{print $1}' /etc/mtab)"
+uci -q delete fstab.rwm
+uci set fstab.rwm="mount"
+uci set fstab.rwm.device="${DEVICE}"
+uci set fstab.rwm.target="/rwm"
+uci commit fstab
    ```
 
 
@@ -41,16 +41,16 @@ Authors: Kevin Chen
 
 ### 3.然后格式化硬盘，后再次更新文件系统表
 
-   ```
-   mkfs.ext4 /dev/sda1
-   
-   DEVICE="/dev/sda1"
-   eval $(block info "${DEVICE}" | grep -o -e "UUID=\S*")
-   uci -q delete fstab.overlay
-   uci set fstab.overlay="mount"
-   uci set fstab.overlay.uuid="${UUID}"
-   uci set fstab.overlay.target="/overlay"
-   uci commit fstab
+   ```bash
+mkfs.ext4 /dev/sda1
+ 
+DEVICE="/dev/sda1"
+eval $(block info "${DEVICE}" | grep -o -e "UUID=\S*")
+uci -q delete fstab.overlay
+uci set fstab.overlay="mount"
+uci set fstab.overlay.uuid="${UUID}"
+uci set fstab.overlay.target="/overlay"
+uci commit fstab
    ```
 
 
@@ -61,10 +61,10 @@ Authors: Kevin Chen
 
 ### 4.最后，迁移数据
 
-   ```
-   mount /dev/sda1 /mnt
-   cp -a -f /overlay/. /mnt
-   umount /mnt
+   ```bash
+mount /dev/sda1 /mnt
+cp -a -f /overlay/. /mnt
+umount /mnt
    ```
 
 
@@ -75,7 +75,7 @@ Authors: Kevin Chen
 
 ### 5.重启，完成
 
-   ```
+   ```bash
    reboot
    ```
 
